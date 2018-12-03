@@ -34,6 +34,7 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/node_modules/* " lol
 set visualbell " Error bells are displayed visually.
 set wildmenu " Show autocomplete menus.
 set backspace=indent,eol,start " Normal backspace
+set conceallevel=0 "disable auto-hide features
 filetype plugin on " Defines autocommands that will get executed when a file matching a given pattern is opened.
 
 " Create folder and set backup, undo and swp folder
@@ -56,6 +57,19 @@ set timeoutlen=1000 ttimeoutlen=0
 set splitright
 set splitbelow
 
+" Remove trailing whitespaces on save
+autocmd BufWritePre * :call RemoveTrailingSpaces()
+
+function! RemoveTrailingSpaces()
+    let w:winview = winsaveview()
+
+    %s/\s\+$//e
+
+    if exists('w:winview')
+        call winrestview(w:winview)
+    endif
+endfunction
+
 "============================================================
 " Plugins
 "============================================================
@@ -63,6 +77,8 @@ set splitbelow
 " Plugin: NERDTree
 " https://github.com/scrooloose/nerdtree
 map <C-n> :NERDTreeToggle<CR>
+let NERDTreeShowHidden=1
+let NERDTreeQuitOnOpen=1
 
 " Close VIM if the only window left open is NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -71,12 +87,18 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " https://github.com/vim-airline/vim-airline
 set laststatus=2
 let g:airline_theme = 'deus'
-let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#branch#enabled = 1
 
 " Plugin: vimwiki
 " https://github.com/vimwiki/vimwiki
 let g:vimwiki_list = [{ 'path': '~/Dropbox/wiki' }]
+
+" PLUGIN: indentLine
+" https://github.com/Yggdroot/indentLine
+let g:indentLine_color_term = 238
+
+" Plugin: vim-monokai
+hi Comment ctermfg=242 ctermbg=NONE cterm=NONE guifg=#75715e guibg=NONE gui=NONE
 
 "============================================================
 " Mappings

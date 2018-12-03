@@ -6,6 +6,9 @@ COLORS_DIR="$BASE_DIR/colors"
 AUTOLOAD_DIR="$BASE_DIR/autoload"
 PLUGINS=(
     "tpope/vim-pathogen"
+    "tpope/vim-commentary"
+    "tpope/vim-sensible"
+    "tpope/vim-surround"
     "vim-airline/vim-airline"
     "vim-airline/vim-airline-themes"
     "scrooloose/nerdtree"
@@ -14,8 +17,13 @@ PLUGINS=(
     "vimwiki/vimwiki"
 )
 
+rm -rf $PLUGIN_DIR
 mkdir -p $PLUGIN_DIR
+
+rm -rf $COLORS_DIR
 mkdir -p $COLORS_DIR
+
+rm -rf $AUTOLOAD_DIR
 mkdir -p $AUTOLOAD_DIR
 
 for PLUGIN in ${PLUGINS[@]}; do
