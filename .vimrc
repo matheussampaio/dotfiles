@@ -88,17 +88,24 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 set laststatus=2
 let g:airline_theme = 'deus'
 let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#ale#enabled = 1
 
 " Plugin: vimwiki
 " https://github.com/vimwiki/vimwiki
 let g:vimwiki_list = [{ 'path': '~/Dropbox/wiki' }]
 
-" PLUGIN: indentLine
+" Plugin: indentLine
 " https://github.com/Yggdroot/indentLine
 let g:indentLine_color_term = 238
 
 " Plugin: vim-monokai
 hi Comment ctermfg=242 ctermbg=NONE cterm=NONE guifg=#75715e guibg=NONE gui=NONE
+
+" Plugin: ale
+let g:ale_lint_on_text_changed = 'ever' " only run lints when saving the files
+
+" Plugin: ctrlp
+let g:ctrlp_show_hidden = 1
 
 "============================================================
 " Mappings
