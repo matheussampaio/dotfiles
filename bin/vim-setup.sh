@@ -1,20 +1,34 @@
 #!/usr/bin/env bash
 
+DOTFILES_DIR="$HOME/git/dotfiles"
+
 BASE_DIR="$HOME/.vim"
 PLUGIN_DIR="$BASE_DIR/bundle"
 COLORS_DIR="$BASE_DIR/colors"
 AUTOLOAD_DIR="$BASE_DIR/autoload"
+FTPLUGIN_DIR="$BASE_DIR/ftplugin"
+
 PLUGINS=(
-    "tpope/vim-pathogen"
-    "tpope/vim-commentary"
-    "tpope/vim-sensible"
-    "tpope/vim-surround"
-    "vim-airline/vim-airline"
+    # Essentials
+    "tpope/vim-pathogen" # install plugins and runtime files
+    "tpope/vim-commentary" # comment stuff out
+    "tpope/vim-sensible" # universal set of defaults that everyone can agree on
+    "tpope/vim-surround" # provides mappings to easily delete, change and add surroundings (parantheses, brackets, quotes, etc)
+    "tpope/vim-fugitive" # git wrapper
+    "kien/ctrlp.vim" # fuzzy file, buffer mru ttag, etc finder
+    "vim-airline/vim-airline" # lean and mean status/tabline
     "vim-airline/vim-airline-themes"
-    "scrooloose/nerdtree"
-    "sickill/vim-monokai"
-    "kien/ctrlp.vim"
-    "vimwiki/vimwiki"
+    "scrooloose/nerdtree" # tree explorer plugin
+    "sickill/vim-monokai" # monokai color scheme
+    "w0rp/ale" # asynchronous lint engine
+    "kshenoy/vim-signature" # place, toggle and display marks
+
+    # Others
+    "vimwiki/vimwiki" # personal wiki from vim
+    "christoomey/vim-tmux-navigator" # navigate seamlessly between vim and tmux splits
+
+    # Vue Plugins
+    "posva/vim-vue" # syntax highlighting for vue components
 )
 
 rm -rf $PLUGIN_DIR
@@ -31,7 +45,8 @@ for PLUGIN in ${PLUGINS[@]}; do
    git clone https://github.com/$PLUGIN.git $PLUGIN_DIR/$DIRNAME
 done
 
-ln -s $HOME/git/dotfiles/.vimrc $HOME/.vimrc
+ln -s $DOTFILES_DIR/.vimrc $HOME/.vimrc
+ln -s $DOTFILES_DIR/ftplugin $FTPLUGIN_DIR
 ln -s $PLUGIN_DIR/vim-monokai/colors/monokai.vim $COLORS_DIR/monokai.vim
 ln -s $PLUGIN_DIR/vim-pathogen/autoload/pathogen.vim $AUTOLOAD_DIR/pathogen.vim
 
