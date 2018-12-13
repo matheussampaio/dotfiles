@@ -30,6 +30,9 @@ PLUGINS=(
 
     # Vue Plugins
     "posva/vim-vue" # syntax highlighting for vue components
+
+    # Javascript Plugins
+    "pangloss/vim-javascript"
 )
 
 rm -rf $PLUGIN_DIR
