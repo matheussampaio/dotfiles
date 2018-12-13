@@ -33,6 +33,9 @@ PLUGINS=(
 
     # Javascript Plugins
     "pangloss/vim-javascript"
+
+    # HTML Plugins
+    "mattn/emmet-vim"
 )
 
 rm -rf $PLUGIN_DIR
