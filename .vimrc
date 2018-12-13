@@ -36,6 +36,8 @@ set wildmenu " Show autocomplete menus.
 set backspace=indent,eol,start " Normal backspace
 set conceallevel=0 "disable auto-hide features
 filetype plugin on " Defines autocommands that will get executed when a file matching a given pattern is opened.
+set foldlevelstart=5
+set relativenumber " Show relative line numbers
 
 " Create folder and set backup, undo and swp folder
 silent !mkdir ~/.vim/.backup > /dev/null 2>&1
