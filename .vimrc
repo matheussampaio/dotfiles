@@ -109,6 +109,9 @@ let g:ale_lint_on_text_changed = 'ever' " only run lints when saving the files
 " Plugin: ctrlp
 let g:ctrlp_show_hidden = 1
 
+" Plugin: emmet
+let g:user_emmet_install_global = 0
+
 "============================================================
 " Mappings
 "============================================================
