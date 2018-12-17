@@ -73,15 +73,6 @@ endfunction
 
 
 "============================================================
-" Theme
-"============================================================
-
-" Plugin: vim-monokai
-colorscheme monokai
-hi Comment ctermfg=242 ctermbg=NONE cterm=NONE guifg=#75715e guibg=NONE gui=NONE
-
-
-"============================================================
 " Plugins
 "============================================================
 
@@ -117,6 +108,18 @@ let g:ctrlp_show_hidden=1
 
 " Plugin: emmet
 let g:user_emmet_install_global=0
+
+" Plugin: quick-scope
+
+"============================================================
+" Theme
+"============================================================
+
+" Plugin: vim-monokai
+colorscheme monokai
+hi Comment ctermfg=242 ctermbg=NONE cterm=NONE guifg=#75715e guibg=NONE gui=NONE
+highlight QuickScopePrimary ctermfg=214
+highlight QuickScopeSecondary ctermfg=218
 
 "============================================================
 " Mappings
