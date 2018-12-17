@@ -1,16 +1,10 @@
 #!/usr/bin/env bash
 
-DOTFILES_DIR="$HOME/git/dotfiles"
+USERNAME=$(whoami)
+PERSONA_CUSTOMIZATIONS="mine"
 
-BASE_DIR="$HOME/.vim"
-PLUGIN_DIR="$BASE_DIR/bundle"
-COLORS_DIR="$BASE_DIR/colors"
-AUTOLOAD_DIR="$BASE_DIR/autoload"
-FTPLUGIN_DIR="$BASE_DIR/ftplugin"
-
-PLUGINS=(
+PACKAGES=(
     # Essentials
-    "tpope/vim-pathogen" # install plugins and runtime files
     "tpope/vim-commentary" # comment stuff out
     "tpope/vim-sensible" # universal set of defaults that everyone can agree on
     "tpope/vim-surround" # provides mappings to easily delete, change and add surroundings (parantheses, brackets, quotes, etc)
@@ -20,11 +14,9 @@ PLUGINS=(
     "kien/ctrlp.vim" # fuzzy file, buffer mru ttag, etc finder
     "vim-airline/vim-airline" # lean and mean status/tabline
     "vim-airline/vim-airline-themes"
-    "scrooloose/nerdtree" # tree explorer plugin
     "w0rp/ale" # asynchronous lint engine
     "kshenoy/vim-signature" # place, toggle and display marks
     "unblevable/quick-scope" # highlights which characters to target for `f`, `F` and family.
-
 
     # Others
     "vimwiki/vimwiki" # personal wiki from vim
@@ -38,23 +30,19 @@ PLUGINS=(
     "sickill/vim-monokai" # monokai color scheme
 )
 
-rm -rf $PLUGIN_DIR
-mkdir -p $PLUGIN_DIR
+cp -R $PERSONA_CUSTOMIZATIONS $HOME/.vim/pack/$USERNAME/$PERSONA_CUSTOMIZATIONS
 
-rm -rf $COLORS_DIR
-mkdir -p $COLORS_DIR
+ln -fs $(pwd)/../.vimrc $HOME/.vimrc
 
-rm -rf $AUTOLOAD_DIR
-mkdir -p $AUTOLOAD_DIR
+exit
 
-for PLUGIN in ${PLUGINS[@]}; do
-   DIRNAME="$(basename $PLUGIN)"
-   git clone https://github.com/$PLUGIN.git $PLUGIN_DIR/$DIRNAME
+rm -rf $HOME/.vim/pack
+mkdir -p $HOME/.vim/pack
+
+for PACKAGE in ${PACKAGES[@]}; do
+   DIRNAME="$(basename $PACKAGE)"
+   git clone https://github.com/$PACKAGE.git $HOME/.vim/pack/$USERNAME/start/$DIRNAME
 done
 
-ln -s $DOTFILES_DIR/.vimrc $HOME/.vimrc
-ln -s $DOTFILES_DIR/ftplugin $FTPLUGIN_DIR
-ln -s $PLUGIN_DIR/vim-monokai/colors/monokai.vim $COLORS_DIR/monokai.vim
-ln -s $PLUGIN_DIR/vim-pathogen/autoload/pathogen.vim $AUTOLOAD_DIR/pathogen.vim
 
 echo "vim setup done <3"

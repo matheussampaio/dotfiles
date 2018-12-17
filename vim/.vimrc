@@ -1,17 +1,5 @@
 "============================================================
-" Plugins
-"============================================================
-" List of plugins that I use:
-" + ctrlp
-" + vim-airline
-" + nerdtree
-" + pathogen
-
-set runtimepath^=~/.vim/bundle/ctrlp.vim
-set runtimepath^=~/.vim/bundle/vim-airline/plugin/airline.vim
-
-"============================================================
-" matheussampaio settings
+" matheussampaio's settings
 "============================================================
 
 set nocompatible
@@ -76,15 +64,6 @@ endfunction
 " Plugins
 "============================================================
 
-" Plugin: NERDTree
-" https://github.com/scrooloose/nerdtree
-map <C-n> :NERDTreeToggle<CR>
-let NERDTreeShowHidden=1
-let NERDTreeQuitOnOpen=1
-
-" Close VIM if the only window left open is NERDTree
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
 " Plugin: vim-airline
 " https://github.com/vim-airline/vim-airline
 set laststatus=2
@@ -130,12 +109,6 @@ nnoremap <space> za
 
 inoremap <C-s> <ESC>:w<CR>
 nnoremap <C-s> :w<CR>
-
-"============================================================
-" Start pathogen
-"============================================================
-execute pathogen#infect()
-call pathogen#helptags()
 
 set noruler
 set noshowmode
