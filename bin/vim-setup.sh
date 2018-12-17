@@ -19,10 +19,10 @@ PLUGINS=(
     "vim-airline/vim-airline" # lean and mean status/tabline
     "vim-airline/vim-airline-themes"
     "scrooloose/nerdtree" # tree explorer plugin
-    "sickill/vim-monokai" # monokai color scheme
     "w0rp/ale" # asynchronous lint engine
     "kshenoy/vim-signature" # place, toggle and display marks
     "unblevable/quick-scope" # highlights which characters to target for `f`, `F` and family.
+    "tpope/vim-apathy" # set `path` option for miscellaneous file types
 
     # Others
     "vimwiki/vimwiki" # personal wiki from vim
@@ -36,6 +36,9 @@ PLUGINS=(
 
     # HTML Plugins
     "mattn/emmet-vim"
+
+    # Colorschema
+    "sickill/vim-monokai" # monokai color scheme
 )
 
 rm -rf $PLUGIN_DIR

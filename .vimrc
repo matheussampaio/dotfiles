@@ -16,7 +16,6 @@ set runtimepath^=~/.vim/bundle/vim-airline/plugin/airline.vim
 
 set nocompatible
 syntax on " Enable syntax highlighting.
-color monokai " Select Monokai theme
 set smartindent
 set clipboard=unnamed " use OS clipboard
 set shiftwidth=2 " number of spaces when shift indenting
@@ -72,6 +71,16 @@ function! RemoveTrailingSpaces()
     endif
 endfunction
 
+
+"============================================================
+" Theme
+"============================================================
+
+" Plugin: vim-monokai
+colorscheme monokai
+hi Comment ctermfg=242 ctermbg=NONE cterm=NONE guifg=#75715e guibg=NONE gui=NONE
+
+
 "============================================================
 " Plugins
 "============================================================
@@ -88,29 +97,26 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " Plugin: vim-airline
 " https://github.com/vim-airline/vim-airline
 set laststatus=2
-let g:airline_theme = 'deus'
-let g:airline#extensions#branch#enabled = 1
-let g:airline#extensions#ale#enabled = 1
+let g:airline_theme='deus'
+let g:airline#extensions#branch#enabled=1
+let g:airline#extensions#ale#enabled=1
 
 " Plugin: vimwiki
 " https://github.com/vimwiki/vimwiki
-let g:vimwiki_list = [{ 'path': '~/Dropbox/wiki' }]
+let g:vimwiki_list=[{ 'path': '~/Dropbox/wiki' }]
 
 " Plugin: indentLine
 " https://github.com/Yggdroot/indentLine
-let g:indentLine_color_term = 238
-
-" Plugin: vim-monokai
-hi Comment ctermfg=242 ctermbg=NONE cterm=NONE guifg=#75715e guibg=NONE gui=NONE
+let g:indentLine_color_term=238
 
 " Plugin: ale
-let g:ale_lint_on_text_changed = 'ever' " only run lints when saving the files
+let g:ale_lint_on_text_changed='ever' " only run lints when saving the files
 
 " Plugin: ctrlp
-let g:ctrlp_show_hidden = 1
+let g:ctrlp_show_hidden=1
 
 " Plugin: emmet
-let g:user_emmet_install_global = 0
+let g:user_emmet_install_global=0
 
 "============================================================
 " Mappings
@@ -118,6 +124,9 @@ let g:user_emmet_install_global = 0
 
 " space open/closes folds
 nnoremap <space> za
+
+inoremap <C-s> <ESC>:w<CR>
+nnoremap <C-s> :w<CR>
 
 "============================================================
 " Start pathogen
