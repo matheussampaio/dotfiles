@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 USERNAME=$(whoami)
-PERSONA_CUSTOMIZATIONS="mine"
+PERSONAL_CUSTOMIZATIONS="mine"
 
 PACKAGES=(
     # Essentials
@@ -30,19 +30,27 @@ PACKAGES=(
     "sickill/vim-monokai" # monokai color scheme
 )
 
-cp -R $PERSONA_CUSTOMIZATIONS $HOME/.vim/pack/$USERNAME/$PERSONA_CUSTOMIZATIONS
+echo "creating mine link"
+ln -fs $(pwd)/vim/$PERSONAL_CUSTOMIZATIONS $HOME/.vim/pack/$USERNAME/$PERSONAL_CUSTOMIZATIONS
 
-ln -fs $(pwd)/../.vimrc $HOME/.vimrc
+echo "creating .vimrc link"
+ln -fs $(pwd)/vim/.vimrc $HOME/.vimrc
 
-exit
+echo "cleaning ~/.vim/pack..."
 
 rm -rf $HOME/.vim/pack
 mkdir -p $HOME/.vim/pack
 
 for PACKAGE in ${PACKAGES[@]}; do
    DIRNAME="$(basename $PACKAGE)"
-   git clone https://github.com/$PACKAGE.git $HOME/.vim/pack/$USERNAME/start/$DIRNAME
+   PACKAGE_DIR="$HOME/.vim/pack/$USERNAME/start/$DIRNAME"
+   REPOSITORY_URL="https://github.com/$PACKAGE.git"
+
+   echo "cloning $PACKAGE..."
+
+   git clone $REPOSITORY_URL $PACKAGE_DIR --quiet
 done
 
+vim -c "helptags ALL" -c q
 
 echo "vim setup done <3"
