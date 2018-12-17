@@ -15,6 +15,8 @@ PLUGINS=(
     "tpope/vim-sensible" # universal set of defaults that everyone can agree on
     "tpope/vim-surround" # provides mappings to easily delete, change and add surroundings (parantheses, brackets, quotes, etc)
     "tpope/vim-fugitive" # git wrapper
+    "tpope/vim-apathy" # set `path` option for miscellaneous file types
+    "tpope/vim-vinegar" # directory browser
     "kien/ctrlp.vim" # fuzzy file, buffer mru ttag, etc finder
     "vim-airline/vim-airline" # lean and mean status/tabline
     "vim-airline/vim-airline-themes"
@@ -22,17 +24,12 @@ PLUGINS=(
     "w0rp/ale" # asynchronous lint engine
     "kshenoy/vim-signature" # place, toggle and display marks
     "unblevable/quick-scope" # highlights which characters to target for `f`, `F` and family.
-    "tpope/vim-apathy" # set `path` option for miscellaneous file types
+
 
     # Others
     "vimwiki/vimwiki" # personal wiki from vim
     "christoomey/vim-tmux-navigator" # navigate seamlessly between vim and tmux splits
-
-    # Vue Plugins
-    "posva/vim-vue" # syntax highlighting for vue components
-
-    # Javascript Plugins
-    "pangloss/vim-javascript"
+    "sheerun/vim-polyglot" # collection of language packs
 
     # HTML Plugins
     "mattn/emmet-vim"
