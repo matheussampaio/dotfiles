@@ -30,16 +30,16 @@ PACKAGES=(
     "sickill/vim-monokai" # monokai color scheme
 )
 
-echo "creating mine link"
-ln -fs $(pwd)/vim/$PERSONAL_CUSTOMIZATIONS $HOME/.vim/pack/$USERNAME/$PERSONAL_CUSTOMIZATIONS
-
 echo "creating .vimrc link"
 ln -fs $(pwd)/vim/.vimrc $HOME/.vimrc
 
 echo "cleaning ~/.vim/pack..."
 
 rm -rf $HOME/.vim/pack
-mkdir -p $HOME/.vim/pack
+mkdir -p $HOME/.vim/pack/$USERNAME/start
+
+echo "creating mine link"
+ln -fs $(pwd)/vim/$PERSONAL_CUSTOMIZATIONS $HOME/.vim/pack/$USERNAME/start/$PERSONAL_CUSTOMIZATIONS
 
 for PACKAGE in ${PACKAGES[@]}; do
    DIRNAME="$(basename $PACKAGE)"
