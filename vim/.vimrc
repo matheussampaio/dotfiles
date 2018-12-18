@@ -96,9 +96,16 @@ let g:user_emmet_install_global=0
 
 " Plugin: vim-monokai
 colorscheme monokai
-hi Comment ctermfg=242 ctermbg=NONE cterm=NONE guifg=#75715e guibg=NONE gui=NONE
+" Change comment code color
+" hi Comment ctermfg=242 ctermbg=NONE cterm=NONE guifg=#75715e guibg=NONE gui=NONE
+" Change QuickScope colors to be easier to see with monokai's theme
 highlight QuickScopePrimary ctermfg=214
 highlight QuickScopeSecondary ctermfg=218
+" Change Relative Numbers column colors to match monokai's background
+highlight LineNr ctermbg=235
+" Change bottom half of the background color to match monokai's background
+" More info: https://stackoverflow.com/questions/18094481/changing-background-colors
+highlight NonText ctermbg=235
 
 "============================================================
 " Mappings
