@@ -30,3 +30,6 @@ stty -ixon
 # editing and reloading bash profile
 alias ebash='vim ~/.zshrc'
 alias rbash='source ~/.zshrc'
+
+git config --global alias.df "diff -- ':!package-lock.json' ':!yarn.lock'"
+alias df="git diff -- ':!package-lock.json' ':!yarn.lock'"
