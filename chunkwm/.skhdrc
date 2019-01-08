@@ -95,12 +95,12 @@ shift + alt - f : chunkc tiling::window --toggle native-fullscreen
 shift + alt - space : chunkc tiling::window --toggle float
 
 # change layout of desktop
-alt - b : chunkc tiling::desktop --layout bsp
-alt - m : chunkc tiling::desktop --layout monocle
-alt - t : chunkc tiling::desktop --layout float
+ctrl + alt - b : chunkc tiling::desktop --layout bsp
+ctrl + alt - m : chunkc tiling::desktop --layout monocle
+ctrl + alt - f : chunkc tiling::desktop --layout float
 
 # kill focused window
-shift + alt - q : chunkc tiling::window --close
+alt - q : chunkc tiling::window --close
 
 # change focus
 alt - h : chunkc tiling::window --focus west
@@ -140,3 +140,7 @@ alt - 7 : chunkc tiling:desktop --focus 7
 alt - 8 : chunkc tiling:desktop --focus 8
 alt - 9 : chunkc tiling:desktop --focus 9
 alt - 0 : chunkc tiling:desktop --focus 10
+
+# toggle sticky, float and resize to picture-in-picture size
+alt - s : chunkc tiling::window --toggle sticky; \
+          chunkc tiling::window --grid-layout 5:5:4:0:1:1
