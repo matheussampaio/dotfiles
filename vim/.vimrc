@@ -67,7 +67,9 @@ endfunction
 " Plugin: vim-airline
 " https://github.com/vim-airline/vim-airline
 set laststatus=2
+
 let g:airline_theme='deus'
+
 let g:airline#extensions#branch#enabled=1
 let g:airline#extensions#ale#enabled=1
 
@@ -83,7 +85,9 @@ let g:indentLine_color_term=238
 let g:ale_lint_on_text_changed='ever' " only run lints when saving the files
 
 " Plugin: ctrlp
+let g:ctrlp_working_path_mode = '0'
 let g:ctrlp_show_hidden=1
+let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
 " Plugin: emmet
 let g:user_emmet_install_global=0
@@ -106,6 +110,12 @@ highlight LineNr ctermbg=235
 " Change bottom half of the background color to match monokai's background
 " More info: https://stackoverflow.com/questions/18094481/changing-background-colors
 highlight NonText ctermbg=235
+
+augroup CursorLine
+  au!
+  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+  au WinLeave * setlocal nocursorline
+augroup END
 
 "============================================================
 " Mappings
