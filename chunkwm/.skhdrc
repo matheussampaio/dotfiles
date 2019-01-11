@@ -54,39 +54,6 @@
 #
 #                                  an EOL character signifies the end of the bind.
 
-# add an on_enter command to the default mode
-:: default : chunkc border::color 0xff0f6288
-
-# defines a new mode 'resize' with an on_enter command, that captures keypresses
-:: resize @ : chunkc border::color 0xff24ccaa
-
-# from 'default' mode, activate mode 'resize'
-# (this is the key combination you want to use to enter resize mode)
-ctrl - r ; resize
-
-# from 'resize' mode, activate mode 'default'
-# (this is the keypress required to leave resize mode)
-resize < escape ; default
-
-# resize window in different directions
-# (i'm using hjkl but you could just as easily use arrow keys, wasd, etc.)
-resize < h : chunkc tiling::window --use-temporary-ratio 0.05 --adjust-window-edge west; chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge east;
-resize < j : chunkc tiling::window --use-temporary-ratio 0.05 --adjust-window-edge south; chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge north;
-resize < k : chunkc tiling::window --use-temporary-ratio 0.05 --adjust-window-edge north; chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge south;
-resize < l : chunkc tiling::window --use-temporary-ratio 0.05 --adjust-window-edge east; chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge west;
-#
-# defines a new mode 'test' with an on_enter command, that captures keypresses
-# :: test @ : chunkc border::color 0xff24ccaa
-#
-# from 'default' mode, activate mode 'test'
-# cmd - x ; test
-#
-# from 'test' mode, activate mode 'default'
-# test < cmd - x ; default
-#
-# launch a new terminal instance when in either 'default' or 'test' mode
-# default, test < cmd - return : open -na /Applications/Terminal.app
-
 # toggle fullscreen mode for the focused container
 alt - f : chunkc tiling::window --toggle fullscreen
 shift + alt - f : chunkc tiling::window --toggle native-fullscreen
@@ -143,4 +110,4 @@ alt - 0 : chunkc tiling:desktop --focus 10
 
 # toggle sticky, float and resize to picture-in-picture size
 alt - s : chunkc tiling::window --toggle sticky; \
-          chunkc tiling::window --grid-layout 5:5:4:0:1:1
+      chunkc tiling::window --grid-layout 5:5:4:0:1:1

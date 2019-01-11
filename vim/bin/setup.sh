@@ -13,6 +13,7 @@ PACKAGES=(
     "tpope/vim-fugitive" # git wrapper
     "tpope/vim-apathy" # set `path` option for miscellaneous file types
     "tpope/vim-vinegar" # directory browser
+    "tpope/vim-obsession" # keep vim-sessions updated
     "kien/ctrlp.vim" # fuzzy file, buffer mru ttag, etc finder
     "vim-airline/vim-airline" # lean and mean status/tabline
     "vim-airline/vim-airline-themes"
