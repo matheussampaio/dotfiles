@@ -50,7 +50,7 @@ for PACKAGE in ${PACKAGES[@]}; do
 
    echo "cloning $PACKAGE..."
 
-   git clone $REPOSITORY_URL $PACKAGE_DIR --quiet
+   git clone $REPOSITORY_URL $PACKAGE_DIR
 done
 
 vim -c "helptags ALL" -c q
