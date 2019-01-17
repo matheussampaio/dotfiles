@@ -28,6 +28,7 @@ set relativenumber " Show relative line numbers
 set noruler
 set noshowmode
 set hidden
+set encoding=utf-8
 
 " Create folder and set backup, undo and swp folder
 silent !mkdir ~/.vim/.backup > /dev/null 2>&1
@@ -70,6 +71,8 @@ endfunction
 " Plugin: vim-airline
 " https://github.com/vim-airline/vim-airline
 set laststatus=2
+
+let g:airline_powerline_fonts = 1
 
 let g:airline_theme='deus'
 
