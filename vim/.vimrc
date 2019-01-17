@@ -100,6 +100,21 @@ let g:user_emmet_install_global=0
 
 " Plugin: quick-scope
 
+" Change QuickScope colors to be easier to see with monokai's theme
+highlight QuickScopePrimary ctermfg=214
+highlight QuickScopeSecondary ctermfg=218
+
+" Hide cursorline after losing window focus
+augroup CursorLine
+  au!
+  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+  au WinLeave * setlocal nocursorline
+augroup END
+
+"Netrw
+" Don't add netwr buffers when jumping with <C-6>
+let g:netrw_altfile = 1
+
 "============================================================
 " Theme
 "============================================================
@@ -110,10 +125,6 @@ colorscheme monokai
 " Change comment code color
 " hi Comment ctermfg=242 ctermbg=NONE cterm=NONE guifg=#75715e guibg=NONE gui=NONE
 
-" Change QuickScope colors to be easier to see with monokai's theme
-highlight QuickScopePrimary ctermfg=214
-highlight QuickScopeSecondary ctermfg=218
-
 " Change Relative Numbers column colors to match monokai's background
 highlight LineNr ctermbg=235
 
@@ -121,11 +132,6 @@ highlight LineNr ctermbg=235
 " More info: https://stackoverflow.com/questions/18094481/changing-background-colors
 highlight NonText ctermbg=235
 
-augroup CursorLine
-  au!
-  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-  au WinLeave * setlocal nocursorline
-augroup END
 
 "============================================================
 " Mappings
@@ -141,4 +147,3 @@ noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
-
