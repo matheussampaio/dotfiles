@@ -23,7 +23,6 @@ PACKAGES=(
 
     # Others
     "vimwiki/vimwiki" # personal wiki from vim
-    "christoomey/vim-tmux-navigator" # navigate seamlessly between vim and tmux splits
     "sheerun/vim-polyglot" # collection of language packs
 
     # HTML Plugins

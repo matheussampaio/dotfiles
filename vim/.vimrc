@@ -25,6 +25,9 @@ set conceallevel=0 "disable auto-hide features
 filetype plugin on " Defines autocommands that will get executed when a file matching a given pattern is opened.
 set foldlevelstart=5
 set relativenumber " Show relative line numbers
+set noruler
+set noshowmode
+set hidden
 
 " Create folder and set backup, undo and swp folder
 silent !mkdir ~/.vim/.backup > /dev/null 2>&1
@@ -100,13 +103,17 @@ let g:user_emmet_install_global=0
 
 " Plugin: vim-monokai
 colorscheme monokai
+
 " Change comment code color
 " hi Comment ctermfg=242 ctermbg=NONE cterm=NONE guifg=#75715e guibg=NONE gui=NONE
+
 " Change QuickScope colors to be easier to see with monokai's theme
 highlight QuickScopePrimary ctermfg=214
 highlight QuickScopeSecondary ctermfg=218
+
 " Change Relative Numbers column colors to match monokai's background
 highlight LineNr ctermbg=235
+
 " Change bottom half of the background color to match monokai's background
 " More info: https://stackoverflow.com/questions/18094481/changing-background-colors
 highlight NonText ctermbg=235
@@ -127,6 +134,8 @@ nnoremap <space> za
 inoremap <C-s> <ESC>:w<CR>
 nnoremap <C-s> :w<CR>
 
-set noruler
-set noshowmode
-set hidden
+noremap <C-h> <C-w>h
+noremap <C-j> <C-w>j
+noremap <C-k> <C-w>k
+noremap <C-l> <C-w>l
+
