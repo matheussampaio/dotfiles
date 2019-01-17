@@ -49,4 +49,7 @@ git config --global alias.df "diff -- ':!package-lock.json' ':!yarn.lock'"
 alias df="git diff -- ':!package-lock.json' ':!yarn.lock'"
 
 source $ZSH/oh-my-zsh.sh
-source '/home/matheus/.babun-docker/setup.sh'
+
+if [[ -a ~/.babun-docker/setup.sh ]]; then
+  source ~/.babun-docker/setup.sh
+fi
