@@ -53,3 +53,5 @@ source $ZSH/oh-my-zsh.sh
 if [[ -a ~/.babun-docker/setup.sh ]]; then
   source ~/.babun-docker/setup.sh
 fi
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
