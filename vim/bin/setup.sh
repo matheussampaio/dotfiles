@@ -20,6 +20,7 @@ PACKAGES=(
     "w0rp/ale" # asynchronous lint engine
     "kshenoy/vim-signature" # place, toggle and display marks
     "unblevable/quick-scope" # highlights which characters to target for `f`, `F` and family.
+    "mileszs/ack.vim" # search files with Ack
 
     # Others
     "vimwiki/vimwiki" # personal wiki from vim
