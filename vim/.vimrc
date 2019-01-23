@@ -23,7 +23,7 @@ set wildmenu " Show autocomplete menus.
 set backspace=indent,eol,start " Normal backspace
 set conceallevel=0 "disable auto-hide features
 filetype plugin on " Defines autocommands that will get executed when a file matching a given pattern is opened.
-set foldlevelstart=5
+set foldlevelstart=99
 set relativenumber " Show relative line numbers
 set noruler
 set noshowmode
@@ -49,20 +49,6 @@ set timeoutlen=1000 ttimeoutlen=0
 " Open split at the right side
 set splitright
 set splitbelow
-
-" Remove trailing whitespaces on save
-autocmd BufWritePre * :call RemoveTrailingSpaces()
-
-function! RemoveTrailingSpaces()
-    let w:winview = winsaveview()
-
-    %s/\s\+$//e
-
-    if exists('w:winview')
-        call winrestview(w:winview)
-    endif
-endfunction
-
 
 "============================================================
 " Plugins
