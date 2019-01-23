@@ -3,7 +3,6 @@
 set -e
 
 USERNAME=$(whoami)
-PERSONAL_CUSTOMIZATIONS="mine"
 
 PACKAGES=(
     # Essentials
@@ -42,7 +41,10 @@ rm -rf $HOME/.vim/pack
 mkdir -p $HOME/.vim/pack/$USERNAME/start
 
 echo "creating mine link"
-ln -fs $(pwd)/vim/$PERSONAL_CUSTOMIZATIONS $HOME/.vim/pack/$USERNAME/start/$PERSONAL_CUSTOMIZATIONS
+ln -fs $(pwd)/vim/mine $HOME/.vim/pack/$USERNAME/start/mine
+
+echo "creating plugins link"
+ln -fs $(pwd)/vim/plugin $HOME/.vim/plugin
 
 for PACKAGE in ${PACKAGES[@]}; do
    DIRNAME="$(basename $PACKAGE)"
