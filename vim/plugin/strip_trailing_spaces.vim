@@ -1,9 +1,11 @@
 function RemoveTrailingSpaces()
-    let w:winview = winsaveview()
+    if exists('b:strip_whitespace')
+      let w:winview = winsaveview()
 
-    %s/\s\+$//e
+      %s/\s\+$//e
 
-    if exists('w:winview')
-        call winrestview(w:winview)
+      if exists('w:winview')
+          call winrestview(w:winview)
+      endif
     endif
 endfunction

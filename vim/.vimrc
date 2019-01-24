@@ -101,6 +101,9 @@ augroup END
 " Don't add netwr buffers when jumping with <C-6>
 let g:netrw_altfile = 1
 
+autocmd BufWritePre * :call RemoveTrailingSpaces()
+autocmd FileType vim,javascript let b:strip_whitespace = 1
+
 "============================================================
 " Theme
 "============================================================

@@ -5,6 +5,3 @@ let g:ale_javascript_eslint_suppress_missing_config = 1
 let b:ale_linters = ['eslint']
 
 set foldmethod=syntax
-
-" Remove trailing whitespaces on save
-autocmd BufWritePre :call RemoveTrailingSpaces()
