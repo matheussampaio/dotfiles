@@ -23,6 +23,7 @@ set wildmenu " Show autocomplete menus.
 set backspace=indent,eol,start " Normal backspace
 set conceallevel=0 "disable auto-hide features
 filetype plugin on " Defines autocommands that will get executed when a file matching a given pattern is opened.
+set foldmethod=indent
 set foldlevelstart=99
 set relativenumber " Show relative line numbers
 set noruler
