@@ -29,6 +29,9 @@ set relativenumber " Show relative line numbers
 set noruler
 set noshowmode
 set hidden
+set undofile
+set undolevels=1000
+set undoreload=10000
 set encoding=utf-8
 
 " Create folder and set backup, undo and swp folder
@@ -36,9 +39,9 @@ silent !mkdir ~/.vim/.backup > /dev/null 2>&1
 silent !mkdir ~/.vim/.undo > /dev/null 2>&1
 silent !mkdir ~/.vim/.swp > /dev/null 2>&1
 
-set backupdir=~/.vim/.backup//
-set undodir=~/.vim/.undo//
-set directory=~/.vim/.swp//
+set backupdir=~/.vim/.backup/
+set undodir=~/.vim/.undo/
+set directory=~/.vim/.swp/
 
 " Show invisible characters
 set list
