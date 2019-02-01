@@ -20,6 +20,7 @@ PACKAGES=(
     "kshenoy/vim-signature" # place, toggle and display marks
     "unblevable/quick-scope" # highlights which characters to target for `f`, `F` and family.
     "mileszs/ack.vim" # search files with Ack
+    "terryma/vim-smooth-scroll" # smooth scroll when moving pages
 
     # Others
     "vimwiki/vimwiki" # personal wiki from vim
@@ -30,6 +31,7 @@ PACKAGES=(
 
     # Colorschema
     "sickill/vim-monokai" # monokai color scheme
+    "Lokaltog/vim-monotone" # monotone color scheme
 )
 
 echo "creating .vimrc link"
