@@ -81,9 +81,13 @@ let g:indentLine_color_term=238
 let g:ale_lint_on_text_changed='ever' " only run lints when saving the files
 
 " Plugin: ctrlp
-let g:ctrlp_working_path_mode = '0'
-let g:ctrlp_show_hidden=1
-" let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_show_hidden = 1
+let g:ctrlp_cache_dir = '~/.vim/.cache/ctrlp'
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_use_caching = 1
+let g:ctrlp_lazy_update = 1
+let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
 " Plugin: emmet
 let g:user_emmet_install_global=0
