@@ -64,7 +64,7 @@ set laststatus=2
 
 let g:airline_powerline_fonts = 1
 
-let g:airline_theme='deus'
+let g:airline_theme='lucius'
 
 let g:airline#extensions#branch#enabled=1
 let g:airline#extensions#ale#enabled=1
@@ -83,16 +83,22 @@ let g:ale_lint_on_text_changed='ever' " only run lints when saving the files
 " Plugin: ctrlp
 let g:ctrlp_working_path_mode = '0'
 let g:ctrlp_show_hidden=1
-let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+" let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
 " Plugin: emmet
 let g:user_emmet_install_global=0
 
+" Plugin: Smooth Scroll
+noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 25, 2)<CR>
+noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 25, 2)<CR>
+noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 25, 4)<CR>
+noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 25, 4)<CR>
+
 " Plugin: quick-scope
 
 " Change QuickScope colors to be easier to see with monokai's theme
-highlight QuickScopePrimary ctermfg=214
-highlight QuickScopeSecondary ctermfg=218
+" highlight QuickScopePrimary ctermfg=214
+" highlight QuickScopeSecondary ctermfg=218
 
 " Hide cursorline after losing window focus
 augroup CursorLine
@@ -112,18 +118,26 @@ autocmd FileType vim,javascript let b:strip_whitespace = 1
 " Theme
 "============================================================
 
+" forces true colour on
+let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
+
+" set termguicolors
+
+colorscheme monotone
+
 " Plugin: vim-monokai
-colorscheme monokai
+" colorscheme monokai
 
 " Change comment code color
 " hi Comment ctermfg=242 ctermbg=NONE cterm=NONE guifg=#75715e guibg=NONE gui=NONE
 
 " Change Relative Numbers column colors to match monokai's background
-highlight LineNr ctermbg=235
+" highlight LineNr ctermbg=235
 
 " Change bottom half of the background color to match monokai's background
 " More info: https://stackoverflow.com/questions/18094481/changing-background-colors
-highlight NonText ctermbg=235
+" highlight NonText ctermbg=235
 
 
 "============================================================
@@ -140,4 +154,6 @@ noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
-noremap <C-F> :Ack<Space>
+noremap <leader>f :Ack<Space>
+
+
