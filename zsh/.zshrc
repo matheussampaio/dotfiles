@@ -15,43 +15,21 @@ bindkey '^[[B' down-line-or-search
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git tmux wd)
 
-# utils
-alias cpwd="pwd | tr -d '\n' | pbcopy"
-
-if type hub > /dev/null; then
-  alias git=hub
-fi
+stty -ixon
 
 # editing and reloading bash profile
 alias ebash='vim ~/.zshrc'
 alias rbash='source ~/.zshrc'
+alias ssh='TERM=xterm-256color ssh'
 
-if type tmux > /dev/null; then
-  alias tmux='tmux -2'  # for 256color
-  alias tmux='tmux -u'  # to get rid of unicode rendering problem
+if type hub > /dev/null; then
+  alias git=hub
 fi
-
-gmm() {
-    git branch -f $1 $(current_branch) && git push origin $1
-}
-
-# http://superuser.com/questions/399296/256-color-support-for-vim-background-in-tmux/399326#399326
-# File: ~/.bashrc (Ubuntu), ~/.bash_profile (Mac)
-# for VIM and TMUC
-if [ "$TERM" = "xterm" ]; then
-  export TERM=xterm-256color
-fi
-
-
-stty -ixon
-
-git config --global alias.df "diff -- ':!package-lock.json' ':!yarn.lock'"
-alias df="git diff -- ':!package-lock.json' ':!yarn.lock'"
-
-source $ZSH/oh-my-zsh.sh
 
 if [[ -a ~/.babun-docker/setup.sh ]]; then
   source ~/.babun-docker/setup.sh
 fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+source $ZSH/oh-my-zsh.sh
