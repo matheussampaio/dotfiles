@@ -86,7 +86,6 @@ let g:ctrlp_show_hidden = 1
 let g:ctrlp_cache_dir = '~/.vim/.cache/ctrlp'
 let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_use_caching = 1
-let g:ctrlp_lazy_update = 1
 let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
 " Plugin: emmet
@@ -158,6 +157,5 @@ noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
+
 noremap <leader>f :Ack<Space>
-
-
