@@ -19,7 +19,7 @@ stty -ixon
 # editing and reloading bash profile
 alias ebash='vim ~/.zshrc'
 alias rbash='source ~/.zshrc'
-alias tmuxtemplate='~/git/dotfiles/tmux/bin/tmuxgo.sh'
+alias tmuxgo='~/git/dotfiles/tmux/bin/tmuxgo.sh'
 alias ssh='TERM=xterm-256color ssh'
 
 if type hub > /dev/null; then

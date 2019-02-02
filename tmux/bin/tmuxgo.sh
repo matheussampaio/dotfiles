@@ -2,7 +2,7 @@
 
 SESSION=`basename $PWD`
 
-tmux new-session -d -s $SESSION 'vim'
+tmux new-session -d -s $SESSION
 
 # Rename first window and create a horizontal pane
 tmux rename-window -t $SESSION:1 vim
@@ -21,7 +21,10 @@ tmux new-window -t $SESSION -a -n general-purpose
 tmux split-window -h
 tmux select-pane -t 1
 
+tmux set-option -g set-titles-string $SESSION
 
 # Select first window
 tmux select-window -t $SESSION:1
 tmux attach -t $SESSION
+
+
