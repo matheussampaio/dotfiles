@@ -79,6 +79,7 @@ let g:indentLine_color_term=238
 
 " Plugin: ale
 let g:ale_lint_on_text_changed='ever' " only run lints when saving the files
+let g:ale_set_signs = 0
 
 " Plugin: ctrlp
 let g:ctrlp_working_path_mode = 'ra'
