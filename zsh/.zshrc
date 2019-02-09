@@ -5,6 +5,8 @@ export TERM=xterm-256color-italic
 export LANG=en_US.UTF-8
 export ZSH_THEME="robbyrussell"
 
+source $ZSH/oh-my-zsh.sh
+
 bindkey '^[[A' up-line-or-search
 bindkey '^[[B' down-line-or-search
 
@@ -31,5 +33,3 @@ if [[ -a ~/.babun-docker/setup.sh ]]; then
 fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-source $ZSH/oh-my-zsh.sh
