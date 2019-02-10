@@ -158,12 +158,19 @@ colorscheme monotone
 " space open/closes folds
 nnoremap <space> za
 
+" Ctrl+S to save the buffer
 inoremap <C-s> <ESC>:w<CR>
 nnoremap <C-s> :w<CR>
 
+" navigate between splits
 noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
 
+" By pressing ctrl+r in visual mode, you will be prompted to enter text to replace with.
+" Press enter and then confirm each change you agree with y or decline with n.
+vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
+
+" \ + f to seach in the project
 noremap <leader>f :Ack<Space>
