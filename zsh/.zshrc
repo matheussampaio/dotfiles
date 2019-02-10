@@ -5,16 +5,16 @@ export TERM=xterm-256color-italic
 export LANG=en_US.UTF-8
 export ZSH_THEME="robbyrussell"
 
-source $ZSH/oh-my-zsh.sh
-
-bindkey '^[[A' up-line-or-search
-bindkey '^[[B' down-line-or-search
-
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git tmux wd)
+
+source $ZSH/oh-my-zsh.sh
+
+bindkey '^[[A' up-line-or-search
+bindkey '^[[B' down-line-or-search
 
 stty -ixon
 
