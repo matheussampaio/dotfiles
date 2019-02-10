@@ -69,6 +69,11 @@ let g:airline_theme='lucius'
 let g:airline#extensions#branch#enabled=1
 let g:airline#extensions#ale#enabled=1
 
+let g:airline_section_y = ''
+let g:airline_section_z = ''
+let g:airline_section_error = ''
+let g:airline_section_warning = ''
+let g:airline_skip_empty_sections = 1
 " Plugin: vimwiki
 " https://github.com/vimwiki/vimwiki
 let g:vimwiki_list=[{ 'path': '~/Dropbox/wiki' }]
