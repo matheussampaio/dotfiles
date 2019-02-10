@@ -123,7 +123,7 @@ let g:netrw_altfile = 1
 let g:netrw_localrmdir="rm -r"
 
 autocmd BufWritePre * :call RemoveTrailingSpaces()
-autocmd FileType vim,javascript let b:strip_whitespace = 1
+autocmd FileType vim,javascript,typescript let b:strip_whitespace = 1
 
 "============================================================
 " Theme
