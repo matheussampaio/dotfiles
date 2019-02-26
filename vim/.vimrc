@@ -33,6 +33,8 @@ set undofile
 set undolevels=1000
 set undoreload=10000
 set encoding=utf-8
+set termguicolors
+set laststatus=2
 
 " Create folder and set backup, undo and swp folder
 silent !mkdir ~/.vim/.backup > /dev/null 2>&1
@@ -60,20 +62,17 @@ set splitbelow
 
 " Plugin: vim-airline
 " https://github.com/vim-airline/vim-airline
-set laststatus=2
 
-let g:airline_powerline_fonts = 1
-
-let g:airline_theme='lucius'
+let g:airline_powerline_fonts=1
 
 let g:airline#extensions#branch#enabled=1
 let g:airline#extensions#ale#enabled=1
 
-let g:airline_section_y = ''
-let g:airline_section_z = ''
-let g:airline_section_error = ''
-let g:airline_section_warning = ''
-let g:airline_skip_empty_sections = 1
+let g:airline_section_y=''
+let g:airline_section_z=''
+let g:airline_section_error=''
+let g:airline_section_warning=''
+let g:airline_skip_empty_sections=1
 " Plugin: vimwiki
 " https://github.com/vimwiki/vimwiki
 let g:vimwiki_list=[{ 'path': '~/Dropbox/wiki' }]
@@ -83,17 +82,17 @@ let g:vimwiki_list=[{ 'path': '~/Dropbox/wiki' }]
 let g:indentLine_color_term=238
 
 " Plugin: ale
-let g:ale_lint_on_text_changed = 'ever' " only run lints when saving the files
-let g:ale_completion_enabled = 1
-let g:ale_set_signs = 0
+let g:ale_lint_on_text_changed='ever' " only run lints when saving the files
+let g:ale_completion_enabled=1
+let g:ale_set_signs=0
 
 " Plugin: ctrlp
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_show_hidden = 1
-let g:ctrlp_cache_dir = '~/.vim/.cache/ctrlp'
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_use_caching = 1
-let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+let g:ctrlp_working_path_mode='ra'
+let g:ctrlp_show_hidden=1
+let g:ctrlp_cache_dir='~/.vim/.cache/ctrlp'
+let g:ctrlp_clear_cache_on_exit=0
+let g:ctrlp_use_caching=1
+let g:ctrlp_user_command=['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
 " Plugin: emmet
 let g:user_emmet_install_global=0
@@ -119,11 +118,11 @@ augroup END
 
 "Netrw
 " Don't add netwr buffers when jumping with <C-6>
-let g:netrw_altfile = 1
+let g:netrw_altfile=1
 let g:netrw_localrmdir="rm -r"
 
 autocmd BufWritePre * :call RemoveTrailingSpaces()
-autocmd FileType vim,javascript,typescript let b:strip_whitespace = 1
+autocmd FileType vim,javascript,typescript let b:strip_whitespace=1
 
 "============================================================
 " Theme
@@ -133,34 +132,49 @@ autocmd FileType vim,javascript,typescript let b:strip_whitespace = 1
 let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
 
-" set termguicolors
 
-colorscheme monotone
+" colorscheme monotone
+" let g:airline_theme='lucius'
 
-" Plugin: vim-monokai
-" colorscheme monokai
+" =============
+" Monokai Begin
+" =============
+colorscheme monokai
+let g:airline_theme='base16_monokai'
 
 " Change comment code color
 " hi Comment ctermfg=242 ctermbg=NONE cterm=NONE guifg=#75715e guibg=NONE gui=NONE
 
 " Change Relative Numbers column colors to match monokai's background
-" highlight LineNr ctermbg=235
+highlight clear LineNr
+highlight LineNr ctermfg=245
+
+highlight clear SignColumn
 
 " Change bottom half of the background color to match monokai's background
 " More info: https://stackoverflow.com/questions/18094481/changing-background-colors
-" highlight NonText ctermbg=235
+highlight clear NonText
+highlight NonText ctermfg=235
+
+" =============
+" Monokai End
+" =============
 
 
 "============================================================
 " Mappings
 "============================================================
 
+" disable ESC
+vnoremap <ESC> <C-u>:echo "ESC is disabled, use <C-c>"<CR>
+inoremap <ESC> <C-o>:echo "ESC is disabled, use <C-c>"<CR>
+
 " space open/closes folds
-nnoremap <space> za
+" nnoremap <space> za
 
 " Ctrl+S to save the buffer
-inoremap <C-s> <ESC>:w<CR>
-nnoremap <C-s> :w<CR>
+" inoremap <C-s> <ESC>:w<CR>
+" nnoremap <C-s> :w<CR>
 
 " navigate between splits
 noremap <C-h> <C-w>h
