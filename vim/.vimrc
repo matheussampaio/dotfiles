@@ -57,6 +57,64 @@ set splitright
 set splitbelow
 
 "============================================================
+" Vim Plug
+"============================================================
+
+" Install Vim Plug if folder is not found
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin('~/.vim/plugged')
+
+" Essentials
+Plug 'tpope/vim-sensible' " universal set of defaults that everyone can agree on.
+Plug 'tpope/vim-commentary' " comment stuff out.
+Plug 'suy/vim-context-commentstring' " sets the value of 'commentstring' depending on the region of the file.
+Plug 'tpope/vim-surround' " provides mappings to easily delete, change and add surroundings (parantheses, brackets, quotes, etc).
+Plug 'tpope/vim-fugitive' " git wrapper.
+" Plug 'tpope/vim-apathy' " set `path` option for miscellaneous file types.
+Plug 'tpope/vim-vinegar' " improvements to netrw
+Plug 'kien/ctrlp.vim' " fuzzy file, buffer mru ttag, etc finder.
+Plug 'vim-airline/vim-airline' " lean and mean status/tabline.
+Plug 'vim-airline/vim-airline-themes'
+" Plug 'w0rp/ale' " asynchronous lint engine.
+Plug 'kshenoy/vim-signature' " place, toggle and display marks.
+Plug 'unblevable/quick-scope' " highlights which characters to target for `f`, `F` and family.
+Plug 'mileszs/ack.vim' " search files with Ack.
+" Plug 'jiangmiao/auto-pairs' " insert or delete brackets, parents, and quotes in pairs.
+Plug 'christoomey/vim-tmux-navigator' " make it easier to swap between vim and tmux.
+Plug 'milkypostman/vim-togglelist' " toggle quicklist and loclist
+Plug 'simnalamburt/vim-mundo' " undo tree
+
+" Others
+Plug 'mhinz/vim-signify' " sign column to indicate added, modified and removed lines.
+" Plug 'sheerun/vim-polyglot' " collection of language packs.
+
+" Autocompletion
+" Plug 'neoclide/coc.nvim' " intellisense engine with LSP support. NOTE: Requires nodejs, yarn and vim-node-rpc
+
+" HTML
+Plug 'mattn/emmet-vim', { 'for': 'html' }
+
+" Javascript
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'mxw/vim-jsx', { 'for': 'javascript' }
+
+" Markdown
+Plug 'shime/vim-livedown', { 'for': 'markdown' } " preview markdown.
+
+" Themes
+Plug 'sickill/vim-monokai'
+
+" Others
+Plug 'lervag/wiki.vim'
+
+call plug#end()
+
+"============================================================
 " Plugins
 "============================================================
 
@@ -116,23 +174,29 @@ autocmd FileType vim,javascript,typescript let b:strip_whitespace=1 " only remov
 " Theme
 "============================================================
 
-" forces true colour on
-let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
-let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
+" Only apply theme if vim-monokai plugin exists
+if isdirectory( expand("$HOME/.vim/plugged/vim-monokai") )
+  " forces true colour on
+  let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
 
-colorscheme monokai
-let g:airline_theme='base16_monokai'
+  colorscheme monokai
 
-" Change Relative Numbers column colors to match monokai's background
-highlight clear LineNr
-highlight LineNr ctermfg=245
+  " Change Relative Numbers column colors to match monokai's background
+  highlight clear LineNr
+  highlight LineNr ctermfg=245
 
-highlight clear SignColumn
+  highlight clear SignColumn
 
-" Change bottom half of the background color to match monokai's background
-" More info: https://stackoverflow.com/questions/18094481/changing-background-colors
-highlight clear NonText
-highlight NonText ctermfg=235
+  " Change bottom half of the background color to match monokai's background
+  " More info: https://stackoverflow.com/questions/18094481/changing-background-colors
+  highlight clear NonText
+  highlight NonText ctermfg=235
+endif
+
+if isdirectory( expand("$HOME/.vim/plugged/vim-airline") )
+  let g:airline_theme='base16_monokai'
+endif
 
 "============================================================
 " Mappings
