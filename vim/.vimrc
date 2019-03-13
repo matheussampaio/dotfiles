@@ -73,41 +73,30 @@ let g:airline_section_z=''
 let g:airline_section_error=''
 let g:airline_section_warning=''
 let g:airline_skip_empty_sections=1
-" Plugin: vimwiki
-" https://github.com/vimwiki/vimwiki
-let g:vimwiki_list=[{ 'path': '~/Dropbox/wiki' }]
 
-" Plugin: indentLine
-" https://github.com/Yggdroot/indentLine
-let g:indentLine_color_term=238
+" Plugin: wiki.vim
+" https://github.com/lervag/wiki.vim
+let g:wiki_root = '~/Dropbox/wiki'
 
-" Plugin: ale
-let g:ale_lint_on_text_changed='ever' " only run lints when saving the files
-let g:ale_completion_enabled=1
-let g:ale_set_signs=0
+" " Plugin: ale
+" let g:ale_lint_on_text_changed='ever' " only run lints when saving the files
+" let g:ale_completion_enabled=1
+" let g:ale_set_signs=0
 
 " Plugin: ctrlp
 let g:ctrlp_working_path_mode='ra'
 let g:ctrlp_show_hidden=1
 let g:ctrlp_cache_dir='~/.vim/.cache/ctrlp'
-let g:ctrlp_clear_cache_on_exit=0
 let g:ctrlp_use_caching=1
-let g:ctrlp_user_command=['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/](\.git|\.idea|node_modules|coverage|Build|Pods)$',
+  \ }
+
+" Plugin: vim-signify
+let g:signify_vcs_list = [ 'git' ]
 
 " Plugin: emmet
 let g:user_emmet_install_global=0
-
-" Plugin: Smooth Scroll
-noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 25, 2)<CR>
-noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 25, 2)<CR>
-noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 25, 4)<CR>
-noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 25, 4)<CR>
-
-" Plugin: quick-scope
-
-" Change QuickScope colors to be easier to see with monokai's theme
-" highlight QuickScopePrimary ctermfg=214
-" highlight QuickScopeSecondary ctermfg=218
 
 " Hide cursorline after losing window focus
 augroup CursorLine
@@ -117,12 +106,11 @@ augroup CursorLine
 augroup END
 
 "Netrw
-" Don't add netwr buffers when jumping with <C-6>
-let g:netrw_altfile=1
-let g:netrw_localrmdir="rm -r"
+let g:netrw_altfile=1 " Don't add netwr buffers when jumping with <C-6>
+let g:netrw_localrmdir="rm -r" " delete non-empty folders
 
 autocmd BufWritePre * :call RemoveTrailingSpaces()
-autocmd FileType vim,javascript,typescript let b:strip_whitespace=1
+autocmd FileType vim,javascript,typescript let b:strip_whitespace=1 " only remove empty spaces for those filetypes
 
 "============================================================
 " Theme
@@ -132,18 +120,8 @@ autocmd FileType vim,javascript,typescript let b:strip_whitespace=1
 let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
 
-
-" colorscheme monotone
-" let g:airline_theme='lucius'
-
-" =============
-" Monokai Begin
-" =============
 colorscheme monokai
 let g:airline_theme='base16_monokai'
-
-" Change comment code color
-" hi Comment ctermfg=242 ctermbg=NONE cterm=NONE guifg=#75715e guibg=NONE gui=NONE
 
 " Change Relative Numbers column colors to match monokai's background
 highlight clear LineNr
@@ -156,18 +134,9 @@ highlight clear SignColumn
 highlight clear NonText
 highlight NonText ctermfg=235
 
-" =============
-" Monokai End
-" =============
-
-
 "============================================================
 " Mappings
 "============================================================
-
-" disable ESC
-vnoremap <ESC> <C-u>:echo "ESC is disabled, use <C-c>"<CR>
-inoremap <ESC> <C-o>:echo "ESC is disabled, use <C-c>"<CR>
 
 " space open/closes folds
 " nnoremap <space> za
@@ -187,4 +156,4 @@ noremap <C-l> <C-w>l
 vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 
 " \ + f to seach in the project
-noremap <leader>f :Ack<Space>
+noremap <leader>f :Ack!<Space>
