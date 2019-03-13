@@ -13,8 +13,10 @@ plugins=(git tmux wd)
 
 source $ZSH/oh-my-zsh.sh
 
-bindkey '^[[A' up-line-or-search
-bindkey '^[[B' down-line-or-search
+bindkey '^[[A' nop
+bindkey '^[[B' nop
+bindkey '^P' up-line-or-search
+bindkey '^N' down-line-or-search
 
 stty -ixon
 
