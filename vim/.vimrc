@@ -251,8 +251,12 @@ noremap <C-l> <C-w>l
 " Press enter and then confirm each change you agree with y or decline with n.
 vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 
-" \ + f to seach in the project
-noremap <leader>f :Ack!<Space>
+" \ + l to searc for lines
+noremap <leader>f :Lines<CR>
+" \ + f to search for files
+noremap <leader>f :Files<CR>
+" \ + b to search for buffers
+noremap <leader>b :Buffers<CR>
 
 " Auto reload .vimrc
 augroup myvimrc
