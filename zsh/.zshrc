@@ -34,4 +34,7 @@ if [[ -a ~/.babun-docker/setup.sh ]]; then
   source ~/.babun-docker/setup.sh
 fi
 
+# use fd instead of find, mainly because fd exclude some files by default
+export FZF_DEFAULT_COMMAND='fd --type f --hidden'
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

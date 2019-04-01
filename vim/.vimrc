@@ -21,50 +21,45 @@ call plug#begin('~/.vim/plugged')
 " Essentials
 Plug 'tpope/vim-sensible' " universal set of defaults that everyone can agree on.
 Plug 'tpope/vim-commentary' " comment stuff out.
-Plug 'suy/vim-context-commentstring' " sets the value of 'commentstring' depending on the region of the file.
+Plug 'suy/vim-context-commentstring', { 'for': 'jsx' } " sets the value of 'commentstring' depending on the region of the file.
 Plug 'tpope/vim-surround' " provides mappings to easily delete, change and add surroundings (parantheses, brackets, quotes, etc).
 Plug 'tpope/vim-fugitive' " git wrapper.
+Plug 'tpope/vim-rhubarb' " fugitive github extension.
+Plug 'tpope/vim-unimpaired' " handy brackets mappings.
+Plug 'tpope/vim-repeat' " enable repeating supported plugin maps with '.'.
 " Plug 'tpope/vim-apathy' " set `path` option for miscellaneous file types.
-Plug 'tpope/vim-vinegar' " improvements to netrw
+Plug 'tpope/vim-vinegar' " improvements to netrw.
 Plug 'vim-airline/vim-airline' " lean and mean status/tabline.
-Plug 'vim-airline/vim-airline-themes'
-Plug 'w0rp/ale' " asynchronous lint engine.
+Plug 'w0rp/ale', { 'on': 'ALEToggle' } " asynchronous lint engine.
 Plug 'kshenoy/vim-signature' " place, toggle and display marks.
-Plug 'unblevable/quick-scope' " highlights which characters to target for `f`, `F` and family.
-Plug 'mileszs/ack.vim', { 'on': [] } " search files with Ack.
-Plug 'jiangmiao/auto-pairs', { 'on': [] } " insert or delete brackets, parents, and quotes in pairs.
+" Plug 'unblevable/quick-scope' " highlights which characters to target for `f`, `F` and family.
+" Plug 'mileszs/ack.vim', { 'on': [] } " search files with Ack.
+" Plug 'jiangmiao/auto-pairs', { 'on': [] } " insert or delete brackets, parents, and quotes in pairs.
 Plug 'christoomey/vim-tmux-navigator' " make it easier to swap between vim and tmux.
-Plug 'milkypostman/vim-togglelist' " toggle quicklist and loclist
-Plug 'simnalamburt/vim-mundo' " undo tree
-Plug 'tpope/vim-obsession' " keep vim sessions up to date
-
-" Others
-Plug 'mhinz/vim-signify', { 'on': [] } " sign column to indicate added, modified and removed lines.
-Plug 'airblade/vim-gitgutter' " shows a git diff in the gutter (sign column)
-" Plug 'sheerun/vim-polyglot' " collection of language packs.
+Plug 'milkypostman/vim-togglelist' " toggle quicklist and loclist.
 
 " Autocompletion
-" Plug 'neoclide/coc.nvim' " intellisense engine with LSP support. NOTE: Requires nodejs, yarn and vim-node-rpc
+" intellisense engine with LSP support. NOTE: Requires nodejs, yarn and vim-node-rpc
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}, 'on': [] }
 
 " Find files, buffers, tags
 " Plug 'kien/ctrlp.vim' " fuzzy file, buffer mru ttag, etc finder.
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fuzzy string search
-Plug 'junegunn/fzf.vim' " keybindings and commands for FZF
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fuzzy string search.
+Plug 'junegunn/fzf.vim' " keybindings and commands for FZF.
 
 " HTML
 Plug 'mattn/emmet-vim', { 'for': 'html' }
 
 " Javascript, JSX
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
-Plug 'MaxMEllon/vim-jsx-pretty'
-Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'mxw/vim-jsx', { 'for': 'jsx' }
+" Plug 'MaxMEllon/vim-jsx-pretty', { 'for': 'jsx' }
 
 " JSON
-Plug 'elzr/vim-json'
+Plug 'elzr/vim-json', { 'for': 'json' }
 
 " GraphQL
-Plug 'jparise/vim-graphql'
+Plug 'jparise/vim-graphql', { 'on': [] }
 
 " Markdown
 Plug 'shime/vim-livedown', { 'for': 'markdown' } " preview markdown.
@@ -92,14 +87,14 @@ set softtabstop=2 " number of spaces in tab when editing
 set tabstop=2 " number of visual spaces per tab
 
 set wrap " changes how text is displayed
-set linebreak " wrap long lines at a character in 'breakat'
+" set linebreak " wrap long lines at a character in 'breakat'
 
 set showcmd
 set scrolloff=2
 
 " backup, undo, swap files {{{
 set backup
-set swapfile
+set noswapfile
 set undofile
 set undolevels=1000
 set undoreload=10000
@@ -107,13 +102,14 @@ set undoreload=10000
 " Create folder and set backup, undo and swp folder
 silent !mkdir ~/.vim/.backup > /dev/null 2>&1
 silent !mkdir ~/.vim/.undo > /dev/null 2>&1
-silent !mkdir ~/.vim/.swp > /dev/null 2>&1
 
 set backupdir=~/.vim/.backup/
 set undodir=~/.vim/.undo/
 set directory=~/.vim/.swp/
 " }}}
 
+set autowrite " write the contents of the file after some events
+set autowriteall " write the contents of the file when losing focus
 set cursorline  " highlight current line
 set showmatch " highlight matching [{()}]
 set incsearch " search as characters are entered
@@ -127,12 +123,13 @@ set backspace=indent,eol,start " Normal backspace
 set conceallevel=0 "disable auto-hide features
 set foldmethod=indent
 set foldlevelstart=10
+set number
 set relativenumber " Show relative line numbers
 set hidden
 set encoding=utf-8
 set termguicolors
 set laststatus=1
-
+set diffopt+=vertical
 
 " Show invisible characters
 set list
@@ -153,17 +150,21 @@ set splitbelow
 " https://github.com/vim-airline/vim-airline
 
 let g:airline_powerline_fonts=1
+let g:airline#extensions#virtualenv#enabled=0
+let g:airline#extensions#whitespace#enabled=0
 let g:airline#extensions#branch#enabled=1
 let g:airline#extensions#ale#enabled=1
 let g:airline_skip_empty_sections=1
+let g:airline_section_y=''
+let g:airline_section_z=''
 
 " Plugin: wiki.vim
 " https://github.com/lervag/wiki.vim
 let g:wiki_root = '~/Dropbox/wiki'
 
 " " Plugin: ale
-" let g:ale_lint_on_text_changed='ever' " only run lints when saving the files
-" let g:ale_completion_enabled=1
+let g:ale_lint_on_text_changed='ever' " only run lints when saving the files
+let g:ale_completion_enabled=0
 " let g:ale_set_signs=0
 
 " Plugin: ctrlp
@@ -174,6 +175,9 @@ let g:wiki_root = '~/Dropbox/wiki'
 " let g:ctrlp_custom_ignore = {
 "   \ 'dir':  '\v[\/](\.git|\.idea|node_modules|coverage|Build|Pods)$',
 "   \ }
+
+" Plugin: FZF
+command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..'}, <bang>0)
 
 " Plugin: vim-signify
 let g:signify_vcs_list = [ 'git' ]
@@ -194,6 +198,9 @@ let g:netrw_localrmdir="rm -r" " delete non-empty folders
 
 autocmd BufWritePre * :call RemoveTrailingSpaces()
 autocmd FileType vim,javascript,typescript let b:strip_whitespace=1 " only remove empty spaces for those filetypes
+
+" Plugin: JSX
+let g:jsx_ext_required = 1 " only enable JSX for files with .jsx extension
 
 "============================================================
 " Theme
@@ -235,11 +242,10 @@ endif
 "============================================================
 
 " space open/closes folds
-" nnoremap <space> za
+nnoremap <space> za
 
 " Ctrl+S to save the buffer
-" inoremap <C-s> <ESC>:w<CR>
-" nnoremap <C-s> :w<CR>
+nnoremap <C-s> :w<CR>
 
 " navigate between splits
 noremap <C-h> <C-w>h
@@ -251,15 +257,14 @@ noremap <C-l> <C-w>l
 " Press enter and then confirm each change you agree with y or decline with n.
 vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 
-" \ + l to searc for lines
-noremap <leader>f :Lines<CR>
+" \ + l to search in the project
+noremap <leader>f :Ag<CR>
+" \ + ag to search for current word in the project
+noremap <leader>ag :Ag <C-R><C-W><CR>
 " \ + f to search for files
-noremap <leader>f :Files<CR>
+noremap <leader>p :Files<CR>
 " \ + b to search for buffers
 noremap <leader>b :Buffers<CR>
 
-" Auto reload .vimrc
-augroup myvimrc
-    au!
-    au BufWritePost .vimrc so $MYVIMRC
-augroup END
+" remove search highlight
+noremap <leader>h :noh<CR>
