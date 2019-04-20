@@ -1,0 +1,8 @@
+{
+  "suggest.maxCompleteItemCount": 5,
+  "coc.preferences.diagnostic.virtualText": true,
+  "eslint.filetypes": ["javascript", "typescript", "typescriptreact", "javascriptreact"],
+  "diagnostic.errorSign": "•",
+  "diagnostic.warningSign": "•",
+  "diagnostic.infoSign": "•"
+}
