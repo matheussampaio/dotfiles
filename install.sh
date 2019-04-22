@@ -6,6 +6,12 @@ echo "---------------------------------------------------------"
 INSTALLDIR=$PWD
 
 echo "---------------------------------------------------------"
+echo "$(tput setaf 2) Creating symbolic links.$(tput sgr 0)"
+echo "---------------------------------------------------------"
+
+ln -fs $PWD/.gitconfig $HOME/.gitconfig
+
+echo "---------------------------------------------------------"
 echo "$(tput setaf 2) Checking for Homebrew installation.$(tput sgr 0)"
 echo "---------------------------------------------------------"
 brew="/usr/local/bin/brew"
@@ -79,7 +85,7 @@ if ! [[ -f "$localGit" ]]; then
 fi
 
 # Create backup folder if it doesn't exist
-mkdir -p ~/.local/share/nvim/backup
+mkdir -p $HOME/.local/share/nvim/backup
 
 echo "---------------------------------------------------------"
 echo "$(tput setaf 2) Installing oh-my-zsh.$(tput sgr 0)"
@@ -88,7 +94,7 @@ echo "---------------------------------------------------------"
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
-  ln -fs $PWD/.zshrc ~/.zshrc
+  ln -fs $PWD/.zshrc $HOME/.zshrc
 else
   echo "---------------------------------------------------------"
   echo "$(tput setaf 2) oh-my-zsh already installed.$(tput sgr 0)"
@@ -98,7 +104,7 @@ fi
 echo "---------------------------------------------------------"
 echo "$(tput setaf 2) Installing zsh-autosuggestions.$(tput sgr 0)"
 echo "---------------------------------------------------------"
-git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.zsh/zsh-autosuggestions
 
 echo "---------------------------------------------------------"
 echo "$(tput setaf 2) Installing Neovim plugins and linking dotfiles.$(tput sgr 0)"
@@ -106,9 +112,9 @@ echo "---------------------------------------------------------"
 
 mkdir -p $HOME/.config/nvim
 
-ln -fs $PWD/nvim/coc-settings.json ~/.config/nvim/coc-settings.json
-ln -fs $PWD/nvim/init.vim ~/.config/nvim/init.vim
-ln -fs $PWD/nvim/plugins.vim ~/.config/nvim/plugins.vim
+ln -fs $PWD/nvim/coc-settings.json $HOME/.config/nvim/coc-settings.json
+ln -fs $PWD/nvim/init.vim $HOME/.config/nvim/init.vim
+ln -fs $PWD/nvim/plugins.vim $HOME/.config/nvim/plugins.vim
 
 nvim +PlugInstall +qall
 nvim +UpdateRemotePlugins +qall
@@ -118,10 +124,10 @@ echo "$(tput setaf 2) Installing tmux plugin manager.$(tput sgr 0)"
 echo "---------------------------------------------------------"
 
 if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
-  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-  ~/.tmux/plugins/tpm/scripts/install_plugins.sh
+  git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
+  $HOME/.tmux/plugins/tpm/scripts/install_plugins.sh
 
-  ln -fs $PWD/.tmux.conf ~/.tmux.conf
+  ln -fs $PWD/.tmux.conf $HOME/.tmux.conf
 fi
 
 echo "---------------------------------------------------------"

@@ -1,0 +1,17 @@
+[core]
+  editor = nvim
+  pager = less
+[user]
+  name = Matheus Sampaio
+  email = matheus@sampaio.us
+[commit]
+  verbose = true
+[rerere]
+  enabled = true
+[diff]
+  algorithm = patience
+[merge]
+  tool = nvim
+[rebase]
+  instructionFormat = %s [%an]
+
