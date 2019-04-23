@@ -196,7 +196,7 @@ set termguicolors
 set nopaste
 
 " Save fold and cursor positions to viewfile.
-set viewoptions=folds,cursor,options
+set viewoptions=folds,cursor
 
 " Automatically save/load viewfiles.
 augroup AutoSaveFolds
@@ -250,8 +250,11 @@ call denite#custom#map('insert', '<C-j>', '<denite:move_to_next_line>', 'noremap
 call denite#custom#map('insert', '<C-n>', '<denite:move_to_next_line>', 'noremap')
 call denite#custom#map('insert', '<C-k>', '<denite:move_to_previous_line>', 'noremap')
 call denite#custom#map('insert', '<C-p>', '<denite:move_to_previous_line>', 'noremap')
-" call denite#custom#map('insert', '<C-a>', '<denite:toggle_select_all>', 'noremap')
-" call denite#custom#map('insert', '<C-q>', '<denite:do_action:quickfix>', 'noremap')
+call denite#custom#map('insert', '<C-l>', '<denite:toggle_select_all>', 'noremap')
+call denite#custom#map('insert', '<C-q>', '<denite:do_action:quickfix>', 'noremap')
+
+call denite#custom#map('normal', '<C-l>', '<denite:toggle_select_all>', 'noremap')
+call denite#custom#map('normal', '<C-q>', '<denite:do_action:quickfix>', 'noremap')
 
 call denite#custom#option('default', 'auto_resize', 1)
 call denite#custom#option('default', 'statusline', 0)
