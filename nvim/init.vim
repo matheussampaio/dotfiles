@@ -51,6 +51,9 @@ Plug 'tpope/vim-vinegar'
 " lean and mean status/tabline.
 Plug 'vim-airline/vim-airline'
 
+" airline themes
+Plug 'vim-airline/vim-airline-themes'
+
 " place, toggle and display marks.
 Plug 'kshenoy/vim-signature'
 
@@ -111,6 +114,8 @@ Plug 'othree/yajs.vim'
 
 " Show information about dependencies versions inside `package.json`.
 Plug 'meain/vim-package-info', { 'do': 'npm install' }
+
+Plug 'Lokaltog/vim-monotone'
 
 call plug#end()
 
@@ -191,7 +196,7 @@ set termguicolors
 set nopaste
 
 " Save fold and cursor positions to viewfile.
-set viewoptions=folds,cursor
+set viewoptions=folds,cursor,options
 
 " Automatically save/load viewfiles.
 augroup AutoSaveFolds
@@ -245,6 +250,8 @@ call denite#custom#map('insert', '<C-j>', '<denite:move_to_next_line>', 'noremap
 call denite#custom#map('insert', '<C-n>', '<denite:move_to_next_line>', 'noremap')
 call denite#custom#map('insert', '<C-k>', '<denite:move_to_previous_line>', 'noremap')
 call denite#custom#map('insert', '<C-p>', '<denite:move_to_previous_line>', 'noremap')
+" call denite#custom#map('insert', '<C-a>', '<denite:toggle_select_all>', 'noremap')
+" call denite#custom#map('insert', '<C-q>', '<denite:do_action:quickfix>', 'noremap')
 
 call denite#custom#option('default', 'auto_resize', 1)
 call denite#custom#option('default', 'statusline', 0)
@@ -339,6 +346,11 @@ let g:jsx_ext_required = 1
 " Display colors as virtual text
 let g:Hexokinase_highlighters = ['virtual']
 
+augroup vimrc
+  " force write shada on leaving nvim
+  autocmd VimLeave * wshada!
+augroup END
+
 " ============================================================================ "
 " ===                                UI                                    === "
 " ============================================================================ "
@@ -351,14 +363,8 @@ set background=dark
 " See https://gist.github.com/romainl/379904f91fa40533175dfaec4c833f2f for
 " details
 function! MyHighlights() abort
-  " Add a little bit more contrast to LineNr
-  hi! LineNr guifg=#6a6a6a
-
   " Make background signcolumn background transparent
   hi! SignColumn ctermfg=NONE guibg=NONE
-
-  " Hide End Of Buffer tilde
-  hi! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg
 
   " Make background color transparent for git changes
   hi! SignifySignAdd guibg=NONE
@@ -396,7 +402,22 @@ if isdirectory( expand("$HOME/.local/share/nvim/plugged/vim-monokai-tasty") )
   endif
 
   colorscheme vim-monokai-tasty
+
+  " Add a little bit more contrast to LineNr
+  hi! LineNr guifg=#6a6a6a
+
+  " Errors bold read with transparent background
+  hi! Error cterm=bold ctermfg=231 ctermbg=NONE gui=bold guifg=#ff005f guibg=NONE
+
+  " Search highlights shade of organ
+  " hi! Search cterm=bold ctermfg=51 ctermbg=NONE gui=bold guifg=#00ffff guibg=NONE
+
+  " Hide End Of Buffer tilde
+  hi! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg
 endif
+
+" colorscheme monotone
+" let g:airline_theme='deus'
 
 " ============================================================================ "
 " ===                            Key Mappings                              === "
@@ -472,3 +493,6 @@ nnoremap <C-s> :w<CR>
 map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
 \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
+" help transitions
+nnoremap <leader>p :echo "Use \f"<CR>

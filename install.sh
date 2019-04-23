@@ -1,4 +1,5 @@
 #!/bin/sh
+
 echo "---------------------------------------------------------"
 echo "$(tput setaf 2) Greetings. Preparing to power up and begin diagnostics.$(tput sgr 0)"
 echo "---------------------------------------------------------"
