@@ -169,6 +169,9 @@ set ignorecase
 " if the search string has an upper case letter in it, the search will be case sensitive.
 set smartcase
 
+" Show the effects of a command incrementally, as you type
+set inccommand=nosplit
+
 " Automatically re-read file if a change was detected outside of vim.
 set autoread
 
@@ -464,8 +467,10 @@ nmap <leader>uw :StripWhitespace<CR>
 nmap <leader>uc :HexokinaseToggle<CR>
 
 " === Open common used files === "
+" Open dotfiles
+nnoremap <silent> <leader>gd :Ex ~/git/dotfiles<CR>
 " Open .vimrc
-nnoremap <silent> <leader>gv :e $MYVIMRC<CR>
+nnoremap <silent> <leader>gv :e ~/git/dotfiles/nvim/init.vim<CR>
 " Open .tmux.conf
 nnoremap <silent> <leader>gt :e ~/.tmux.conf<CR>
 " Open .zshrc
