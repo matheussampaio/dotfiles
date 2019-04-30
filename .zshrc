@@ -19,16 +19,6 @@ export EDITOR='nvim'
 # Enabled true color support for terminals
 export NVIM_TUI_ENABLE_TRUE_COLOR=1
 
-# TMUX
-# Automatically start tmux
-ZSH_TMUX_AUTOSTART=true
-
-# Automatically connect to a previous session if it exists
-ZSH_TMUX_AUTOCONNECT=true
-
-# Enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
 # Display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
 
@@ -72,3 +62,25 @@ bindkey '^N' down-line-or-search
 
 # disable zsh's autocd
 unsetopt autocd
+
+# Take and pull a screenshot from connect Android device
+adb_screenshot() {
+  SCREENSHOT_FILEPATH="/Users/$(whoami)/Desktop/screenshot_$(date +%d-%m-%Y:%H:%M:%S).png"
+
+  # Record screenshot
+  adb shell screencap -p /sdcard/screenshot.png
+
+  # Pull screenshot from device
+  adb pull /sdcard/screenshot.png
+
+  # Clean screenshot from device
+  adb shell rm /sdcard/screenshot.png
+
+  # Move screenshot to Desktop and rename it to be unique
+  mv screenshot.png $SCREENSHOT_FILEPATH
+
+  # add image to clipboard
+  osascript -e "set the clipboard to (read (POSIX file \"$SCREENSHOT_FILEPATH\") as JPEG picture)"
+}
+
+alias adbs=adb_screenshot
