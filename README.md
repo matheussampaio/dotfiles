@@ -1,3 +1,7 @@
 # Matheus Sampaio's dotfiles
 
-My dotfiles! :D
+## How to install
+
+```
+$ ./install.sh
+```
