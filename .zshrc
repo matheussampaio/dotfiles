@@ -31,7 +31,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git tmux wd z docker-compose)
+plugins=(git tmux wd docker-compose)
 
 # Load Oh My Zsh
 source $ZSH/oh-my-zsh.sh
@@ -46,6 +46,9 @@ export FZF_DEFAULT_COMMAND='rg --files'
 
 # Apply the command to CTRL-T as well
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+# Disable brew analytics
+export HOMEBREW_NO_ANALYTICS=1
 
 # Load FZF if exists
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -84,3 +87,9 @@ adb_screenshot() {
 }
 
 alias adbs=adb_screenshot
+
+# add brew to PATH
+[ "$OSTYPE" = 'linux-gnu' ] && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+
+# turn off all beeps
+unsetopt BEEP
