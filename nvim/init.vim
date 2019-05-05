@@ -214,6 +214,9 @@ set exrc
 " Avoid trojan horses when loading local .nvimrc (:h trojan-horse).
 set secure
 
+" Disable bells
+set visualbell
+
 " ============================================================================ "
 " ===                           PLUGIN SETUP                               === "
 " ============================================================================ "
