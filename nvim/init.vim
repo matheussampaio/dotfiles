@@ -1,8 +1,8 @@
 scriptencoding utf-8
 
-" ============================================================================ "
-"                                   VIM Plug                                   "
-" ============================================================================ "
+" " ============================================================================ "
+" " ===                              VIM Plug                                === "
+" " ============================================================================ "
 
 " check whether vim-plug is installed and install it if necessary
 let plugpath = expand('<sfile>:p:h'). '/autoload/plug.vim'
@@ -22,11 +22,11 @@ endif
 
 call plug#begin('~/.local/share/nvim/plugged')
 
-" ============================================================================ "
-"                                   Plugins                                    "
-" ============================================================================ "
+" " ============================================================================ "
+" " ===                               Plugins                                === "
+" " ============================================================================ "
 
-" Essentials
+" " === Essentials === "
 " comment stuff out.
 Plug 'tpope/vim-commentary'
 
@@ -51,9 +51,6 @@ Plug 'tpope/vim-vinegar'
 " lean and mean status/tabline.
 Plug 'vim-airline/vim-airline'
 
-" airline themes
-Plug 'vim-airline/vim-airline-themes'
-
 " place, toggle and display marks.
 Plug 'kshenoy/vim-signature'
 
@@ -68,12 +65,6 @@ Plug 'ntpeters/vim-better-whitespace'
 
 " Intellisense engine with LSP support.
 Plug 'neoclide/coc.nvim', { 'tag': '*', 'do': { -> coc#util#install()} }
-
-" Denite - Fuzzy finding, buffer management
-Plug 'Shougo/denite.nvim'
-
-" CtrlP matcher to improve file listing
-Plug 'nixprime/cpsm', { 'do': './install.sh' }
 
 " Monokai Tasty Colorschema.
 Plug 'patstockwell/vim-monokai-tasty'
@@ -91,37 +82,31 @@ Plug 'sheerun/vim-polyglot'
 " Display colors inline
 Plug 'RRethy/vim-hexokinase'
 
-" === Git Plugins === "
+" " === Git Plugins === "
 " Git wrapper.
 Plug 'tpope/vim-fugitive'
 
 " Show git changes in the sign column.
 Plug 'mhinz/vim-signify'
 
-" === Markdown Plugins === "
+" " === Markdown Plugins === "
 " Preview markdown with :LivePreview.
 Plug 'shime/vim-livedown', { 'for': 'markdown' }
-
-" === Javascript Plugins === "
-" Typescript syntax highlighting
-Plug 'HerringtonDarkholme/yats.vim'
 
 " ReactJS JSX syntax highlighting
 Plug 'mxw/vim-jsx'
 
-" Improved syntax highlighting and indentation
-Plug 'othree/yajs.vim'
-
 " Show information about dependencies versions inside `package.json`.
 Plug 'meain/vim-package-info', { 'do': 'npm install' }
 
-Plug 'Lokaltog/vim-monotone'
+" Wrap and unwrap function arguments, lists, and dictionaires
+Plug 'FooSoft/vim-argwrap'
 
 call plug#end()
 
-" ============================================================================ "
-" ===                           EDITING OPTIONS                            === "
-" ============================================================================ "
+" " ============================================================================ "
+" " ===                           EDITING OPTIONS                            === "
+" " ============================================================================ "
 
 " Show line number in the sign column.
 set number
@@ -214,98 +199,22 @@ set exrc
 " Avoid trojan horses when loading local .nvimrc (:h trojan-horse).
 set secure
 
+" Start diffmode with vertical splits
+set diffopt+=vertical
+
 " Disable bells
 set visualbell
 
-" ============================================================================ "
-" ===                           PLUGIN SETUP                               === "
-" ============================================================================ "
+" " ============================================================================ "
+" " ===                           PLUGIN SETUP                               === "
+" " ============================================================================ "
 
-" Wrap in try/catch to avoid errors on initial install before plugin is available
-" try
-" === Denite setup ==="
-" Use ripgrep for searching current directory for files
-" By default, ripgrep will respect rules in .gitignore
-"   --files: Print each file that would be searched (but don't search)
-"   --glob:  Include or exclues files for searching that match the given glob
-"            (aka ignore .git files)
-"
-call denite#custom#var('file/rec', 'command', ['rg', '--files', '--hidden', '-g', '!.git', '-g', '!*.{png,jpg,lock}'])
-call denite#custom#source('file/rec', 'matchers', ['matcher/cpsm'])
-
-" Use ripgrep in place of "grep"
-call denite#custom#var('grep', 'command', ['rg', '-g', '!{yarn.lock,package-lock.json}'])
-
-" Custom options for ripgrep
-"   --vimgrep:  Show results with every match on it's own line
-"   --hidden:   Search hidden directories and files
-"   --heading:  Show the file name above clusters of matches from each file
-"   --S:        Search case insensitively if the pattern is all lowercase
-call denite#custom#var('grep', 'default_opts', ['--hidden', '--vimgrep', '--heading', '-S'])
-
-" Recommended defaults for ripgrep via Denite docs
-call denite#custom#var('grep', 'recursive_opts', [])
-call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
-call denite#custom#var('grep', 'separator', ['--'])
-call denite#custom#var('grep', 'final_opts', [])
-
-" Remove date from buffer list
-call denite#custom#var('buffer', 'date_format', '')
-
-call denite#custom#map('insert', '<C-j>', '<denite:move_to_next_line>', 'noremap')
-call denite#custom#map('insert', '<C-n>', '<denite:move_to_next_line>', 'noremap')
-call denite#custom#map('insert', '<C-k>', '<denite:move_to_previous_line>', 'noremap')
-call denite#custom#map('insert', '<C-p>', '<denite:move_to_previous_line>', 'noremap')
-call denite#custom#map('insert', '<C-l>', '<denite:toggle_select_all>', 'noremap')
-call denite#custom#map('insert', '<C-q>', '<denite:do_action:quickfix>', 'noremap')
-
-call denite#custom#map('normal', '<C-l>', '<denite:toggle_select_all>', 'noremap')
-call denite#custom#map('normal', '<C-q>', '<denite:do_action:quickfix>', 'noremap')
-
-call denite#custom#option('default', 'auto_resize', 1)
-call denite#custom#option('default', 'statusline', 0)
-call denite#custom#option('default', 'statusline', 0)
-
-" catch
-"   echo 'Denite not installed. It should work after running :PlugInstall'
-" endtry
-
-" === Coc.nvim === "
-" use <tab> for trigger completion and navigate to next complete item
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-
-"Close preview window when completion is done.
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-
-" === NeoSnippet === "
-" Map <C-k> as shortcut to activate snippet if available
-imap <C-k> <Plug>(neosnippet_expand_or_jump)
-smap <C-k> <Plug>(neosnippet_expand_or_jump)
-xmap <C-k> <Plug>(neosnippet_expand_target)
-
-" === Vim airline ==== "
+" " === Vim airline ==== "
 " Wrap in try/catch to avoid errors on initial install before plugin is available
 try
 
-" Enable extensions
-let g:airline_extensions = ['branch', 'hunks', 'coc']
-
 " Do not draw separators for empty sections (only for the active window) >
 let g:airline_skip_empty_sections = 1
-
-" Smartly uniquify buffers names with similar filename, suppressing common parts of paths.
-let g:airline#extensions#tabline#formatter = 'unique_tail'
-
-" Custom setup that removes filetype/whitespace from default vim airline bar
-let g:airline#extensions#default#layout = [['a', 'b', 'c'], ['x', 'warning', 'error']]
 
 let airline#extensions#coc#stl_format_err = '%E{[%e(#%fe)]}'
 
@@ -331,27 +240,24 @@ catch
   echo 'Airline not installed. It should work after running :PlugInstall'
 endtry
 
-" === Wiki Vim ==== "
+" " === Wiki Vim ==== "
 let g:wiki_root = '~/Dropbox/wiki'
 
-" === Signify === "
+" " === Signify === "
 let g:signify_sign_delete = '-'
 
-" === Emmet === "
-" let g:user_emmet_install_global=0
-
-" === Netrw === "
+" " === Netrw === "
 let g:netrw_altfile=1 " Don't add netwr buffers when jumping with <C-6>
 let g:netrw_localrmdir="rm -r" " delete non-empty folders
 
-" === coc.nvim === "
-let g:coc_start_at_startup=0
+" Install basic lists, including `files`, `mru`, `grep`, etc.
+call coc#add_extension('coc-lists', 'coc-snippets')
 
-" === vim jsx === "
+" " === vim jsx === "
 " Only enable jsx for files with `.jsx` extension
 let g:jsx_ext_required = 1
 
-" === vim-hexokinase === "
+" " === vim-hexokinase === "
 " Display colors as virtual text
 let g:Hexokinase_highlighters = ['virtual']
 
@@ -360,9 +266,9 @@ augroup vimrc
   autocmd VimLeave * wshada!
 augroup END
 
-" ============================================================================ "
-" ===                                UI                                    === "
-" ============================================================================ "
+" " ============================================================================ "
+" " ===                                UI                                    === "
+" " ============================================================================ "
 
 " Use dark background
 set background=dark
@@ -386,7 +292,7 @@ function! MyHighlights() abort
   hi! SignifySignChange guifg=#c594c5
 endfunction
 
-augroup MyColors
+augroup MyHighlights
   autocmd!
   autocmd ColorScheme * call MyHighlights()
 augroup END
@@ -418,58 +324,57 @@ if isdirectory( expand("$HOME/.local/share/nvim/plugged/vim-monokai-tasty") )
   " Errors bold read with transparent background
   hi! Error cterm=bold ctermfg=231 ctermbg=NONE gui=bold guifg=#ff005f guibg=NONE
 
-  " Search highlights shade of organ
-  " hi! Search cterm=bold ctermfg=51 ctermbg=NONE gui=bold guifg=#00ffff guibg=NONE
-
   " Hide End Of Buffer tilde
   hi! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg
 endif
 
-" colorscheme monotone
-" let g:airline_theme='deus'
+" " ============================================================================ "
+" " ===                            Key Mappings                              === "
+" " ============================================================================ "
 
-" ============================================================================ "
-" ===                            Key Mappings                              === "
-" ============================================================================ "
-
-" === Denite shorcuts === "
-
-" Browser currently open buffers
-nmap <silent> <leader>b :Denite buffer<CR>
-
-" Browse list of files in current directory
-nmap <silent> <leader>f :Denite file/rec -winheight=5<CR>
-
-" Search current directory for occurences of given term and close window if no results
-nnoremap <silent> <leader>s :<C-u>Denite grep:. -no-empty -mode=normal<CR>
-
-" Search current directory for occurences of word under cursor
-nnoremap <silent> <leader>w :<C-u>DeniteCursorWord grep:. -mode=normal<CR>
-
-" === search shortcuts === "
-" Clear highlighted search terms while preserving history
-noremap <Leader>h :nohlsearch<CR>
-
-" By pressing ctrl+r in visual mode, you will be prompted to enter text to replace with.
-" Press enter and then confirm each change you agree with y or decline with n.
-vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
-
-" === coc.nvim === "
+" " === coc.nvim === "
+" Got to current word definition
 nmap <silent> <leader>cd <Plug>(coc-definition)
+" Search for current work references
 nmap <silent> <leader>ce <Plug>(coc-references)
+" Open current word implementation
 nmap <silent> <leader>ci <Plug>(coc-implementation)
+" Rename current word
 nmap <silent> <leader>cr <Plug>(coc-rename)
+" Fix current line
 nmap <silent> <leader>cf <Plug>(coc-fix-current)
+" Browse list of files in current directory
+nmap <silent> <C-p> :CocList files<CR>
+" Browse most recent files
+nmap <silent> <leader>cb :CocList mru<CR>
+" Search for a symbol in the current directory
+nmap <silent> <leader>cs :CocList symbols<CR>
+" Search for a term in the current directory
+nmap <silent> <leader>f :CocList grep<CR>
+" Browse CoC commands
+nmap <silent> <leader>cp :CocList commands<CR>
 
-" === vim-better-whitespace === "
+" " === vim-better-whitespace === "
 " Automatically remove trailing whitespace
-nmap <leader>uw :StripWhitespace<CR>
+nmap <silent> <leader>as :StripWhitespace<CR>
 
-" === vim hexokinase === "
+" " === vim hexokinase === "
 " Toggle show colors beside colors hex, rgb, rgba, etc.
-nmap <leader>uc :HexokinaseToggle<CR>
+nmap <silent> <leader>ac :HexokinaseToggle<CR>
 
-" === Open common used files === "
+" " === Vim Plug === "
+" Run Plug Status
+nnoremap <silent> <leader>ps :PlugStatus<CR>
+" Run Plug Install
+nnoremap <silent> <leader>pi :PlugInstall<CR>
+" Run Plug Update
+nnoremap <silent> <leader>pu :PlugUpdate<CR>
+
+" " === Vim ArgWrap === "
+" Toggle argwrap
+nnoremap <silent> <leader>aw :ArgWrap<CR>
+
+" " === Others === "
 " Open dotfiles
 nnoremap <silent> <leader>gd :Ex ~/git/dotfiles<CR>
 " Open .vimrc
@@ -481,29 +386,30 @@ nnoremap <silent> <leader>gz :e ~/.zshrc<CR>
 " Open vim notes
 nnoremap <silent> <leader>gn :e ~/Dropbox/wiki/Notes.wiki<CR>
 
-" === System Clipboard === "
+" Ctrl+S to save the buffer
+nnoremap <silent> <C-s> :w<CR>
+
+" Debug hightlight group
+map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+  \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+  \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
+" help transitions
+nnoremap <leader>p :echo "Use \f"<CR>
+
+" move visual lines
+nnoremap j gj
+nnoremap k gk
+
 " Paste from "+ (system) register
 nnoremap <leader>v o<ESC>"+p
 
 " Copy selection to "+ (system) register
 vnoremap <leader>c "+y
 
-" === Vim Plug === "
-" Run Plug Status
-nnoremap <leader>ps :PlugStatus<CR>
-" Run Plug Install
-nnoremap <leader>pi :PlugInstall<CR>
-" Run Plug Update
-nnoremap <leader>pu :PlugUpdate<CR>
+" Clear highlighted search terms while preserving history
+noremap <Leader>h :nohlsearch<CR>
 
-" === others === "
-" Ctrl+S to save the buffer
-nnoremap <C-s> :w<CR>
-
-" Debug hightlight group
-map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
-\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
-
-" help transitions
-nnoremap <leader>p :echo "Use \f"<CR>
+" By pressing ctrl+r in visual mode, you will be prompted to enter text to replace with.
+" Press enter and then confirm each change you agree with y or decline with n.
+vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>

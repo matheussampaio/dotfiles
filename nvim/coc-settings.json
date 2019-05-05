@@ -1,8 +1,15 @@
 {
   "suggest.maxCompleteItemCount": 5,
-  "coc.preferences.diagnostic.virtualText": true,
   "eslint.filetypes": ["javascript", "typescript", "typescriptreact", "javascriptreact"],
+  "diagnostic.virtualText": true,
   "diagnostic.errorSign": "•",
   "diagnostic.warningSign": "•",
-  "diagnostic.infoSign": "•"
+  "diagnostic.infoSign": "•",
+  "list.insertMappings": {
+    "<C-l>": "do:selectall",
+    "<C-q>": "action:quickfix",
+    "<C-c>": "do:exit"
+  },
+  "list.source.files.args": ["--files", "--hidden"],
+  "list.source.grep.args": ["-g", "!{yarn.lock,package-lock.json}"]
 }
