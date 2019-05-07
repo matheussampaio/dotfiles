@@ -97,7 +97,7 @@ Plug 'shime/vim-livedown', { 'for': 'markdown' }
 Plug 'mxw/vim-jsx'
 
 " Show information about dependencies versions inside `package.json`.
-Plug 'meain/vim-package-info', { 'do': 'npm install' }
+" Plug 'meain/vim-package-info', { 'do': 'npm install' }
 
 " Wrap and unwrap function arguments, lists, and dictionaires
 Plug 'FooSoft/vim-argwrap'
@@ -204,6 +204,9 @@ set diffopt+=vertical
 
 " Disable bells
 set visualbell
+
+" Change leader to SPACE
+let mapleader=" "
 
 " " ============================================================================ "
 " " ===                           PLUGIN SETUP                               === "
@@ -374,20 +377,33 @@ nnoremap <silent> <leader>pu :PlugUpdate<CR>
 " Toggle argwrap
 nnoremap <silent> <leader>aw :ArgWrap<CR>
 
+" " === Vim Fugitive === "
+" Open GStatus in a new tab
+nnoremap <silent> <leader>gs :Gtabedit :<CR>
+" Git push
+nnoremap <silent> <leader>gp :Gpush<CR>
+" Git checkout branch
+nnoremap <leader>gcb :Git checkout -b<space>
+" Git pull
+nnoremap <silent> <leader>gl :Gpull<CR>
+
 " " === Others === "
 " Open dotfiles
-nnoremap <silent> <leader>gd :Ex ~/git/dotfiles<CR>
+nnoremap <silent> <leader>od :Ex ~/git/dotfiles<CR>
 " Open .vimrc
-nnoremap <silent> <leader>gv :e ~/git/dotfiles/nvim/init.vim<CR>
+nnoremap <silent> <leader>ov :e ~/git/dotfiles/nvim/init.vim<CR>
 " Open .tmux.conf
-nnoremap <silent> <leader>gt :e ~/.tmux.conf<CR>
+nnoremap <silent> <leader>ot :e ~/.tmux.conf<CR>
 " Open .zshrc
-nnoremap <silent> <leader>gz :e ~/.zshrc<CR>
+nnoremap <silent> <leader>oz :e ~/.zshrc<CR>
 " Open vim notes
-nnoremap <silent> <leader>gn :e ~/Dropbox/wiki/Notes.wiki<CR>
+nnoremap <silent> <leader>on :e ~/Dropbox/wiki/Notes.wiki<CR>
 
 " Ctrl+S to save the buffer
 nnoremap <silent> <C-s> :w<CR>
+
+" Update buffers
+nnoremap <silent> <leader>u :checktime<CR>
 
 " Debug hightlight group
 map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
