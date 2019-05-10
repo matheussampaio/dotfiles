@@ -216,11 +216,19 @@ let mapleader=" "
 " Wrap in try/catch to avoid errors on initial install before plugin is available
 try
 
+" Do not show current git branch
+let g:airline#extensions#branch#enabled=0
+
 " Do not draw separators for empty sections (only for the active window) >
-let g:airline_skip_empty_sections = 1
+let g:airline_skip_empty_sections=1
+
+" remove (fileencoding, fileformat) section
+let g:airline_section_y=''
+
+" remove (percentage, line number, column number) section
+let g:airline_section_z=''
 
 let airline#extensions#coc#stl_format_err = '%E{[%e(#%fe)]}'
-
 let airline#extensions#coc#stl_format_warn = '%W{[%w(#%fw)]}'
 
 " Configure error/warning section to use coc.nvim
