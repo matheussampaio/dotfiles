@@ -66,7 +66,7 @@ bindkey '^N' down-line-or-search
 # disable zsh's autocd
 unsetopt autocd
 
-# Take and pull a screenshot from connect Android device
+# Take and pull a screenshot from connected Android device
 adb_screenshot() {
   SCREENSHOT_FILEPATH="/Users/$(whoami)/Desktop/screenshot_$(date +%d-%m-%Y:%H:%M:%S).png"
 
@@ -82,11 +82,37 @@ adb_screenshot() {
   # Move screenshot to Desktop and rename it to be unique
   mv screenshot.png $SCREENSHOT_FILEPATH
 
-  # add image to clipboard
+  # Add image to clipboard
   osascript -e "set the clipboard to (read (POSIX file \"$SCREENSHOT_FILEPATH\") as JPEG picture)"
 }
 
 alias adbs=adb_screenshot
+
+# Record the screen and pull the video from connected Android device and
+# convert the video to gif (easier to share on Github)
+# required ffmpeg and gifsicle: brew install ffmpeg gifsicle
+adb_screenrecord() {
+  SCREENRECORD_FILENAME=$(date +%d-%m-%Y:%H:%M:%S)
+
+  SCREENRECORD_MP4_FILEPATH="/Users/$(whoami)/Desktop/screenrecord_$SCREENRECORD_FILENAME.mp4"
+  SCREENRECORD_GIF_FILEPATH="/Users/$(whoami)/Desktop/screenrecord_$SCREENRECORD_FILENAME.gif"
+
+  # Record screen
+  adb shell screenrecord /sdcard/screenrecord.mp4
+
+  # Pull video from device
+  adb pull /sdcard/screenrecord.mp4
+
+  # Delete video from device
+  adb shell rm /sdcard/screenrecord.mp4
+
+  # Move video to Desktop and rename it to be unique
+  mv screenrecord.mp4 $SCREENRECORD_MP4_FILEPATH
+
+  ffmpeg -i $SCREENRECORD_MP4_FILEPATH -f gif - | gifsicle --optimize=3 > $SCREENRECORD_GIF_FILEPATH
+}
+
+alias adbr=adb_screenrecord
 
 # add brew to PATH
 [ "$OSTYPE" = 'linux-gnu' ] && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)

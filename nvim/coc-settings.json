@@ -1,5 +1,4 @@
 {
-  "suggest.maxCompleteItemCount": 5,
   "eslint.filetypes": ["javascript", "typescript", "typescriptreact", "javascriptreact"],
   "diagnostic.virtualText": true,
   "diagnostic.errorSign": "•",
@@ -11,5 +10,10 @@
     "<C-c>": "do:exit"
   },
   "list.source.files.args": ["--files", "--hidden"],
-  "list.source.grep.args": ["-g", "!{yarn.lock,package-lock.json}"]
+  "list.source.grep.args": ["-g", "!{yarn.lock,package-lock.json}"],
+  "suggest.minTriggerInputLength": 5,
+  "suggest.timeout": 500,
+  "suggest.autoTrigger": "trigger",
+  "diagnostic.refreshAfterSave": true,
+  "diagnostic.refreshOnInsertMode": false
 }
