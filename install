@@ -27,7 +27,7 @@ echo "---------------------------------------------------------"
 echo "$(tput setaf 2) Checking for Homebrew installation.$(tput sgr 0)"
 echo "---------------------------------------------------------"
 
-if [ "$OSTYPE" == "darwin"* ]; then
+if [[ "$OSTYPE" == "darwin"* ]]; then
   brew="/usr/local/bin/brew"
 else
   brew="/home/linuxbrew/.linuxbrew/bin/brew"
@@ -55,19 +55,22 @@ fi
 # disable analytics
 brew analytics off
 
+echo "---------------------------------------------------------"
+echo "$(tput setaf 2) Updating Homebrew.$(tput sgr 0)"
+echo "---------------------------------------------------------"
 brew update
 
 echo "---------------------------------------------------------"
 echo "$(tput setaf 2) Installing system packages.$(tput sgr 0)"
 echo "---------------------------------------------------------"
 
-brew reinstall gcc git python3 node tmux zsh ripgrep fzf htop tldr hub ffmpeg gifsicle
+brew reinstall gcc git python3 node tmux zsh ripgrep fzf htop tldr hub
 
 echo "---------------------------------------------------------"
 echo "$(tput setaf 2) Installing NeoVim.$(tput sgr 0)"
 echo "---------------------------------------------------------"
 
-if [ "$OSTYPE" == "darwin"* ]; then
+if [[ "$OSTYPE" == "darwin"* ]]; then
   rm -rf nvim-osx64
   wget https://github.com/neovim/neovim/releases/download/nightly/nvim-macos.tar.gz
   tar xzvf nvim-macos.tar.gz
