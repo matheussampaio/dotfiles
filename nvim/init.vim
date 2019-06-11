@@ -70,8 +70,7 @@ Plug 'neoclide/coc.nvim', { 'tag': '*', 'do': { -> coc#util#install()} }
 Plug 'patstockwell/vim-monokai-tasty'
 
 " Take notes with Wiki.
-Plug 'lervag/wiki.vim'
-Plug 'lervag/wiki-ft.vim'
+Plug 'vimwiki/vimwiki'
 
 " auto-close brakets after pressing ENTER.
 Plug 'rstacruz/vim-closer'
@@ -94,13 +93,22 @@ Plug 'mhinz/vim-signify'
 Plug 'shime/vim-livedown', { 'for': 'markdown' }
 
 " ReactJS JSX syntax highlighting
-Plug 'mxw/vim-jsx'
+Plug 'mxw/vim-jsx', { 'for': 'javascript' }
 
 " Show information about dependencies versions inside `package.json`.
-" Plug 'meain/vim-package-info', { 'do': 'npm install' }
+Plug 'meain/vim-package-info', { 'for': 'javascript', 'do': 'npm install' }
 
 " Wrap and unwrap function arguments, lists, and dictionaires
 Plug 'FooSoft/vim-argwrap'
+
+" Disctraction-free writing in vim
+Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
+
+" Jekyll utils
+Plug 'parkr/vim-jekyll'
+
+" Efficient way of using Vim as Git mergetool
+Plug 'samoshkin/vim-mergetool'
 
 call plug#end()
 
@@ -199,14 +207,19 @@ set exrc
 " Avoid trojan horses when loading local .nvimrc (:h trojan-horse).
 set secure
 
-" Start diffmode with vertical splits
+" Start diffmode with vertical splits.
 set diffopt+=vertical
 
-" Disable bells
+" Disable bells.
 set visualbell
 
-" Change leader to SPACE
+" Change leader to SPACE.
 let mapleader=" "
+
+" Force write shada on leaving nvim.
+augroup ForceShadaWrite
+  autocmd VimLeave * wshada!
+augroup END
 
 " " ============================================================================ "
 " " ===                           PLUGIN SETUP                               === "
@@ -251,8 +264,8 @@ catch
   echo 'Airline not installed. It should work after running :PlugInstall'
 endtry
 
-" " === Wiki Vim ==== "
-let g:wiki_root = '~/Dropbox/wiki'
+" " === vimwiki ==== "
+let g:vimwiki_list = [{ 'path': '~/Dropbox/wiki' }]
 
 " " === Signify === "
 let g:signify_sign_delete = '-'
@@ -260,9 +273,6 @@ let g:signify_sign_delete = '-'
 " " === Netrw === "
 let g:netrw_altfile=1 " Don't add netwr buffers when jumping with <C-6>
 let g:netrw_localrmdir="rm -r" " delete non-empty folders
-
-" Install basic lists, including `files`, `mru`, `grep`, etc.
-call coc#add_extension('coc-lists', 'coc-snippets')
 
 " " === vim jsx === "
 " Only enable jsx for files with `.jsx` extension
@@ -272,10 +282,9 @@ let g:jsx_ext_required = 1
 " Display colors as virtual text
 let g:Hexokinase_highlighters = ['virtual']
 
-augroup vimrc
-  " force write shada on leaving nvim
-  autocmd VimLeave * wshada!
-augroup END
+" " === coc.nvim === "
+" Install basic lists, including `files`, `mru`, `grep`, etc.
+call coc#add_extension('coc-lists', 'coc-snippets')
 
 " " ============================================================================ "
 " " ===                                UI                                    === "
@@ -361,25 +370,27 @@ nmap <silent> <leader>cb :CocList mru<CR>
 " Search for a symbol in the current directory
 nmap <silent> <leader>cs :CocList symbols<CR>
 " Search for a term in the current directory
-nmap <silent> <leader>f :CocList grep<CR>
+nmap <silent> <leader>f :CocList -I grep -ignorecase<CR>
 " Browse CoC commands
 nmap <silent> <leader>cp :CocList commands<CR>
+" Trigger completion
+inoremap <silent><expr> <c-space> coc#refresh()
 
 " " === vim-better-whitespace === "
 " Automatically remove trailing whitespace
-nmap <silent> <leader>as :StripWhitespace<CR>
+nmap <leader>as :StripWhitespace<CR>
 
 " " === vim hexokinase === "
 " Toggle show colors beside colors hex, rgb, rgba, etc.
-nmap <silent> <leader>ac :HexokinaseToggle<CR>
+nmap <leader>ac :HexokinaseToggle<CR>
 
 " " === Vim Plug === "
 " Run Plug Status
-nnoremap <silent> <leader>ps :PlugStatus<CR>
+nnoremap <leader>ps :PlugStatus<CR>
 " Run Plug Install
-nnoremap <silent> <leader>pi :PlugInstall<CR>
+nnoremap <leader>pi :PlugInstall<CR>
 " Run Plug Update
-nnoremap <silent> <leader>pu :PlugUpdate<CR>
+nnoremap <leader>pu :PlugUpdate<CR>
 
 " " === Vim ArgWrap === "
 " Toggle argwrap
@@ -387,31 +398,39 @@ nnoremap <silent> <leader>aw :ArgWrap<CR>
 
 " " === Vim Fugitive === "
 " Open GStatus in a new tab
-nnoremap <silent> <leader>gs :Gtabedit :<CR>
+nnoremap <leader>gs :G<CR>
 " Git push
-nnoremap <silent> <leader>gp :Gpush<CR>
+nnoremap <leader>gp :Gpush<CR>
 " Git checkout branch
 nnoremap <leader>gcb :Git checkout -b<space>
 " Git pull
-nnoremap <silent> <leader>gl :Gpull<CR>
+nnoremap <leader>gl :Gpull<CR>
+
+" " === vim-mergetool === "
+let g:mergetool_layout = 'bmr'
+let g:mergetool_prefer_revision = 'local'
+
+nmap <leader>mt <plug>(MergetoolToggle)
 
 " " === Others === "
 " Open dotfiles
-nnoremap <silent> <leader>od :Ex ~/git/dotfiles<CR>
+nnoremap <leader>od :Ex ~/git/dotfiles<CR>
 " Open .vimrc
-nnoremap <silent> <leader>ov :e ~/git/dotfiles/nvim/init.vim<CR>
+nnoremap <leader>ov :tabnew ~/git/dotfiles/nvim/init.vim<CR>
 " Open .tmux.conf
-nnoremap <silent> <leader>ot :e ~/.tmux.conf<CR>
+nnoremap <leader>ot :tabnew ~/.tmux.conf<CR>
 " Open .zshrc
-nnoremap <silent> <leader>oz :e ~/.zshrc<CR>
+nnoremap <leader>oz :tabnew ~/.zshrc<CR>
 " Open vim notes
-nnoremap <silent> <leader>on :e ~/Dropbox/wiki/Notes.wiki<CR>
+nnoremap <leader>on :tabnew ~/Dropbox/wiki/Notes.wiki<CR>
+" Open vim notes
+nnoremap <leader>oc :tabnew ~/git/dotfiles/nvim/coc-settings.json<CR>
 
 " Ctrl+S to save the buffer
-nnoremap <silent> <C-s> :w<CR>
+nnoremap <C-s> :w<CR>
 
 " Update buffers
-nnoremap <silent> <leader>u :checktime<CR>
+nnoremap <leader>u :checktime<CR>
 
 " Debug hightlight group
 map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
@@ -437,3 +456,11 @@ noremap <Leader>h :nohlsearch<CR>
 " By pressing ctrl+r in visual mode, you will be prompted to enter text to replace with.
 " Press enter and then confirm each change you agree with y or decline with n.
 vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
+
+" Normally space move the cursor to the right in normal mode. Since LEADER is
+" SPACE, disabling that behavior works better for me.
+nnoremap <space> <NOP>
+
+" Git diff keybindings
+nnoremap <silent> <leader>gdh :diffget //2<CR>
+nnoremap <silent> <leader>gdl :diffget //3<CR>

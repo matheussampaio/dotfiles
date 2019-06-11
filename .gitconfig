@@ -1,17 +1,28 @@
 [core]
   editor = nvim
   pager = less
+
 [user]
   name = Matheus Sampaio
   email = matheus@sampaio.us
+
 [commit]
   verbose = true
+
 [rerere]
   enabled = true
+
 [diff]
   algorithm = patience
+
 [merge]
-  tool = nvim
+  tool = vim_mergetool
+  conflictStyle = diff3
+
+[mergetool "vim_mergetool"]
+  cmd = vim -f -c "MergetoolStart" "$MERGED" "$BASE" "$LOCAL" "$REMOTE"
+  trustExitCode = true
+
 [rebase]
-  instructionFormat = %s [%an]
+  instructionFormat = %s [%an - %ar]
 
