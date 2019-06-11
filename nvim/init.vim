@@ -227,6 +227,10 @@ augroup ForceShadaWrite
   autocmd VimLeave * wshada!
 augroup END
 
+" Display tab characters
+set list
+set listchars=tab:>-
+
 " " ============================================================================ "
 " " ===                           PLUGIN SETUP                               === "
 " " ============================================================================ "
