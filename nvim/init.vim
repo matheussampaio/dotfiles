@@ -229,7 +229,7 @@ augroup END
 
 " Display tab characters
 set list
-set listchars=nbsp:·,tab:▸-
+set listchars=nbsp:·,tab:▶-
 
 " " ============================================================================ "
 " " ===                           PLUGIN SETUP                               === "
