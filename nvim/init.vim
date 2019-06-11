@@ -64,7 +64,7 @@ Plug 'milkypostman/vim-togglelist'
 Plug 'ntpeters/vim-better-whitespace'
 
 " Intellisense engine with LSP support.
-Plug 'neoclide/coc.nvim', { 'tag': '*', 'do': { -> coc#util#install()} }
+Plug 'neoclide/coc.nvim', { 'tag': '*', 'do': './install.sh' }
 
 " Monokai Tasty Colorschema.
 Plug 'patstockwell/vim-monokai-tasty'
@@ -109,6 +109,12 @@ Plug 'parkr/vim-jekyll'
 
 " Efficient way of using Vim as Git mergetool
 Plug 'samoshkin/vim-mergetool'
+
+" Support for expanding abbreviations
+Plug 'mattn/emmet-vim'
+
+" A simple alignment operator
+Plug 'tommcdo/vim-lion'
 
 call plug#end()
 
@@ -285,6 +291,10 @@ let g:Hexokinase_highlighters = ['virtual']
 " " === coc.nvim === "
 " Install basic lists, including `files`, `mru`, `grep`, etc.
 call coc#add_extension('coc-lists', 'coc-snippets')
+
+" " === emmet.vim === "
+" Change emmet key
+let g:user_emmet_leader_key='<C-E>'
 
 " " ============================================================================ "
 " " ===                                UI                                    === "
