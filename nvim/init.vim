@@ -79,7 +79,16 @@ Plug 'rstacruz/vim-closer'
 Plug 'sheerun/vim-polyglot'
 
 " Display colors inline
-Plug 'RRethy/vim-hexokinase'
+Plug 'RRethy/vim-hexokinase', { 'on': 'HexokinaseToggle' }
+
+" A simple alignment operator
+Plug 'tommcdo/vim-lion'
+
+" Speed up Vim by updating folds only when called-for.
+Plug 'Konfekt/FastFold'
+
+" Make Vim persist editing state without fuss
+Plug 'zhimsel/vim-stay'
 
 " " === Git Plugins === "
 " Git wrapper.
@@ -87,6 +96,9 @@ Plug 'tpope/vim-fugitive'
 
 " Show git changes in the sign column.
 Plug 'mhinz/vim-signify'
+
+" Efficient way of using Vim as Git mergetool
+Plug 'samoshkin/vim-mergetool'
 
 " " === Markdown Plugins === "
 " Preview markdown with :LivePreview.
@@ -107,14 +119,8 @@ Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
 " Jekyll utils
 Plug 'parkr/vim-jekyll'
 
-" Efficient way of using Vim as Git mergetool
-Plug 'samoshkin/vim-mergetool'
-
 " Support for expanding abbreviations
-Plug 'mattn/emmet-vim'
-
-" A simple alignment operator
-Plug 'tommcdo/vim-lion'
+Plug 'mattn/emmet-vim', { 'for': ['javascript', 'jsx', 'html'] }
 
 call plug#end()
 
@@ -198,14 +204,7 @@ set termguicolors
 set nopaste
 
 " Save fold and cursor positions to viewfile.
-set viewoptions=folds,cursor
-
-" Automatically save/load viewfiles.
-augroup AutoSaveFolds
-  autocmd!
-  autocmd BufWinLeave,BufLeave,BufWritePost ?* nested silent! mkview!
-  autocmd BufWinEnter ?* silent! loadview
-augroup end
+set viewoptions=folds,cursor,slash,unix
 
 " Load local .nvimrc (:h exrc).
 set exrc
@@ -222,14 +221,18 @@ set visualbell
 " Change leader to SPACE.
 let mapleader=" "
 
-" Force write shada on leaving nvim.
-augroup ForceShadaWrite
-  autocmd VimLeave * wshada!
-augroup END
-
 " Display tab characters
 set list
 set listchars=nbsp:·,tab:▶-
+
+" the screen will not be redrawn while executing macros, registers and other commands that have not been typed.
+set lazyredraw
+
+" set default regexp engine
+set regexpengine=1
+
+" Syntax highlighting items specify folds.
+set foldmethod=syntax
 
 " " ============================================================================ "
 " " ===                           PLUGIN SETUP                               === "
@@ -299,6 +302,10 @@ call coc#add_extension('coc-lists', 'coc-snippets')
 " " === emmet.vim === "
 " Change emmet key
 let g:user_emmet_leader_key='<C-E>'
+
+" " === fastfold === "
+let g:markdown_folding=1
+let g:javaScript_fold=1
 
 " " ============================================================================ "
 " " ===                                UI                                    === "
