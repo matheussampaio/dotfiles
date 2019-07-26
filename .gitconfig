@@ -9,19 +9,8 @@
 [commit]
   verbose = true
 
-[rerere]
-  enabled = true
-
 [diff]
   algorithm = patience
-
-[merge]
-  tool = vim_mergetool
-  conflictStyle = diff3
-
-[mergetool "vim_mergetool"]
-  cmd = vim -f -c "MergetoolStart" "$MERGED" "$BASE" "$LOCAL" "$REMOTE"
-  trustExitCode = true
 
 [rebase]
   instructionFormat = %s [%an - %ar]
