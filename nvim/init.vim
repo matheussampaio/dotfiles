@@ -104,6 +104,9 @@ Plug 'samoshkin/vim-mergetool'
 " Preview markdown with :LivePreview.
 Plug 'shime/vim-livedown', { 'for': 'markdown' }
 
+" Syntax highlighting, matching rules and mappings for the original Markdown and extensions.
+Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] }
+
 " ReactJS JSX syntax highlighting
 Plug 'mxw/vim-jsx', { 'for': 'javascript' }
 
@@ -233,6 +236,9 @@ set regexpengine=1
 
 " Syntax highlighting items specify folds.
 set foldmethod=syntax
+
+" Set default to unfold
+set foldlevel=1000
 
 " " ============================================================================ "
 " " ===                           PLUGIN SETUP                               === "

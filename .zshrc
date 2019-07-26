@@ -88,32 +88,6 @@ adb_screenshot() {
 
 alias adbs=adb_screenshot
 
-# Record the screen and pull the video from connected Android device and
-# convert the video to gif (easier to share on Github)
-# required ffmpeg and gifsicle: brew install ffmpeg gifsicle
-adb_screenrecord() {
-  SCREENRECORD_FILENAME=$(date +%d-%m-%Y:%H:%M:%S)
-
-  SCREENRECORD_MP4_FILEPATH="/Users/$(whoami)/Desktop/screenrecord_$SCREENRECORD_FILENAME.mp4"
-  SCREENRECORD_GIF_FILEPATH="/Users/$(whoami)/Desktop/screenrecord_$SCREENRECORD_FILENAME.gif"
-
-  # Record screen
-  adb shell screenrecord /sdcard/screenrecord.mp4
-
-  # Pull video from device
-  adb pull /sdcard/screenrecord.mp4
-
-  # Delete video from device
-  adb shell rm /sdcard/screenrecord.mp4
-
-  # Move video to Desktop and rename it to be unique
-  mv screenrecord.mp4 $SCREENRECORD_MP4_FILEPATH
-
-  ffmpeg -i $SCREENRECORD_MP4_FILEPATH -f gif - | gifsicle --optimize=3 > $SCREENRECORD_GIF_FILEPATH
-}
-
-alias adbr=adb_screenrecord
-
 # add brew to PATH
 [ "$OSTYPE" = 'linux-gnu' ] && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 
@@ -121,3 +95,14 @@ alias adbr=adb_screenrecord
 unsetopt BEEP
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+# force current branch to point to origin/$current_branch
+gbf() {
+  TEMP_BRANCH_NAME=gbf-$(date +%F)
+  CURRENT_BRANCH="$(git_current_branch)"
+
+  git checkout --quiet -b $TEMP_BRANCH_NAME && \
+  git branch -f $CURRENT_BRANCH origin/$CURRENT_BRANCH && \
+  git checkout --quiet $CURRENT_BRANCH && \
+  git branch --quiet -D $TEMP_BRANCH_NAME
+}
