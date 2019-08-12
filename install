@@ -67,6 +67,11 @@ echo "---------------------------------------------------------"
 brew reinstall gcc git python3 node tmux zsh ripgrep fzf htop tldr hub
 
 echo "---------------------------------------------------------"
+echo "$(tput setaf 2) Cleaning Homebrew.$(tput sgr 0)"
+echo "---------------------------------------------------------"
+brew cleanup
+
+echo "---------------------------------------------------------"
 echo "$(tput setaf 2) Installing NeoVim.$(tput sgr 0)"
 echo "---------------------------------------------------------"
 
@@ -111,11 +116,6 @@ else
   echo "$(tput setaf 2) oh-my-zsh already installed.$(tput sgr 0)"
   echo "---------------------------------------------------------"
 fi
-
-echo "---------------------------------------------------------"
-echo "$(tput setaf 2) Installing zsh-autosuggestions.$(tput sgr 0)"
-echo "---------------------------------------------------------"
-git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.zsh/zsh-autosuggestions
 
 echo "---------------------------------------------------------"
 echo "$(tput setaf 2) Installing tmux plugin manager.$(tput sgr 0)"

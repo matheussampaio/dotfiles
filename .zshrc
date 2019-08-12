@@ -20,7 +20,7 @@ export EDITOR='nvim'
 export NVIM_TUI_ENABLE_TRUE_COLOR=1
 
 # Display red dots whilst waiting for completion.
-COMPLETION_WAITING_DOTS="true"
+# COMPLETION_WAITING_DOTS="true"
 
 # Disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -52,9 +52,6 @@ export HOMEBREW_NO_ANALYTICS=1
 
 # Load FZF if exists
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# Enabled zsh-autosuggestions
-[ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ] && source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # Aliases
 alias vim="nvim"
@@ -94,8 +91,6 @@ alias adbs=adb_screenshot
 # turn off all beeps
 unsetopt BEEP
 
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-
 # force current branch to point to origin/$current_branch
 gbf() {
   TEMP_BRANCH_NAME=gbf-$(date +%F)
@@ -106,3 +101,5 @@ gbf() {
   git checkout --quiet $CURRENT_BRANCH && \
   git branch --quiet -D $TEMP_BRANCH_NAME
 }
+
+export PATH="$PATH:$HOME/Library/Android/sdk/tools/"
