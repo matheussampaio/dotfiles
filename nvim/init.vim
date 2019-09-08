@@ -26,18 +26,14 @@ call plug#begin('~/.local/share/nvim/plugged')
 " " ===                               Plugins                                === "
 " " ============================================================================ "
 
-" " === Essentials === "
 " comment stuff out.
 Plug 'tpope/vim-commentary'
 
 " sets the value of 'commentstring' depending on the region of the file.
-Plug 'suy/vim-context-commentstring', { 'for': 'javascript.jsx' }
+" Plug 'suy/vim-context-commentstring', { 'for': 'javascript.jsx' }
 
 " provides mappings to easily delete, change and add surroundings (parantheses, brackets, quotes, etc).
 Plug 'tpope/vim-surround'
-
-" fugitive github extension.
-Plug 'tpope/vim-rhubarb'
 
 " handy brackets mappings.
 Plug 'tpope/vim-unimpaired'
@@ -60,8 +56,8 @@ Plug 'christoomey/vim-tmux-navigator'
 " toggle quicklist and loclist.
 Plug 'milkypostman/vim-togglelist'
 
-" Trailing whitespace highlighting & automatic fixing.
-Plug 'ntpeters/vim-better-whitespace'
+" " Trailing whitespace highlighting & automatic fixing.
+" Plug 'ntpeters/vim-better-whitespace'
 
 " Intellisense engine with LSP support.
 Plug 'neoclide/coc.nvim', { 'tag': '*', 'do': './install.sh' }
@@ -81,8 +77,8 @@ Plug 'sheerun/vim-polyglot'
 " Display colors inline
 Plug 'RRethy/vim-hexokinase', { 'on': 'HexokinaseToggle' }
 
-" A simple alignment operator
-Plug 'tommcdo/vim-lion'
+" " A simple alignment operator
+" Plug 'tommcdo/vim-lion'
 
 " Speed up Vim by updating folds only when called-for.
 Plug 'Konfekt/FastFold'
@@ -90,40 +86,44 @@ Plug 'Konfekt/FastFold'
 " Make Vim persist editing state without fuss
 Plug 'zhimsel/vim-stay'
 
-" " === Git Plugins === "
 " Git wrapper.
 Plug 'tpope/vim-fugitive'
+
+" fugitive github extension.
+Plug 'tpope/vim-rhubarb'
 
 " Show git changes in the sign column.
 Plug 'mhinz/vim-signify'
 
-" Efficient way of using Vim as Git mergetool
-Plug 'samoshkin/vim-mergetool'
+" " Efficient way of using Vim as Git mergetool
+" Plug 'samoshkin/vim-mergetool'
 
-" " === Markdown Plugins === "
-" Preview markdown with :LivePreview.
-Plug 'shime/vim-livedown', { 'for': 'markdown' }
+" " Preview markdown with :LivePreview.
+" Plug 'shime/vim-livedown', { 'for': 'markdown' }
 
-" Syntax highlighting, matching rules and mappings for the original Markdown and extensions.
-Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] }
+" " Syntax highlighting, matching rules and mappings for the original Markdown and extensions.
+" Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] }
 
-" ReactJS JSX syntax highlighting
-Plug 'mxw/vim-jsx', { 'for': 'javascript' }
+" " ReactJS JSX syntax highlighting
+" Plug 'mxw/vim-jsx', { 'for': 'javascript' }
 
-" Show information about dependencies versions inside `package.json`.
-Plug 'meain/vim-package-info', { 'for': 'javascript', 'do': 'npm install' }
+" " Show information about dependencies versions inside `package.json`.
+" Plug 'meain/vim-package-info', { 'for': 'javascript', 'do': 'npm install' }
 
 " Wrap and unwrap function arguments, lists, and dictionaires
 Plug 'FooSoft/vim-argwrap'
 
-" Disctraction-free writing in vim
-Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
+" " Disctraction-free writing in vim
+" Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
 
-" Jekyll utils
-Plug 'parkr/vim-jekyll'
+" " Jekyll utils
+" Plug 'parkr/vim-jekyll'
 
-" Support for expanding abbreviations
-Plug 'mattn/emmet-vim', { 'for': ['javascript', 'jsx', 'html'] }
+" " Support for expanding abbreviations
+" Plug 'mattn/emmet-vim', { 'for': ['javascript', 'jsx', 'html'] }
+
+" Enhances vim's search-commmands
+Plug 'wincent/loupe'
 
 call plug#end()
 
@@ -260,21 +260,24 @@ let g:airline_section_y=''
 " remove (percentage, line number, column number) section
 let g:airline_section_z=''
 
-let airline#extensions#coc#stl_format_err = '%E{[%e(#%fe)]}'
-let airline#extensions#coc#stl_format_warn = '%W{[%w(#%fw)]}'
+let airline#extensions#coc#stl_format_err='%E{[%e(#%fe)]}'
+let airline#extensions#coc#stl_format_warn='%W{[%w(#%fw)]}'
+
+" hide tabs close button
+let g:airline#extensions#tabline#show_close_button=1
 
 " Configure error/warning section to use coc.nvim
-let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
-let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
+let g:airline_section_error='%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
+let g:airline_section_warning='%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
 
 " Disable vim-airline in preview mode
-let g:airline_exclude_preview = 1
+let g:airline_exclude_preview=1
 
 " Enable powerline fonts
-let g:airline_powerline_fonts = 0
+let g:airline_powerline_fonts=0
 
 " Enable caching of syntax highlighting groups
-let g:airline_highlighting_cache = 1
+let g:airline_highlighting_cache=1
 
 " Don't show git changes to current file in airline
 let g:airline#extensions#hunks#enabled=0
@@ -293,9 +296,9 @@ let g:signify_sign_delete = '-'
 let g:netrw_altfile=1 " Don't add netwr buffers when jumping with <C-6>
 let g:netrw_localrmdir="rm -r" " delete non-empty folders
 
-" " === vim jsx === "
-" Only enable jsx for files with `.jsx` extension
-let g:jsx_ext_required = 1
+" " " === vim jsx === "
+" " Only enable jsx for files with `.jsx` extension
+" let g:jsx_ext_required = 1
 
 " " === vim-hexokinase === "
 " Display colors as virtual text
@@ -305,9 +308,9 @@ let g:Hexokinase_highlighters = ['virtual']
 " Install basic lists, including `files`, `mru`, `grep`, etc.
 call coc#add_extension('coc-lists', 'coc-snippets')
 
-" " === emmet.vim === "
-" Change emmet key
-let g:user_emmet_leader_key='<C-E>'
+" " " === emmet.vim === "
+" " Change emmet key
+" let g:user_emmet_leader_key='<C-E>'
 
 " " === fastfold === "
 let g:markdown_folding=1
@@ -403,9 +406,9 @@ nmap <silent> <leader>cp :CocList commands<CR>
 " Trigger completion
 inoremap <silent><expr> <c-space> coc#refresh()
 
-" " === vim-better-whitespace === "
-" Automatically remove trailing whitespace
-nmap <leader>as :StripWhitespace<CR>
+" " " === vim-better-whitespace === "
+" " Automatically remove trailing whitespace
+" nmap <leader>as :StripWhitespace<CR>
 
 " " === vim hexokinase === "
 " Toggle show colors beside colors hex, rgb, rgba, etc.
@@ -433,11 +436,11 @@ nnoremap <leader>gcb :Git checkout -b<space>
 " Git pull
 nnoremap <leader>gl :Gpull<CR>
 
-" " === vim-mergetool === "
-let g:mergetool_layout = 'bmr'
-let g:mergetool_prefer_revision = 'local'
+" " " === vim-mergetool === "
+" let g:mergetool_layout = 'bmr'
+" let g:mergetool_prefer_revision = 'local'
 
-nmap <leader>mt <plug>(MergetoolToggle)
+" nmap <leader>mt <plug>(MergetoolToggle)
 
 " " === Others === "
 " Open dotfiles
