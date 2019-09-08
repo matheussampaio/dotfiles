@@ -1,6 +1,6 @@
 {
   "eslint.filetypes": ["javascript", "typescript", "typescriptreact", "javascriptreact"],
-  "diagnostic.virtualText": true,
+  "diagnostic.virtualText": false,
   "diagnostic.errorSign": "•",
   "diagnostic.warningSign": "•",
   "diagnostic.infoSign": "•",
@@ -9,8 +9,8 @@
     "<C-q>": "action:quickfix",
     "<C-c>": "do:exit"
   },
-  "list.source.files.args": ["--files", "--hidden"],
-  "list.source.grep.args": ["-g", "!{yarn.lock,package-lock.json}"],
+  "list.source.files.args": ["--hidden", "--files"],
+  "list.source.files.excludePatterns": ["**/.git/**/*", "**/yarn.lock", "**/package-lock.json"],
   "suggest.minTriggerInputLength": 5,
   "suggest.timeout": 500,
   "suggest.autoTrigger": "trigger",
