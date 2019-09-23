@@ -44,6 +44,9 @@ Plug 'tpope/vim-repeat'
 " improvements to netrw.
 Plug 'tpope/vim-vinegar'
 
+" continuously updated sessions files
+Plug 'tpope/vim-obsession'
+
 " lean and mean status/tabline.
 Plug 'vim-airline/vim-airline'
 
@@ -99,10 +102,13 @@ Plug 'mhinz/vim-signify'
 " Plug 'samoshkin/vim-mergetool'
 
 " " Preview markdown with :LivePreview.
-" Plug 'shime/vim-livedown', { 'for': 'markdown' }
+Plug 'shime/vim-livedown', { 'for': 'markdown' }
 
 " " Syntax highlighting, matching rules and mappings for the original Markdown and extensions.
-" Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] }
+Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] }
+
+" Text filtering and alignment
+Plug 'godlygeek/tabular'
 
 " " ReactJS JSX syntax highlighting
 " Plug 'mxw/vim-jsx', { 'for': 'javascript' }
