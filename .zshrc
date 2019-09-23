@@ -103,3 +103,4 @@ gbf() {
 }
 
 export PATH="$PATH:$HOME/Library/Android/sdk/tools/"
+export PATH="$PATH:$HOME/go/bin/"
