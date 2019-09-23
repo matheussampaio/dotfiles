@@ -104,3 +104,7 @@ gbf() {
 
 export PATH="$PATH:$HOME/Library/Android/sdk/tools/"
 export PATH="$PATH:$HOME/go/bin/"
+
+
+alias dotfiles="vim -S ~/.local/share/nvim/sessions/dotfiles.vim -c :cd ~/git/dotfiles"
+alias fts-tools="vim -S ~/.local/share/nvim/sessions/fts-tools.vim -c :cd ~/Sites/fts-tools"
