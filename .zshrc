@@ -121,4 +121,4 @@ nvim_session() {
   fi
 }
 
-alias vim='nvim_session'
+alias vims='nvim_session'
