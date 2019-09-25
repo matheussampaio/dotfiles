@@ -105,6 +105,20 @@ gbf() {
 export PATH="$PATH:$HOME/Library/Android/sdk/tools/"
 export PATH="$PATH:$HOME/go/bin/"
 
+nvim_session() {
+  SESSION_FILE=~/.local/share/nvim/sessions/$1.vim
 
-alias dotfiles="vim -S ~/.local/share/nvim/sessions/dotfiles.vim -c :cd ~/git/dotfiles"
-alias fts-tools="vim -S ~/.local/share/nvim/sessions/fts-tools.vim -c :cd ~/Sites/fts-tools"
+  echo "$SESSION_FILE"
+
+  if [[ $# == 1 ]]; then
+    if [[  -f $SESSION_FILE ]]; then
+      nvim -S $SESSION_FILE
+    else
+      nvim -c ":Obsession $SESSION_FILE"
+    fi
+  else
+    nvim
+  fi
+}
+
+alias vim='nvim_session'

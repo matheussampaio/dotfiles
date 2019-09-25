@@ -98,6 +98,9 @@ Plug 'tpope/vim-rhubarb'
 " Show git changes in the sign column.
 Plug 'mhinz/vim-signify'
 
+" Fancy start screen for Vim
+Plug 'mhinz/vim-startify'
+
 " " Efficient way of using Vim as Git mergetool
 " Plug 'samoshkin/vim-mergetool'
 
