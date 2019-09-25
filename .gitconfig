@@ -15,3 +15,8 @@
 [rebase]
   instructionFormat = %s [%an - %ar]
 
+[github]
+  user = matheussampaio
+
+[checkout]
+  defaultRemote = origin
