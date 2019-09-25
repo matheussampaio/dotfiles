@@ -325,6 +325,11 @@ call coc#add_extension('coc-lists', 'coc-snippets')
 let g:markdown_folding=1
 let g:javaScript_fold=1
 
+" " === startify === "
+let g:startify_session_dir='~/.local/share/nvim/sessions'
+let g:startify_change_to_vcs_root=1
+let g:startify_session_sort=0
+
 " " ============================================================================ "
 " " ===                                UI                                    === "
 " " ============================================================================ "
