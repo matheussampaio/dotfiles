@@ -85,9 +85,6 @@ adb_screenshot() {
 
 alias adbs=adb_screenshot
 
-# add brew to PATH
-[ "$OSTYPE" = 'linux-gnu' ] && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-
 # turn off all beeps
 unsetopt BEEP
 
@@ -104,6 +101,7 @@ gbf() {
 
 export PATH="$PATH:$HOME/Library/Android/sdk/tools/"
 export PATH="$PATH:$HOME/go/bin/"
+export PATH="$PATH:$HOME/.npm/bin"
 
 nvim_session() {
   SESSION_FILE=~/.local/share/nvim/sessions/$1.vim
