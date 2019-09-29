@@ -15,7 +15,7 @@ sudo apt-get install -y build-essential gcc curl git
 echo "---------------------------------------------------------"
 echo "$(tput setaf 2) Install tools.$(tput sgr 0)"
 echo "---------------------------------------------------------"
-sudo apt-get install -y file python3 tmux ripgrep fzf htop tldr hub zsh
+sudo apt-get install -y file python3 tmux ripgrep fzf htop hub zsh tree
 
 echo "---------------------------------------------------------"
 echo "$(tput setaf 2) Install node.$(tput sgr 0)"
