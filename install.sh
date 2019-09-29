@@ -63,8 +63,17 @@ echo "---------------------------------------------------------"
 echo "$(tput setaf 2) Installing tmux plugin manager.$(tput sgr 0)"
 echo "---------------------------------------------------------"
 if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
-  git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
+  git clone --depth 1 https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 fi
+
+echo "---------------------------------------------------------"
+echo "$(tput setaf 2) Installing fzf.$(tput sgr 0)"
+echo "---------------------------------------------------------"
+if [ ! -d "$HOME/.fzf" ]; then
+  git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.fzf
+fi
+
+$HOME/.fzf/install --all --no-bash --no-fish --xdg
 
 echo "---------------------------------------------------------"
 echo "$(tput setaf 2) Installing oh-my-zsh.$(tput sgr 0)"
