@@ -2,59 +2,18 @@
 # https://unix.stackexchange.com/a/12108
 stty -ixon
 
-# Path to oh-my-zsh installation.
-export ZSH=~/.oh-my-zsh
-
-# Name of the theme to load.
-export ZSH_THEME="robbyrussell"
-
-# Language settings
-export LC_CTYPE=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-
-# Set default editor to nvim
-export EDITOR='nvim'
-
-# Enabled true color support for terminals
-export NVIM_TUI_ENABLE_TRUE_COLOR=1
-
-# Display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
+# Disable marking untracked files under VCS as dirty. This makes repository
+# status check for large repositories much, much faster.
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git tmux wd docker-compose)
+# Plugins can be found in ~/.oh-my-zsh/plugins/*
+plugins=(git tmux wd z)
 
 # Load Oh My Zsh
 source $ZSH/oh-my-zsh.sh
 
-# Load hub
-if type hub > /dev/null; then
-  alias git=hub
-fi
-
-# Setting rg as the default source for fzf
-export FZF_DEFAULT_COMMAND='rg --files'
-
-# Apply the command to CTRL-T as well
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-
-# Disable brew analytics
-export HOMEBREW_NO_ANALYTICS=1
-
-# Load FZF if exists
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# Aliases
-alias vim="nvim"
+# turn off all beeps
+unsetopt BEEP
 
 # Bindins
 bindkey '^P' up-line-or-search
@@ -62,6 +21,10 @@ bindkey '^N' down-line-or-search
 
 # disable zsh's autocd
 unsetopt autocd
+
+alias adbs=adb_screenshot
+alias vims='nvim_session'
+alias vim="nvim"
 
 # Take and pull a screenshot from connected Android device
 adb_screenshot() {
@@ -83,12 +46,7 @@ adb_screenshot() {
   osascript -e "set the clipboard to (read (POSIX file \"$SCREENSHOT_FILEPATH\") as JPEG picture)"
 }
 
-alias adbs=adb_screenshot
-
-# turn off all beeps
-unsetopt BEEP
-
-# force current branch to point to origin/$current_branch
+# Force current branch to point to origin/$current_branch
 gbf() {
   TEMP_BRANCH_NAME=gbf-$(date +%F)
   CURRENT_BRANCH="$(git_current_branch)"
@@ -99,10 +57,7 @@ gbf() {
   git branch --quiet -D $TEMP_BRANCH_NAME
 }
 
-export PATH="$PATH:$HOME/Library/Android/sdk/tools/"
-export PATH="$PATH:$HOME/go/bin/"
-export PATH="$PATH:$HOME/.npm/bin"
-
+# Open vim and create/load a session
 nvim_session() {
   SESSION_FILE=~/.local/share/nvim/sessions/$1.vim
 
@@ -119,4 +74,9 @@ nvim_session() {
   fi
 }
 
-alias vims='nvim_session'
+# Load hub
+if type hub > /dev/null; then
+  alias git=hub
+fi
+
+[ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh ] && source "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh
