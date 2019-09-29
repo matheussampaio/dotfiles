@@ -60,10 +60,10 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'milkypostman/vim-togglelist'
 
 " " Trailing whitespace highlighting & automatic fixing.
-" Plug 'ntpeters/vim-better-whitespace'
+Plug 'ntpeters/vim-better-whitespace'
 
 " Intellisense engine with LSP support.
-Plug 'neoclide/coc.nvim', { 'tag': '*', 'do': './install.sh' }
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 
 " Monokai Tasty Colorschema.
 Plug 'patstockwell/vim-monokai-tasty'
@@ -77,11 +77,14 @@ Plug 'rstacruz/vim-closer'
 " Many syntax highlights
 Plug 'sheerun/vim-polyglot'
 
+" TypeScript syntax highlights
+Plug 'leafgarland/typescript-vim'
+
 " Display colors inline
 Plug 'RRethy/vim-hexokinase', { 'on': 'HexokinaseToggle' }
 
 " " A simple alignment operator
-" Plug 'tommcdo/vim-lion'
+Plug 'tommcdo/vim-lion'
 
 " Speed up Vim by updating folds only when called-for.
 Plug 'Konfekt/FastFold'
@@ -111,7 +114,7 @@ Plug 'shime/vim-livedown', { 'for': 'markdown' }
 Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] }
 
 " Text filtering and alignment
-Plug 'godlygeek/tabular'
+" Plug 'godlygeek/tabular'
 
 " " ReactJS JSX syntax highlighting
 " Plug 'mxw/vim-jsx', { 'for': 'javascript' }
@@ -123,16 +126,13 @@ Plug 'godlygeek/tabular'
 Plug 'FooSoft/vim-argwrap'
 
 " " Disctraction-free writing in vim
-" Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
-
-" " Jekyll utils
-" Plug 'parkr/vim-jekyll'
+Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
 
 " " Support for expanding abbreviations
 " Plug 'mattn/emmet-vim', { 'for': ['javascript', 'jsx', 'html'] }
 
 " Enhances vim's search-commmands
-Plug 'wincent/loupe'
+" Plug 'wincent/loupe'
 
 call plug#end()
 
@@ -244,7 +244,7 @@ set lazyredraw
 set regexpengine=1
 
 " Syntax highlighting items specify folds.
-set foldmethod=syntax
+set foldmethod=indent
 
 " Set default to unfold
 set foldlevel=1000
@@ -329,6 +329,9 @@ let g:javaScript_fold=1
 let g:startify_session_dir='~/.local/share/nvim/sessions'
 let g:startify_change_to_vcs_root=1
 let g:startify_session_sort=0
+
+" " === vim-polyglot === "
+let g:polyglot_disabled = ['typescript']
 
 " " ============================================================================ "
 " " ===                                UI                                    === "
