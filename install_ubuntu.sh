@@ -25,7 +25,7 @@ sudo apt-get install -y nodejs
 
 echo "---------------------------------------------------------"
 echo "$(tput setaf 2) Installing NeoVim.$(tput sgr 0)"
-echo "---------------------------------------------------------"
-sudo apt-get install -y python-dev python-pip python3-dev python3-pip software-properties-common
-sudo add-apt-repository -y ppa:neovim-ppa/unstable
-sudo apt-get install -y neovim
+echo " ---------------------------------------------------------"
+# sudo apt-get install -y python-neovim python3-neovim neovim
+wget https://github.com/neovim/neovim/releases/download/v0.4.2/nvim.appimage
+sudo mv nvim.appimage /usr/bin/nvim
