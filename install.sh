@@ -14,6 +14,7 @@ echo "---------------------------------------------------------"
 
 ln -fs $PWD/.gitconfig $HOME/.gitconfig
 ln -fs $PWD/.zshrc $HOME/.zshrc
+ln -fs $PWD/.zshenv $HOME/.zshenv
 ln -fs $PWD/.tmux.conf $HOME/.tmux.conf
 
 mkdir -p $HOME/.config/nvim
