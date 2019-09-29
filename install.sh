@@ -20,7 +20,7 @@ mkdir -p $HOME/.config/nvim
 
 ln -fs $PWD/nvim/coc-settings.json $HOME/.config/nvim/coc-settings.json
 ln -fs $PWD/nvim/init.vim $HOME/.config/nvim/init.vim
-ln -fs $PWD/nvim/plugins.vim $HOME/.config/nvim/plugins.vim
+ln -fs $PWD/nvim/after $HOME/.config/nvim/after
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
   ./install_osx.sh
