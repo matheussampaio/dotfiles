@@ -63,7 +63,7 @@ Plug 'milkypostman/vim-togglelist'
 Plug 'ntpeters/vim-better-whitespace'
 
 " Intellisense engine with LSP support.
-Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+Plug 'neoclide/coc.nvim', { 'tag': '*', 'do': './install.sh' }
 
 " Monokai Tasty Colorschema.
 Plug 'patstockwell/vim-monokai-tasty'
@@ -315,7 +315,7 @@ let g:Hexokinase_highlighters = ['virtual']
 
 " " === coc.nvim === "
 " Install basic lists, including `files`, `mru`, `grep`, etc.
-call coc#add_extension('coc-lists', 'coc-snippets')
+call coc#add_extension('coc-lists', 'coc-snippets', 'coc-yank')
 
 " " " === emmet.vim === "
 " " Change emmet key
@@ -422,6 +422,8 @@ nmap <silent> <leader>f :CocList -I grep -ignorecase<CR>
 nmap <silent> <leader>cp :CocList commands<CR>
 " Trigger completion
 inoremap <silent><expr> <c-space> coc#refresh()
+" Show previous yanks
+nnoremap <silent> <leader>y :<C-u>CocList -A --normal yank<CR>
 
 " " " === vim-better-whitespace === "
 " " Automatically remove trailing whitespace
