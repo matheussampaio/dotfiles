@@ -27,7 +27,7 @@ brew update
 echo "---------------------------------------------------------"
 echo "$(tput setaf 2) Installing system packages.$(tput sgr 0)"
 echo "---------------------------------------------------------"
-brew reinstall gcc git python3 node tmux zsh ripgrep fzf htop tldr hub
+brew reinstall gcc git python3 node tmux zsh ripgrep fzf htop hub tree
 
 echo "---------------------------------------------------------"
 echo "$(tput setaf 2) Cleaning Homebrew.$(tput sgr 0)"

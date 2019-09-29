@@ -39,6 +39,11 @@ echo "---------------------------------------------------------"
 npm set prefix ~/.npm
 
 echo "---------------------------------------------------------"
+echo "$(tput setaf 2) Installing node package$(tput sgr 0)"
+echo "---------------------------------------------------------"
+npm install -g tldr
+
+echo "---------------------------------------------------------"
 echo "$(tput setaf 2) Installing node neovim package$(tput sgr 0)"
 echo "---------------------------------------------------------"
 npm install -g neovim
