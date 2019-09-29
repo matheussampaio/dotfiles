@@ -29,9 +29,6 @@ call plug#begin('~/.local/share/nvim/plugged')
 " comment stuff out.
 Plug 'tpope/vim-commentary'
 
-" sets the value of 'commentstring' depending on the region of the file.
-" Plug 'suy/vim-context-commentstring', { 'for': 'javascript.jsx' }
-
 " provides mappings to easily delete, change and add surroundings (parantheses, brackets, quotes, etc).
 Plug 'tpope/vim-surround'
 
@@ -63,7 +60,7 @@ Plug 'milkypostman/vim-togglelist'
 Plug 'ntpeters/vim-better-whitespace'
 
 " Intellisense engine with LSP support.
-Plug 'neoclide/coc.nvim', { 'tag': '*', 'do': './install.sh' }
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 
 " Monokai Tasty Colorschema.
 Plug 'patstockwell/vim-monokai-tasty'
@@ -104,23 +101,14 @@ Plug 'mhinz/vim-signify'
 " Fancy start screen for Vim
 Plug 'mhinz/vim-startify'
 
-" " Efficient way of using Vim as Git mergetool
-" Plug 'samoshkin/vim-mergetool'
-
 " " Preview markdown with :LivePreview.
 Plug 'shime/vim-livedown', { 'for': 'markdown' }
 
 " " Syntax highlighting, matching rules and mappings for the original Markdown and extensions.
 Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] }
 
-" Text filtering and alignment
-" Plug 'godlygeek/tabular'
-
-" " ReactJS JSX syntax highlighting
-" Plug 'mxw/vim-jsx', { 'for': 'javascript' }
-
-" " Show information about dependencies versions inside `package.json`.
-" Plug 'meain/vim-package-info', { 'for': 'javascript', 'do': 'npm install' }
+" Show information about dependencies versions inside `package.json`.
+Plug 'meain/vim-package-info', { 'for': 'javascript', 'do': 'npm install' }
 
 " Wrap and unwrap function arguments, lists, and dictionaires
 Plug 'FooSoft/vim-argwrap'
@@ -128,8 +116,8 @@ Plug 'FooSoft/vim-argwrap'
 " " Disctraction-free writing in vim
 Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
 
-" " Support for expanding abbreviations
-" Plug 'mattn/emmet-vim', { 'for': ['javascript', 'jsx', 'html'] }
+" Support for expanding abbreviations
+Plug 'mattn/emmet-vim', { 'for': ['html'] }
 
 " Enhances vim's search-commmands
 " Plug 'wincent/loupe'
@@ -260,6 +248,9 @@ try
 " Do not show current git branch
 let g:airline#extensions#branch#enabled=0
 
+" Enable bufferline integration
+let g:airline#extensions#fugitiveline#enabled=1
+
 " Do not draw separators for empty sections (only for the active window) >
 let g:airline_skip_empty_sections=1
 
@@ -305,10 +296,6 @@ let g:signify_sign_delete = '-'
 let g:netrw_altfile=1 " Don't add netwr buffers when jumping with <C-6>
 let g:netrw_localrmdir="rm -r" " delete non-empty folders
 
-" " " === vim jsx === "
-" " Only enable jsx for files with `.jsx` extension
-" let g:jsx_ext_required = 1
-
 " " === vim-hexokinase === "
 " Display colors as virtual text
 let g:Hexokinase_highlighters = ['virtual']
@@ -318,8 +305,8 @@ let g:Hexokinase_highlighters = ['virtual']
 call coc#add_extension('coc-lists', 'coc-snippets', 'coc-yank')
 
 " " " === emmet.vim === "
-" " Change emmet key
-" let g:user_emmet_leader_key='<C-E>'
+" Change emmet key
+let g:user_emmet_leader_key='<C-E>'
 
 " " === fastfold === "
 let g:markdown_folding=1
@@ -356,13 +343,28 @@ function! MyHighlights() abort
   " Highlight git change signs
   hi! SignifySignAdd guifg=#99c794
   hi! SignifySignDelete guifg=#ec5f67
+
+  " Add a little bit more contrast to LineNr
+  hi! LineNr guifg=#6a6a6a
+
+  " Errors bold read with transparent background
+  hi! Error cterm=bold ctermfg=231 ctermbg=NONE gui=bold guifg=#ff005f guibg=NONE
+
+  " Hide End Of Buffer tilde
+  hi! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg
+
+  " Change highlight
+  hi! Search guifg=peru guibg=NONE
   hi! SignifySignChange guifg=#c594c5
 endfunction
 
 augroup MyHighlights
   autocmd!
   autocmd ColorScheme * call MyHighlights()
+  autocmd FileType json syntax match Comment +\/\/.\+$+
 augroup END
+
+autocmd BufLeave * set laststatus=2
 
 " Hide cursorline after losing window focus
 augroup CursorLine
@@ -384,15 +386,6 @@ if isdirectory( expand("$HOME/.local/share/nvim/plugged/vim-monokai-tasty") )
   endif
 
   colorscheme vim-monokai-tasty
-
-  " Add a little bit more contrast to LineNr
-  hi! LineNr guifg=#6a6a6a
-
-  " Errors bold read with transparent background
-  hi! Error cterm=bold ctermfg=231 ctermbg=NONE gui=bold guifg=#ff005f guibg=NONE
-
-  " Hide End Of Buffer tilde
-  hi! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg
 endif
 
 " " ============================================================================ "
@@ -426,8 +419,8 @@ inoremap <silent><expr> <c-space> coc#refresh()
 nnoremap <silent> <leader>y :<C-u>CocList -A --normal yank<CR>
 
 " " " === vim-better-whitespace === "
-" " Automatically remove trailing whitespace
-" nmap <leader>as :StripWhitespace<CR>
+" Automatically remove trailing whitespace
+nmap <leader>as :StripWhitespace<CR>
 
 " " === vim hexokinase === "
 " Toggle show colors beside colors hex, rgb, rgba, etc.
@@ -454,12 +447,6 @@ nnoremap <leader>gp :Gpush<CR>
 nnoremap <leader>gcb :Git checkout -b<space>
 " Git pull
 nnoremap <leader>gl :Gpull<CR>
-
-" " " === vim-mergetool === "
-" let g:mergetool_layout = 'bmr'
-" let g:mergetool_prefer_revision = 'local'
-
-" nmap <leader>mt <plug>(MergetoolToggle)
 
 " " === Others === "
 " Open dotfiles
