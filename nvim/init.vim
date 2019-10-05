@@ -140,8 +140,8 @@ set relativenumber
 " Don't show last command.
 set noshowcmd
 
-" Hides buffers instead of closing them.
-set hidden
+" Auto write files
+set autowriteall
 
 " Insert spaces when TAB is pressed.
 set expandtab
@@ -503,3 +503,29 @@ nnoremap <space> <NOP>
 " Git diff keybindings
 nnoremap <silent> <leader>gdh :diffget //2<CR>
 nnoremap <silent> <leader>gdl :diffget //3<CR>
+
+" " === dotenv === "
+augroup secret_files
+  " Warn before opening secret files
+  autocmd!
+  " Block Opening Secret Files
+  autocmd BufReadCmd .env silent call SecretFileToggle()
+augroup end
+
+function! SecretFileToggle()
+  let buffer_name = expand("%")
+
+  if '.env' == buffer_name
+    let response = input('Are you sure you want to open "' . buffer_name . '" [y/N]? ')
+
+    if response ==? "" || response =~ "n"
+      " Go back to the previous buffer
+      execute "e #"
+    else
+      " Edit the file
+      execute "e" buffer_name
+      " Run the remaining autocmmands for the file
+      execute "doautocmd BufReadPost" buffer_name
+    endif
+  endif
+endfunction
