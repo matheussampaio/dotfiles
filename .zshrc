@@ -59,7 +59,8 @@ gbf() {
 
 # Open vim and create/load a session
 nvim_session() {
-  SESSION_FILE=~/.local/share/nvim/sessions/$1.vim
+  SESSIONS_FOLDER=~/.local/share/nvim/sessions
+  SESSION_FILE=${SESSIONS_FOLDER}/$1.vim
 
   echo "$SESSION_FILE"
 
@@ -70,7 +71,9 @@ nvim_session() {
       nvim -c ":Obsession $SESSION_FILE"
     fi
   else
-    nvim
+    SESSION_FILE=${SESSIONS_FOLDER}/$(ls ${SESSIONS_FOLDER} | fzf)
+
+    nvim -S $SESSION_FILE
   fi
 }
 

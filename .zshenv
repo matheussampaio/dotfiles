@@ -10,7 +10,13 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
 # Set default editor to nvim
-export EDITOR='nvim'
+if command -v nvim > /dev/null 2>&1; then
+  export EDITOR='nvim'
+fi
+
+if command -v most > /dev/null 2>&1; then
+  export PAGER="most"
+fi
 
 # Enabled true color support for terminals
 export NVIM_TUI_ENABLE_TRUE_COLOR=1
@@ -22,7 +28,9 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export HOMEBREW_NO_ANALYTICS=1
 
 # Setting rg as the default source for fzf
-export FZF_DEFAULT_COMMAND='rg --files'
+if command -v rg > /dev/null 2>&1; then
+  export FZF_DEFAULT_COMMAND='rg --files'
+fi
 
 # Apply the command to CTRL-T as well
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -35,3 +43,7 @@ export PATH="$PATH:$HOME/go/bin/"
 
 # Add NPM libraries to PATH
 export PATH="$PATH:$HOME/.npm/bin"
+
+# Add PHP libraries to PATH
+export PATH="$PATH:/usr/local/opt/php@7.3/bin"
+export PATH="$PATH:/usr/local/opt/php@7.3/sbin"
