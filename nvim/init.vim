@@ -114,7 +114,7 @@ Plug 'meain/vim-package-info', { 'for': 'javascript', 'do': 'npm install' }
 Plug 'FooSoft/vim-argwrap'
 
 " " Disctraction-free writing in vim
-Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
+Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 
 " Support for expanding abbreviations
 Plug 'mattn/emmet-vim', { 'for': ['html'] }
