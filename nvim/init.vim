@@ -122,6 +122,9 @@ Plug 'mattn/emmet-vim', { 'for': ['html'] }
 " Enhances vim's search-commmands
 " Plug 'wincent/loupe'
 
+" Multi-language DBGP debugger client
+Plug 'vim-vdebug/vdebug'
+
 call plug#end()
 
 " " ============================================================================ "
