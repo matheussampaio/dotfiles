@@ -139,8 +139,8 @@ set relativenumber
 " Don't show last command.
 set noshowcmd
 
-" Auto write files
-set autowriteall
+" Leave buffer without saving
+set hidden
 
 " Insert spaces when TAB is pressed.
 set expandtab
