@@ -101,11 +101,13 @@ Plug 'mhinz/vim-signify'
 " Fancy start screen for Vim
 Plug 'mhinz/vim-startify'
 
-" " Preview markdown with :LivePreview.
-Plug 'shime/vim-livedown', { 'for': 'markdown' }
+" Preview markdown with :LivePreview.
+Plug 'shime/vim-livedown', { 'on': 'LivedownPreview' }
 
-" " Syntax highlighting, matching rules and mappings for the original Markdown and extensions.
+" Syntax highlighting, matching rules and mappings for the original Markdown and extensions.
 Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] }
+" vim-markdown requries tabular to format tables
+Plug 'godlygeek/tabular'
 
 " Show information about dependencies versions inside `package.json`.
 Plug 'meain/vim-package-info', { 'for': 'javascript', 'do': 'npm install' }
@@ -118,9 +120,6 @@ Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 
 " Support for expanding abbreviations
 Plug 'mattn/emmet-vim', { 'for': ['html'] }
-
-" Enhances vim's search-commmands
-" Plug 'wincent/loupe'
 
 " Multi-language DBGP debugger client
 Plug 'vim-vdebug/vdebug'
