@@ -159,7 +159,7 @@ set wrap
 set noruler
 
 " Only one line for command line.
-set cmdheight=1
+set cmdheight=2
 
 " Don't give completion messages like 'match 1 of 2' or 'The only match'.
 set shortmess+=c
@@ -239,6 +239,16 @@ set foldmethod=indent
 " Set default to unfold
 set foldlevel=1000
 
+" Some LPS (coc.nvim) have issues with backup files
+set nobackup
+set nowritebackup
+
+" Write swap files to disk quicker
+set updatetime=300
+
+" Always show signcolumns
+set signcolumn=yes
+
 " " ============================================================================ "
 " " ===                           PLUGIN SETUP                               === "
 " " ============================================================================ "
@@ -268,9 +278,6 @@ let airline#extensions#coc#stl_format_warn='%W{[%w(#%fw)]}'
 " hide tabs close button
 let g:airline#extensions#tabline#show_close_button=1
 
-" Configure error/warning section to use coc.nvim
-let g:airline_section_error='%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
-let g:airline_section_warning='%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
 
 " Disable vim-airline in preview mode
 let g:airline_exclude_preview=1
@@ -285,7 +292,6 @@ let g:airline_highlighting_cache=1
 let g:airline#extensions#hunks#enabled=0
 
 catch
-  echo 'Airline not installed. It should work after running :PlugInstall'
 endtry
 
 " " === vimwiki ==== "
@@ -302,10 +308,6 @@ let g:netrw_home='~/.local/share/nvim'
 " " === vim-hexokinase === "
 " Display colors as virtual text
 let g:Hexokinase_highlighters = ['virtual']
-
-" " === coc.nvim === "
-" Install basic lists, including `files`, `mru`, `grep`, etc.
-call coc#add_extension('coc-lists', 'coc-snippets', 'coc-yank')
 
 " " " === emmet.vim === "
 " Change emmet key
@@ -393,32 +395,6 @@ endif
 " " ===                            Key Mappings                              === "
 " " ============================================================================ "
 
-" " === coc.nvim === "
-" Got to current word definition
-nmap <silent> <leader>cd <Plug>(coc-definition)
-" Search for current work references
-nmap <silent> <leader>ce <Plug>(coc-references)
-" Open current word implementation
-nmap <silent> <leader>ci <Plug>(coc-implementation)
-" Rename current word
-nmap <silent> <leader>cr <Plug>(coc-rename)
-" Fix current line
-nmap <silent> <leader>cf <Plug>(coc-fix-current)
-" Browse list of files in current directory
-nmap <silent> <C-p> :CocList files<CR>
-" Browse most recent files
-nmap <silent> <leader>cb :CocList mru<CR>
-" Search for a symbol in the current directory
-nmap <silent> <leader>cs :CocList symbols<CR>
-" Search for a term in the current directory
-nmap <silent> <leader>f :CocList -I grep -ignorecase<CR>
-" Browse CoC commands
-nmap <silent> <leader>cp :CocList commands<CR>
-" Trigger completion
-inoremap <silent><expr> <c-space> coc#refresh()
-" Show previous yanks
-nnoremap <silent> <leader>y :<C-u>CocList -A --normal yank<CR>
-
 " " " === vim-better-whitespace === "
 " Automatically remove trailing whitespace
 nmap <leader>as :StripWhitespace<CR>
@@ -460,8 +436,6 @@ nnoremap <leader>ot :tabnew ~/.tmux.conf<CR>
 nnoremap <leader>oz :tabnew ~/.zshrc<CR>
 " Open vim notes
 nnoremap <leader>on :tabnew ~/Dropbox/wiki/Notes.wiki<CR>
-" Open vim notes
-nnoremap <leader>oc :tabnew ~/git/dotfiles/nvim/coc-settings.json<CR>
 
 " Ctrl+S to save the buffer
 nnoremap <C-s> :w<CR>
@@ -527,3 +501,130 @@ function! SecretFileToggle()
     endif
   endif
 endfunction
+
+" " ============================================================================ "
+" " ===                               coc.nvim                               === "
+" " ============================================================================ "
+" Install basic lists, including `files`, `mru`, `grep`, etc.
+try
+  call coc#add_extension('coc-lists', 'coc-snippets')
+
+  " Got to current word definition
+  nmap <silent> <leader>gd <Plug>(coc-definition)
+
+  " Open current type definition
+  nmap <silent> <leader>gy <Plug>(coc-type-definition)
+
+  " Search for current work references
+  nmap <silent> <leader>gr <Plug>(coc-references)
+
+  " Open current word implementation
+  nmap <silent> <leader>gi <Plug>(coc-implementation)
+
+  " Rename current word
+  nmap <leader>rn <Plug>(coc-rename)
+
+  " Fix current line
+  nmap <leader>qf <Plug>(coc-fix-current)
+
+  " Remap for format selected region
+  xmap <leader>f  <Plug>(coc-format-selected)
+  nmap <leader>f  <Plug>(coc-format-selected)
+
+  augroup mygroup
+    autocmd!
+    " Setup formatexpr specified filetype(s).
+    autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+    " Update signature help on jump placeholder
+    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+  augroup end
+
+  " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+  xmap <leader>a  <Plug>(coc-codeaction-selected)
+  nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+  " Remap for do codeAction of current line
+  nmap <leader>ac  <Plug>(coc-codeaction)
+
+  " Use K to show documentation in preview window
+  nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+  function! s:show_documentation()
+    if (index(['vim','help'], &filetype) >= 0)
+      execute 'h '.expand('<cword>')
+    else
+      call CocAction('doHover')
+    endif
+  endfunction
+
+  " Highlight symbol under cursor on CursorHold
+  autocmd CursorHold * silent call CocActionAsync('highlight')
+
+  " Browse list of files in current directory
+  nmap <silent> <C-p> :CocList files<CR>
+
+  " Browse most recent files
+  nmap <silent> <leader>cb :CocList mru<CR>
+
+  " Search for a symbol in the current directory
+  nmap <silent> <leader>cs :CocList symbols<CR>
+
+  " Search for a term in the current directory
+  nmap <silent> <leader>s :CocList -I grep -ignorecase<CR>
+
+  " Browse coc commands
+  nmap <silent> <leader>cp :CocList commands<CR>
+
+  " Resume latest coc list
+  nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+  " Trigger completion
+  inoremap <silent><expr> <c-space> coc#refresh()
+
+  " Open vim notes
+  nnoremap <leader>oc :tabnew ~/git/dotfiles/nvim/coc-settings.json<CR>
+
+  " Use `[g` and `]g` to navigate diagnostics
+  nmap <silent> [g <Plug>(coc-diagnostic-prev)
+  nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+  " Configure error/warning section to use coc.nvim
+  let g:airline_section_error='%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
+  let g:airline_section_warning='%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
+
+  " Create mappings for function text object, requires document symbols feature of languageserver.
+  xmap if <Plug>(coc-funcobj-i)
+  xmap af <Plug>(coc-funcobj-a)
+  omap if <Plug>(coc-funcobj-i)
+  omap af <Plug>(coc-funcobj-a)
+
+  " Use `:Format` to format current buffer
+  command! -nargs=0 Format :call CocAction('format')
+
+  " Use `:Fold` to fold current buffer
+  command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+  " use `:OR` for organize import of current buffer
+  command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+  " Add status line support, for integration with other plugin, checkout `:h coc-status`
+  set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+  " Use tab for trigger completion with characters ahead and navigate.
+  " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+  inoremap <silent><expr> <TAB>
+        \ pumvisible() ? "\<C-n>" :
+        \ <SID>check_back_space() ? "\<TAB>" :
+        \ coc#refresh()
+  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+  function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
+  endfunction
+
+  " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+  " Coc only does snippet and additional edit on confirm.
+  " inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+catch
+endtry
