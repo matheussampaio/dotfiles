@@ -159,7 +159,7 @@ set wrap
 set noruler
 
 " Only one line for command line.
-set cmdheight=2
+set cmdheight=1
 
 " Don't give completion messages like 'match 1 of 2' or 'The only match'.
 set shortmess+=c
@@ -473,8 +473,8 @@ vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 nnoremap <space> <NOP>
 
 " Git diff keybindings
-nnoremap <silent> <leader>gdh :diffget //2<CR>
-nnoremap <silent> <leader>gdl :diffget //3<CR>
+" nnoremap <silent> <leader>gdh :diffget //2<CR>
+" nnoremap <silent> <leader>gdl :diffget //3<CR>
 
 " " === dotenv === "
 augroup secret_files
@@ -528,16 +528,16 @@ try
   nmap <leader>qf <Plug>(coc-fix-current)
 
   " Remap for format selected region
-  xmap <leader>f  <Plug>(coc-format-selected)
-  nmap <leader>f  <Plug>(coc-format-selected)
+  " xmap <leader>f  <Plug>(coc-format-selected)
+  " nmap <leader>f  <Plug>(coc-format-selected)
 
-  augroup mygroup
-    autocmd!
-    " Setup formatexpr specified filetype(s).
-    autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-    " Update signature help on jump placeholder
-    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-  augroup end
+  " augroup mygroup
+  "   autocmd!
+  "   " Setup formatexpr specified filetype(s).
+  "   autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  "   " Update signature help on jump placeholder
+  "   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+  " augroup end
 
   " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
   xmap <leader>a  <Plug>(coc-codeaction-selected)
@@ -582,7 +582,7 @@ try
   inoremap <silent><expr> <c-space> coc#refresh()
 
   " Open vim notes
-  nnoremap <leader>oc :tabnew ~/git/dotfiles/nvim/coc-settings.json<CR>
+  " nnoremap <leader>oc :tabnew ~/git/dotfiles/nvim/coc-settings.json<CR>
 
   " Use `[g` and `]g` to navigate diagnostics
   nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -593,35 +593,35 @@ try
   let g:airline_section_warning='%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
 
   " Create mappings for function text object, requires document symbols feature of languageserver.
-  xmap if <Plug>(coc-funcobj-i)
-  xmap af <Plug>(coc-funcobj-a)
-  omap if <Plug>(coc-funcobj-i)
-  omap af <Plug>(coc-funcobj-a)
+  " xmap if <Plug>(coc-funcobj-i)
+  " xmap af <Plug>(coc-funcobj-a)
+  " omap if <Plug>(coc-funcobj-i)
+  " omap af <Plug>(coc-funcobj-a)
 
   " Use `:Format` to format current buffer
-  command! -nargs=0 Format :call CocAction('format')
+  " command! -nargs=0 Format :call CocAction('format')
 
-  " Use `:Fold` to fold current buffer
-  command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+  " " Use `:Fold` to fold current buffer
+  " command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
-  " use `:OR` for organize import of current buffer
-  command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+  " " use `:OR` for organize import of current buffer
+  " command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
   " Add status line support, for integration with other plugin, checkout `:h coc-status`
   set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
   " Use tab for trigger completion with characters ahead and navigate.
   " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-  inoremap <silent><expr> <TAB>
-        \ pumvisible() ? "\<C-n>" :
-        \ <SID>check_back_space() ? "\<TAB>" :
-        \ coc#refresh()
-  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+  " inoremap <silent><expr> <TAB>
+  "       \ pumvisible() ? "\<C-n>" :
+  "       \ <SID>check_back_space() ? "\<TAB>" :
+  "       \ coc#refresh()
+  " inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-  function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~# '\s'
-  endfunction
+  " function! s:check_back_space() abort
+  "   let col = col('.') - 1
+  "   return !col || getline('.')[col - 1]  =~# '\s'
+  " endfunction
 
   " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
   " Coc only does snippet and additional edit on confirm.
