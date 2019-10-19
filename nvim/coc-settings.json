@@ -10,7 +10,5 @@
   },
   "list.source.files.args": ["--hidden", "--files"],
   "list.source.files.excludePatterns": ["**/.git/**/*", "**/yarn.lock", "**/package-lock.json"],
-  "suggest.minTriggerInputLength": 3,
-  "diagnostic.refreshAfterSave": true,
-  "diagnostic.refreshOnInsertMode": false
+  "suggest.minTriggerInputLength": 3
 }
