@@ -14,9 +14,9 @@ if command -v nvim > /dev/null 2>&1; then
   export EDITOR='nvim'
 fi
 
-if command -v most > /dev/null 2>&1; then
-  export PAGER="most"
-fi
+# if command -v most > /dev/null 2>&1; then
+#   export PAGER="most"
+# fi
 
 # Enabled true color support for terminals
 export NVIM_TUI_ENABLE_TRUE_COLOR=1
