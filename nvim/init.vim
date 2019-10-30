@@ -75,7 +75,7 @@ Plug 'rstacruz/vim-closer'
 Plug 'sheerun/vim-polyglot'
 
 " TypeScript syntax highlights
-Plug 'leafgarland/typescript-vim'
+Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 
 " Display colors inline
 Plug 'RRethy/vim-hexokinase', { 'on': 'HexokinaseToggle' }
@@ -98,14 +98,12 @@ Plug 'tpope/vim-rhubarb'
 " Show git changes in the sign column.
 Plug 'mhinz/vim-signify'
 
-" Fancy start screen for Vim
-Plug 'mhinz/vim-startify'
-
 " Preview markdown with :LivePreview.
 Plug 'shime/vim-livedown', { 'on': 'LivedownPreview' }
 
 " Syntax highlighting, matching rules and mappings for the original Markdown and extensions.
 Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] }
+
 " vim-markdown requries tabular to format tables
 Plug 'godlygeek/tabular'
 
@@ -113,7 +111,7 @@ Plug 'godlygeek/tabular'
 Plug 'meain/vim-package-info', { 'for': 'javascript', 'do': 'npm install' }
 
 " Wrap and unwrap function arguments, lists, and dictionaires
-Plug 'FooSoft/vim-argwrap'
+Plug 'FooSoft/vim-argwrap', { 'for': 'javascript,typescript' }
 
 " " Disctraction-free writing in vim
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
@@ -122,7 +120,7 @@ Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 Plug 'mattn/emmet-vim', { 'for': ['html'] }
 
 " Multi-language DBGP debugger client
-Plug 'vim-vdebug/vdebug'
+Plug 'vim-vdebug/vdebug', { 'on': 'Vdebug' }
 
 call plug#end()
 
@@ -313,11 +311,6 @@ let g:user_emmet_leader_key='<C-E>'
 " " === fastfold === "
 let g:markdown_folding=1
 let g:javaScript_fold=1
-
-" " === startify === "
-let g:startify_session_dir='~/.local/share/nvim/sessions'
-let g:startify_change_to_vcs_root=1
-let g:startify_session_sort=0
 
 " " === vim-polyglot === "
 let g:polyglot_disabled = ['typescript']
