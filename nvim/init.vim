@@ -122,6 +122,8 @@ Plug 'mattn/emmet-vim', { 'for': ['html'] }
 " Multi-language DBGP debugger client
 Plug 'vim-vdebug/vdebug', { 'on': 'Vdebug' }
 
+Plug 'editorconfig/editorconfig-vim'
+
 call plug#end()
 
 " " ============================================================================ "
@@ -295,6 +297,7 @@ let g:signify_sign_delete = '-'
 " " === Netrw === "
 let g:netrw_altfile=1 " Don't add netwr buffers when jumping with <C-6>
 let g:netrw_localrmdir="rm -r" " delete non-empty folders
+let g:netrw_home='~/.local/share/nvim'
 
 " " === vim-hexokinase === "
 " Display colors as virtual text
@@ -314,6 +317,9 @@ let g:javaScript_fold=1
 
 " " === vim-polyglot === "
 let g:polyglot_disabled = ['typescript']
+
+" " === editorconfig.vim === "
+let g:EditorConfig_exclude_patterns = ['fugitive://.\*', 'scp://.\*']
 
 " " ============================================================================ "
 " " ===                                UI                                    === "
