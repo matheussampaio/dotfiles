@@ -78,7 +78,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 
 " Display colors inline
-Plug 'RRethy/vim-hexokinase', { 'on': 'HexokinaseToggle' }
+Plug 'RRethy/vim-hexokinase', { 'on': 'HexokinaseToggle', 'do': 'make hexokinase' }
 
 " " A simple alignment operator
 Plug 'tommcdo/vim-lion'
@@ -108,7 +108,7 @@ Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] }
 Plug 'godlygeek/tabular'
 
 " Show information about dependencies versions inside `package.json`.
-Plug 'meain/vim-package-info', { 'for': 'javascript', 'do': 'npm install' }
+Plug 'meain/vim-package-info', { 'do': 'npm install' }
 
 " Wrap and unwrap function arguments, lists, and dictionaires
 Plug 'FooSoft/vim-argwrap', { 'for': 'javascript,typescript' }
@@ -117,7 +117,7 @@ Plug 'FooSoft/vim-argwrap', { 'for': 'javascript,typescript' }
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 
 " Support for expanding abbreviations
-Plug 'mattn/emmet-vim', { 'for': ['html'] }
+Plug 'mattn/emmet-vim', { 'for': 'html' }
 
 " Multi-language DBGP debugger client
 Plug 'vim-vdebug/vdebug', { 'on': 'Vdebug' }
@@ -476,31 +476,31 @@ nnoremap <space> <NOP>
 " nnoremap <silent> <leader>gdh :diffget //2<CR>
 " nnoremap <silent> <leader>gdl :diffget //3<CR>
 
-" " === dotenv === "
-augroup secret_files
-  " Warn before opening secret files
-  autocmd!
-  " Block Opening Secret Files
-  autocmd BufReadCmd .env silent call SecretFileToggle()
-augroup end
+" " " === dotenv === "
+" augroup secret_files
+"   " Warn before opening secret files
+"   autocmd!
+"   " Block Opening Secret Files
+"   autocmd BufReadCmd .env silent call SecretFileToggle()
+" augroup end
 
-function! SecretFileToggle()
-  let buffer_name = expand("%")
+" function! SecretFileToggle()
+"   let buffer_name = expand("%")
 
-  if '.env' == buffer_name
-    let response = input('Are you sure you want to open "' . buffer_name . '" [y/N]? ')
+"   if '.env' == buffer_name
+"     let response = input('Are you sure you want to open "' . buffer_name . '" [y/N]? ')
 
-    if response ==? "" || response =~ "n"
-      " Go back to the previous buffer
-      execute "e #"
-    else
-      " Edit the file
-      execute "e" buffer_name
-      " Run the remaining autocmmands for the file
-      execute "doautocmd BufReadPost" buffer_name
-    endif
-  endif
-endfunction
+"     if response ==? "" || response =~ "n"
+"       " Go back to the previous buffer
+"       execute "e #"
+"     else
+"       " Edit the file
+"       execute "e" buffer_name
+"       " Run the remaining autocmmands for the file
+"       execute "doautocmd BufReadPost" buffer_name
+"     endif
+"   endif
+" endfunction
 
 " " ============================================================================ "
 " " ===                               coc.nvim                               === "
@@ -522,10 +522,10 @@ try
   nmap <silent> <leader>gi <Plug>(coc-implementation)
 
   " Rename current word
-  nmap <leader>rn <Plug>(coc-rename)
+  nmap ,r <Plug>(coc-rename)
 
   " Fix current line
-  nmap <leader>qf <Plug>(coc-fix-current)
+  nmap ,f <Plug>(coc-fix-current)
 
   " Remap for format selected region
   " xmap <leader>f  <Plug>(coc-format-selected)

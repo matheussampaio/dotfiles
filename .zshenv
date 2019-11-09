@@ -40,6 +40,7 @@ export PATH="$PATH:$HOME/Library/Android/sdk/tools/"
 
 # Add Go libraries to PATH
 export PATH="$PATH:$HOME/go/bin/"
+export PATH="$PATH:/usr/local/go/bin"
 
 # Add NPM libraries to PATH
 export PATH="$PATH:$HOME/.npm/bin"
