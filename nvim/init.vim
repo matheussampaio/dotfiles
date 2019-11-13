@@ -415,27 +415,9 @@ nnoremap <leader>pu :PlugUpdate<CR>
 " Toggle argwrap
 nnoremap <silent> <leader>aw :ArgWrap<CR>
 
-" " === Vim Fugitive === "
-" Open GStatus in a new tab
-nnoremap <leader>gs :G<CR>
-" Git push
-nnoremap <leader>gp :Gpush<CR>
-" Git checkout branch
-nnoremap <leader>gcb :Git checkout -b<space>
-" Git pull
-nnoremap <leader>gl :Gpull<CR>
-
 " " === Others === "
-" Open dotfiles
-nnoremap <leader>od :Ex ~/git/dotfiles<CR>
 " Open .vimrc
 nnoremap <leader>ov :tabnew ~/git/dotfiles/nvim/init.vim<CR>
-" Open .tmux.conf
-nnoremap <leader>ot :tabnew ~/.tmux.conf<CR>
-" Open .zshrc
-nnoremap <leader>oz :tabnew ~/.zshrc<CR>
-" Open vim notes
-nnoremap <leader>on :tabnew ~/Dropbox/wiki/Notes.wiki<CR>
 
 " Ctrl+S to save the buffer
 nnoremap <C-s> :w<CR>
@@ -447,9 +429,6 @@ nnoremap <leader>u :checktime<CR>
 map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
   \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
   \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
-
-" help transitions
-nnoremap <leader>p :echo "Use \f"<CR>
 
 " move visual lines
 nnoremap j gj
@@ -471,36 +450,6 @@ vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 " Normally space move the cursor to the right in normal mode. Since LEADER is
 " SPACE, disabling that behavior works better for me.
 nnoremap <space> <NOP>
-
-" Git diff keybindings
-" nnoremap <silent> <leader>gdh :diffget //2<CR>
-" nnoremap <silent> <leader>gdl :diffget //3<CR>
-
-" " " === dotenv === "
-" augroup secret_files
-"   " Warn before opening secret files
-"   autocmd!
-"   " Block Opening Secret Files
-"   autocmd BufReadCmd .env silent call SecretFileToggle()
-" augroup end
-
-" function! SecretFileToggle()
-"   let buffer_name = expand("%")
-
-"   if '.env' == buffer_name
-"     let response = input('Are you sure you want to open "' . buffer_name . '" [y/N]? ')
-
-"     if response ==? "" || response =~ "n"
-"       " Go back to the previous buffer
-"       execute "e #"
-"     else
-"       " Edit the file
-"       execute "e" buffer_name
-"       " Run the remaining autocmmands for the file
-"       execute "doautocmd BufReadPost" buffer_name
-"     endif
-"   endif
-" endfunction
 
 " " ============================================================================ "
 " " ===                               coc.nvim                               === "
@@ -526,18 +475,6 @@ try
 
   " Fix current line
   nmap ,f <Plug>(coc-fix-current)
-
-  " Remap for format selected region
-  " xmap <leader>f  <Plug>(coc-format-selected)
-  " nmap <leader>f  <Plug>(coc-format-selected)
-
-  " augroup mygroup
-  "   autocmd!
-  "   " Setup formatexpr specified filetype(s).
-  "   autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  "   " Update signature help on jump placeholder
-  "   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-  " augroup end
 
   " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
   xmap <leader>a  <Plug>(coc-codeaction-selected)
@@ -592,39 +529,7 @@ try
   let g:airline_section_error='%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
   let g:airline_section_warning='%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
 
-  " Create mappings for function text object, requires document symbols feature of languageserver.
-  " xmap if <Plug>(coc-funcobj-i)
-  " xmap af <Plug>(coc-funcobj-a)
-  " omap if <Plug>(coc-funcobj-i)
-  " omap af <Plug>(coc-funcobj-a)
-
-  " Use `:Format` to format current buffer
-  " command! -nargs=0 Format :call CocAction('format')
-
-  " " Use `:Fold` to fold current buffer
-  " command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-
-  " " use `:OR` for organize import of current buffer
-  " command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
   " Add status line support, for integration with other plugin, checkout `:h coc-status`
   set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-
-  " Use tab for trigger completion with characters ahead and navigate.
-  " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-  " inoremap <silent><expr> <TAB>
-  "       \ pumvisible() ? "\<C-n>" :
-  "       \ <SID>check_back_space() ? "\<TAB>" :
-  "       \ coc#refresh()
-  " inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-  " function! s:check_back_space() abort
-  "   let col = col('.') - 1
-  "   return !col || getline('.')[col - 1]  =~# '\s'
-  " endfunction
-
-  " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-  " Coc only does snippet and additional edit on confirm.
-  " inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 catch
 endtry
