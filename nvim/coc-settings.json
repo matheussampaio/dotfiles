@@ -1,5 +1,5 @@
 {
-  "diagnostic.virtualText": false,
+  "diagnostic.virtualText": true,
   "diagnostic.errorSign": "•",
   "diagnostic.warningSign": "•",
   "diagnostic.infoSign": "•",

@@ -224,8 +224,8 @@ set visualbell
 let mapleader=" "
 
 " Display tab characters
-set list
-set listchars=nbsp:·,tab:▶-
+set nolist
+" set listchars=nbsp:·,tab:▶-
 
 " the screen will not be redrawn while executing macros, registers and other commands that have not been typed.
 set lazyredraw
