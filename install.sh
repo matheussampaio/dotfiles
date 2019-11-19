@@ -16,7 +16,7 @@ ln -fs $PWD/.gitconfig $HOME/.gitconfig
 ln -fs $PWD/.zshrc $HOME/.zshrc
 ln -fs $PWD/.zshenv $HOME/.zshenv
 ln -fs $PWD/.tmux.conf $HOME/.tmux.conf
-ln -fs $PWD/alacritty/alacritty.yml $HOME/.config/alacritty/alacritty.yml
+ln -fs $PWD/.gitignore $XDG_CONFIG_HOME/git/ignore
 
 mkdir -p $HOME/.config/nvim
 
