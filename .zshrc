@@ -7,7 +7,7 @@ stty -ixon
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Plugins can be found in ~/.oh-my-zsh/plugins/*
-plugins=(git tmux wd z)
+plugins=(git wd z)
 
 # Load Oh My Zsh
 source $ZSH/oh-my-zsh.sh
