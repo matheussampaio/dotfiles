@@ -124,11 +124,15 @@ Plug 'vim-vdebug/vdebug', { 'on': 'Vdebug' }
 
 Plug 'editorconfig/editorconfig-vim'
 
+Plug 'joshdick/onedark.vim'
+
 call plug#end()
 
 " " ============================================================================ "
 " " ===                           EDITING OPTIONS                            === "
 " " ============================================================================ "
+
+syntax on
 
 " Show line number in the sign column.
 set number
@@ -249,6 +253,8 @@ set updatetime=300
 " Always show signcolumns
 set signcolumn=yes
 
+set conceallevel=1
+
 " " ============================================================================ "
 " " ===                           PLUGIN SETUP                               === "
 " " ============================================================================ "
@@ -335,39 +341,40 @@ set background=dark
 " See https://gist.github.com/romainl/379904f91fa40533175dfaec4c833f2f for
 " details
 function! MyHighlights() abort
-  " Make background signcolumn background transparent
-  hi! SignColumn ctermfg=NONE guibg=NONE
+  " " Make background signcolumn background transparent
+  " hi! SignColumn ctermfg=NONE guibg=NONE
 
-  " Make background color transparent for git changes
-  hi! SignifySignAdd guibg=NONE
-  hi! SignifySignDelete guibg=NONE
-  hi! SignifySignChange guibg=NONE
+  " " Make background color transparent for git changes
+  " hi! SignifySignAdd guibg=NONE
+  " hi! SignifySignDelete guibg=NONE
+  " hi! SignifySignChange guibg=NONE
 
-  " Highlight git change signs
-  hi! SignifySignAdd guifg=#99c794
-  hi! SignifySignDelete guifg=#ec5f67
+  " " Highlight git change signs
+  " hi! SignifySignAdd guifg=#99c794
+  " hi! SignifySignDelete guifg=#ec5f67
 
-  " Add a little bit more contrast to LineNr
-  hi! LineNr guifg=#6a6a6a
+  " " Add a little bit more contrast to LineNr
+  " hi! LineNr guifg=#6a6a6a
 
-  " Errors bold read with transparent background
-  hi! Error cterm=bold ctermfg=231 ctermbg=NONE gui=bold guifg=#ff005f guibg=NONE
+  " " Errors bold read with transparent background
+  " hi! Error cterm=bold ctermfg=231 ctermbg=NONE gui=bold guifg=#ff005f guibg=NONE
 
-  " Hide End Of Buffer tilde
-  hi! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg
+  " " Hide End Of Buffer tilde
+  " hi! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg
 
-  " Change highlight
-  hi! Search guifg=peru guibg=NONE
-  hi! SignifySignChange guifg=#c594c5
+  " " Change highlight
+  " hi! Search guifg=peru guibg=NONE
+  " hi! SignifySignChange guifg=#c594c5
+
+  " hi! NormalNC guibg=#202020
+
+  " autocmd FileType json syntax match Comment +\/\/.\+$+
 endfunction
 
 augroup MyHighlights
   autocmd!
   autocmd ColorScheme * call MyHighlights()
-  autocmd FileType json syntax match Comment +\/\/.\+$+
 augroup END
-
-autocmd BufLeave * set laststatus=2
 
 " Hide cursorline after losing window focus
 augroup CursorLine
@@ -377,20 +384,34 @@ augroup CursorLine
 augroup END
 
 " Only apply theme if vim-monokai plugin exists
-if isdirectory( expand("$HOME/.local/share/nvim/plugged/vim-monokai-tasty") )
-  " forces true colour on
-  let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
+" if isdirectory( expand("$HOME/.local/share/nvim/plugged/vim-monokai-tasty") )
+"   " forces true colour on
+"   let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+"   let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
 
-  let g:vim_monokai_tasty_italic = 1
+"   let g:vim_monokai_tasty_italic = 1
+
+"   if isdirectory( expand("$HOME/.local/share/nvim/plugged/vim-airline") )
+"     let g:airline_theme='monokai_tasty'
+"   endif
+
+"   colorscheme vim-monokai-tasty
+" endif
+
+" Only apply theme if vim-monokai plugin exists
+if isdirectory( expand("$HOME/.local/share/nvim/plugged/onedark.vim") )
+  set t_ZH=[3m
+  set t_ZR=[23m
+
+  let g:onedark_hide_endofbuffer=1
+  let g:onedark_terminal_italics=1
 
   if isdirectory( expand("$HOME/.local/share/nvim/plugged/vim-airline") )
-    let g:airline_theme='monokai_tasty'
+    let g:airline_theme='onedark'
   endif
 
-  colorscheme vim-monokai-tasty
+  colorscheme onedark
 endif
-
 " " ============================================================================ "
 " " ===                            Key Mappings                              === "
 " " ============================================================================ "
@@ -528,6 +549,7 @@ try
   " Configure error/warning section to use coc.nvim
   let g:airline_section_error='%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
   let g:airline_section_warning='%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
+  let g:airline_powerline_fonts=1
 
   " Add status line support, for integration with other plugin, checkout `:h coc-status`
   set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
