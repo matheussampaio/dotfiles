@@ -383,6 +383,8 @@ augroup CursorLine
   au WinLeave * setlocal nocursorline
 augroup END
 
+autocmd BufLeave * set laststatus=2
+
 " Only apply theme if vim-monokai plugin exists
 " if isdirectory( expand("$HOME/.local/share/nvim/plugged/vim-monokai-tasty") )
 "   " forces true colour on

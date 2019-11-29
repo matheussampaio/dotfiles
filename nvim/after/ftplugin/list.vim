@@ -1,1 +1,1 @@
-set laststatus=0
+setlocal laststatus=0
