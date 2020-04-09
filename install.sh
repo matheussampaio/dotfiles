@@ -12,11 +12,18 @@ echo "---------------------------------------------------------"
 echo "$(tput setaf 2) Creating symbolic links.$(tput sgr 0)"
 echo "---------------------------------------------------------"
 
-ln -fs $PWD/.gitconfig $HOME/.gitconfig
-ln -fs $PWD/.zshrc $HOME/.zshrc
-ln -fs $PWD/.zshenv $HOME/.zshenv
-ln -fs $PWD/.tmux.conf $HOME/.tmux.conf
-ln -fs $PWD/.gitignore $XDG_CONFIG_HOME/git/ignore
+ln -fs $PWD/zsh/.zshrc $HOME/.zshrc
+ln -fs $PWD/zsh/.zshenv $HOME/.zshenv
+
+ln -fs $PWD/tmux/.tmux.conf $HOME/.tmux.conf
+
+mkdir -p $XDG_CONFIG_HOME/git
+ln -fs $PWD/git/.gitignore $XDG_CONFIG_HOME/git/ignore
+ln -fs $PWD/git/.gitconfig $HOME/.gitconfig
+
+mkdir -p $XDG_CONFIG_HOME/ranger
+ln -fs $PWD/ranger/rc.conf $XDG_CONFIG_HOME/ranger/rc.conf
+ln -fs $PWD/ranger/scope.sh $XDG_CONFIG_HOME/ranger/scope.sh
 
 mkdir -p $HOME/.config/nvim
 
