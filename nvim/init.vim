@@ -38,8 +38,9 @@ Plug 'tpope/vim-unimpaired'
 " enable repeating supported plugin maps with '.'.
 Plug 'tpope/vim-repeat'
 
-" improvements to netrw.
-Plug 'tpope/vim-vinegar'
+" File browser
+Plug 'francoiscabrol/ranger.vim'
+Plug 'rbgrouleff/bclose.vim'
 
 " continuously updated sessions files
 Plug 'tpope/vim-obsession'
@@ -329,6 +330,10 @@ let g:polyglot_disabled = ['typescript']
 " " === editorconfig.vim === "
 let g:EditorConfig_exclude_patterns = ['fugitive://.\*', 'scp://.\*']
 
+" " === ranger.vim === "
+" Open ranger instead of netrw when opening a directory
+let g:ranger_replace_netrw=1
+
 " " ============================================================================ "
 " " ===                                UI                                    === "
 " " ============================================================================ "
@@ -464,7 +469,7 @@ nnoremap <leader>v o<ESC>"+p
 vnoremap <leader>c "+y
 
 " Clear highlighted search terms while preserving history
-noremap <Leader>h :nohlsearch<CR>
+noremap <leader>h :nohlsearch<CR>
 
 " By pressing ctrl+r in visual mode, you will be prompted to enter text to replace with.
 " Press enter and then confirm each change you agree with y or decline with n.
