@@ -24,7 +24,8 @@ unsetopt autocd
 
 alias adbs=adb_screenshot
 alias vims='nvim_session'
-alias vim="nvim"
+alias vim='nvim'
+alias python='python3'
 
 # Take and pull a screenshot from connected Android device
 adb_screenshot() {
