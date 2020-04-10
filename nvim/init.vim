@@ -1,5 +1,10 @@
 scriptencoding utf-8
 
+
+let g:node_host_prog='/usr/local/bin/neovim-node-host'
+let g:python3_host_prog='/usr/bin/python3'
+let g:python_host_prog='/usr/bin/python'
+let g:coc_node_path='/usr/local/Cellar/node/13.5.0/bin/node'
 " " ============================================================================ "
 " " ===                              VIM Plug                                === "
 " " ============================================================================ "
@@ -112,13 +117,13 @@ Plug 'godlygeek/tabular'
 Plug 'meain/vim-package-info', { 'do': 'npm install' }
 
 " Wrap and unwrap function arguments, lists, and dictionaires
-Plug 'FooSoft/vim-argwrap', { 'for': 'javascript,typescript' }
+Plug 'FooSoft/vim-argwrap'
 
 " " Disctraction-free writing in vim
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 
 " Support for expanding abbreviations
-Plug 'mattn/emmet-vim', { 'for': 'html' }
+" Plug 'mattn/emmet-vim', { 'for': ['htm', 'vue', 'jsx'] }
 
 " Multi-language DBGP debugger client
 Plug 'vim-vdebug/vdebug', { 'on': 'Vdebug' }
@@ -126,6 +131,8 @@ Plug 'vim-vdebug/vdebug', { 'on': 'Vdebug' }
 Plug 'editorconfig/editorconfig-vim'
 
 Plug 'joshdick/onedark.vim'
+
+Plug 'suy/vim-context-commentstring'
 
 call plug#end()
 
@@ -229,8 +236,7 @@ set visualbell
 let mapleader=" "
 
 " Display tab characters
-set nolist
-" set listchars=nbsp:·,tab:▶-
+set listchars=nbsp:·,tab:▶-
 
 " the screen will not be redrawn while executing macros, registers and other commands that have not been typed.
 set lazyredraw
@@ -255,6 +261,8 @@ set updatetime=300
 set signcolumn=yes
 
 set conceallevel=1
+
+" set mouse=a
 
 " " ============================================================================ "
 " " ===                           PLUGIN SETUP                               === "
@@ -318,7 +326,7 @@ let g:Hexokinase_highlighters = ['virtual']
 
 " " " === emmet.vim === "
 " Change emmet key
-let g:user_emmet_leader_key='<C-E>'
+" let g:user_emmet_leader_key='<C-E>'
 
 " " === fastfold === "
 let g:markdown_folding=1
@@ -529,10 +537,13 @@ try
   nmap <silent> <C-p> :CocList files<CR>
 
   " Browse most recent files
-  nmap <silent> <leader>cb :CocList mru<CR>
+  nmap <silent> <C-m> :CocList mru<CR>
 
   " Search for a symbol in the current directory
   nmap <silent> <leader>cs :CocList symbols<CR>
+
+  " Search for a command
+  nmap <silent> <leader>cc :CocCommand<CR>
 
   " Search for a term in the current directory
   nmap <silent> <leader>s :CocList -I grep -ignorecase<CR>
