@@ -433,11 +433,11 @@ endif
 
 " " " === vim-better-whitespace === "
 " Automatically remove trailing whitespace
-nmap <leader>as :StripWhitespace<CR>
+nnoremap <leader>as :StripWhitespace<CR>
 
 " " === vim hexokinase === "
 " Toggle show colors beside colors hex, rgb, rgba, etc.
-nmap <leader>ac :HexokinaseToggle<CR>
+nnoremap <leader>ac :HexokinaseToggle<CR>
 
 " " === Vim Plug === "
 " Run Plug Status
@@ -487,6 +487,9 @@ vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 " SPACE, disabling that behavior works better for me.
 nnoremap <space> <NOP>
 
+" Open Ranger in a tab, when existant or in new tab when not existant
+nnoremap <silent> <leader>f :RangerCurrentDirectoryExistingOrNewTab<CR>
+
 " " ============================================================================ "
 " " ===                               coc.nvim                               === "
 " " ============================================================================ "
@@ -495,29 +498,29 @@ try
   call coc#add_extension('coc-lists', 'coc-snippets')
 
   " Got to current word definition
-  nmap <silent> <leader>gd <Plug>(coc-definition)
+  nnoremap <silent> <leader>gd <Plug>(coc-definition)
 
   " Open current type definition
-  nmap <silent> <leader>gy <Plug>(coc-type-definition)
+  nnoremap <silent> <leader>gy <Plug>(coc-type-definition)
 
   " Search for current work references
-  nmap <silent> <leader>gr <Plug>(coc-references)
+  nnoremap <silent> <leader>gr <Plug>(coc-references)
 
   " Open current word implementation
-  nmap <silent> <leader>gi <Plug>(coc-implementation)
+  nnoremap <silent> <leader>gi <Plug>(coc-implementation)
 
   " Rename current word
-  nmap ,r <Plug>(coc-rename)
+  nnoremap ,r <Plug>(coc-rename)
 
   " Fix current line
-  nmap ,f <Plug>(coc-fix-current)
+  nnoremap ,f <Plug>(coc-fix-current)
 
   " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-  xmap <leader>a  <Plug>(coc-codeaction-selected)
-  nmap <leader>a  <Plug>(coc-codeaction-selected)
+  xnoremap <leader>a  <Plug>(coc-codeaction-selected)
+  nnoremap <leader>a  <Plug>(coc-codeaction-selected)
 
   " Remap for do codeAction of current line
-  nmap <leader>ac  <Plug>(coc-codeaction)
+  nnoremap <leader>ac  <Plug>(coc-codeaction)
 
   " Use K to show documentation in preview window
   nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -556,26 +559,23 @@ try
   "   imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
   " endif
 
-  " Browse list of files in current directory
-  nmap <silent> <C-p> :CocList files<CR>
-
   " Browse most recent files
-  nmap <silent> <C-m> :CocList mru<CR>
+  nnoremap <silent> <leader>m :CocList mru<CR>
 
   " Search for a symbol in the current directory
-  nmap <silent> <leader>cs :CocList symbols<CR>
+  nnoremap <silent> <leader>cs :CocList symbols<CR>
 
   " Search for a command
-  nmap <silent> <leader>cc :CocCommand<CR>
+  nnoremap <silent> <leader>cc :CocCommand<CR>
 
   " Search for a term in the current directory
-  nmap <silent> <leader>s :CocList -I grep -ignorecase<CR>
+  nnoremap <silent> <leader>s :CocList -I grep -ignorecase<CR>
 
   " Browse coc commands
-  nmap <silent> <leader>cp :CocList commands<CR>
+  nnoremap <silent> <leader>cp :CocList commands<CR>
 
-  " Resume latest coc list
-  nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+  " Browse list of files in current directory
+  nnoremap <silent> <leader>p  :CocList files<CR>
 
   " Trigger completion
   inoremap <silent><expr> <c-space> coc#refresh()
@@ -584,8 +584,8 @@ try
   " nnoremap <leader>oc :tabnew ~/git/dotfiles/nvim/coc-settings.json<CR>
 
   " Use `[g` and `]g` to navigate diagnostics
-  nmap <silent> [g <Plug>(coc-diagnostic-prev)
-  nmap <silent> ]g <Plug>(coc-diagnostic-next)
+  nnoremap <silent> [g <Plug>(coc-diagnostic-prev)
+  nnoremap <silent> ]g <Plug>(coc-diagnostic-next)
 
   " Configure error/warning section to use coc.nvim
   let g:airline_section_error='%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
