@@ -442,14 +442,6 @@ nnoremap <leader>as :StripWhitespace<CR>
 " Toggle show colors beside colors hex, rgb, rgba, etc.
 nnoremap <leader>ac :HexokinaseToggle<CR>
 
-" " === Vim Plug === "
-" Run Plug Status
-nnoremap <leader>ps :PlugStatus<CR>
-" Run Plug Install
-nnoremap <leader>pi :PlugInstall<CR>
-" Run Plug Update
-nnoremap <leader>pu :PlugUpdate<CR>
-
 " " === Vim ArgWrap === "
 " Toggle argwrap
 nnoremap <silent> <leader>aw :ArgWrap<CR>
