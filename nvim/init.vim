@@ -1,10 +1,5 @@
 scriptencoding utf-8
 
-
-let g:node_host_prog='/usr/local/bin/neovim-node-host'
-let g:python3_host_prog='/usr/bin/python3'
-let g:python_host_prog='/usr/bin/python'
-let g:coc_node_path='/usr/local/Cellar/node/13.5.0/bin/node'
 " " ============================================================================ "
 " " ===                              VIM Plug                                === "
 " " ============================================================================ "
@@ -268,44 +263,51 @@ set conceallevel=1
 " " ===                           PLUGIN SETUP                               === "
 " " ============================================================================ "
 
+" Useful variable to detect the OS
+if !exists("g:os")
+  if has("win64") || has("win32") || has("win16")
+    let g:os = "Windows"
+  else
+    let g:os = substitute(system('uname'), '\n', '', '')
+  endif
+endif
+
 " " === Vim airline ==== "
 " Wrap in try/catch to avoid errors on initial install before plugin is available
 try
+  " Do not show current git branch
+  let g:airline#extensions#branch#enabled=0
 
-" Do not show current git branch
-let g:airline#extensions#branch#enabled=0
+  " Enable bufferline integration
+  let g:airline#extensions#fugitiveline#enabled=1
 
-" Enable bufferline integration
-let g:airline#extensions#fugitiveline#enabled=1
+  " Do not draw separators for empty sections (only for the active window) >
+  let g:airline_skip_empty_sections=1
 
-" Do not draw separators for empty sections (only for the active window) >
-let g:airline_skip_empty_sections=1
+  " remove (fileencoding, fileformat) section
+  let g:airline_section_y=''
 
-" remove (fileencoding, fileformat) section
-let g:airline_section_y=''
+  " remove (percentage, line number, column number) section
+  let g:airline_section_z=''
 
-" remove (percentage, line number, column number) section
-let g:airline_section_z=''
+  let airline#extensions#coc#stl_format_err='%E{[%e(#%fe)]}'
+  let airline#extensions#coc#stl_format_warn='%W{[%w(#%fw)]}'
 
-let airline#extensions#coc#stl_format_err='%E{[%e(#%fe)]}'
-let airline#extensions#coc#stl_format_warn='%W{[%w(#%fw)]}'
-
-" hide tabs close button
-let g:airline#extensions#tabline#show_close_button=1
+  " hide tabs close button
+  let g:airline#extensions#tabline#show_close_button=1
 
 
-" Disable vim-airline in preview mode
-let g:airline_exclude_preview=1
+  " Disable vim-airline in preview mode
+  let g:airline_exclude_preview=1
 
-" Enable powerline fonts
-let g:airline_powerline_fonts=0
+  " Enable powerline fonts
+  let g:airline_powerline_fonts=0
 
-" Enable caching of syntax highlighting groups
-let g:airline_highlighting_cache=1
+  " Enable caching of syntax highlighting groups
+  let g:airline_highlighting_cache=1
 
-" Don't show git changes to current file in airline
-let g:airline#extensions#hunks#enabled=0
-
+  " Don't show git changes to current file in airline
+  let g:airline#extensions#hunks#enabled=0
 catch
 endtry
 
@@ -427,6 +429,7 @@ if isdirectory( expand("$HOME/.local/share/nvim/plugged/onedark.vim") )
 
   colorscheme onedark
 endif
+
 " " ============================================================================ "
 " " ===                            Key Mappings                              === "
 " " ============================================================================ "

@@ -16,8 +16,11 @@ source $ZSH/oh-my-zsh.sh
 unsetopt BEEP
 
 # Bindins
-bindkey '^P' up-line-or-search
-bindkey '^N' down-line-or-search
+# bindkey '^P' up-line-or-search
+# bindkey '^N' down-line-or-search
+
+bindkey '^P' history-beginning-search-backward
+bindkey '^N' history-beginning-search-forward
 
 # disable zsh's autocd
 unsetopt autocd
