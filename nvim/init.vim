@@ -96,6 +96,9 @@ Plug 'tpope/vim-fugitive'
 " fugitive github extension.
 Plug 'tpope/vim-rhubarb'
 
+" Change word case
+Plug 'tpope/vim-abolish'
+
 " Show git changes in the sign column.
 Plug 'mhinz/vim-signify'
 
@@ -229,6 +232,9 @@ set visualbell
 
 " Change leader to SPACE.
 let mapleader=" "
+
+" Display characters
+set list
 
 " Display tab characters
 set listchars=nbsp:·,tab:▶-
@@ -493,32 +499,32 @@ try
   call coc#add_extension('coc-lists', 'coc-snippets')
 
   " Got to current word definition
-  nnoremap <silent> <leader>gd <Plug>(coc-definition)
+  nmap <silent> <leader>gd <Plug>(coc-definition)
 
   " Open current type definition
-  nnoremap <silent> <leader>gy <Plug>(coc-type-definition)
+  nmap <silent> <leader>gy <Plug>(coc-type-definition)
 
   " Search for current work references
-  nnoremap <silent> <leader>gr <Plug>(coc-references)
+  nmap <silent> <leader>gr <Plug>(coc-references)
 
   " Open current word implementation
-  nnoremap <silent> <leader>gi <Plug>(coc-implementation)
+  nmap <silent> <leader>gi <Plug>(coc-implementation)
 
   " Rename current word
-  nnoremap ,r <Plug>(coc-rename)
+  nmap ,r <Plug>(coc-rename)
 
   " Fix current line
-  nnoremap ,f <Plug>(coc-fix-current)
+  nmap ,f <Plug>(coc-fix-current)
 
   " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-  xnoremap <leader>a  <Plug>(coc-codeaction-selected)
-  nnoremap <leader>a  <Plug>(coc-codeaction-selected)
+  xmap <leader>a  <Plug>(coc-codeaction-selected)
+  nmap <leader>a  <Plug>(coc-codeaction-selected)
 
   " Remap for do codeAction of current line
-  nnoremap <leader>ac  <Plug>(coc-codeaction)
+  nmap <leader>ac  <Plug>(coc-codeaction)
 
   " Use K to show documentation in preview window
-  nnoremap <silent> K :call <SID>show_documentation()<CR>
+  nmap <silent> K :call <SID>show_documentation()<CR>
 
   function! s:show_documentation()
     if (index(['vim','help'], &filetype) >= 0)
