@@ -21,10 +21,6 @@ mkdir -p $XDG_CONFIG_HOME/git
 ln -fs $PWD/git/.gitignore $XDG_CONFIG_HOME/git/ignore
 ln -fs $PWD/git/.gitconfig $HOME/.gitconfig
 
-mkdir -p $XDG_CONFIG_HOME/ranger
-ln -fs $PWD/ranger/rc.conf $XDG_CONFIG_HOME/ranger/rc.conf
-ln -fs $PWD/ranger/scope.sh $XDG_CONFIG_HOME/ranger/scope.sh
-
 mkdir -p $HOME/.config/nvim
 
 ln -fs $PWD/nvim/coc-settings.json $HOME/.config/nvim/coc-settings.json

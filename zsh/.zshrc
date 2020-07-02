@@ -87,3 +87,9 @@ if type hub > /dev/null; then
 fi
 
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh ] && source "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/matheussampaio/Downloads/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/matheussampaio/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/matheussampaio/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/matheussampaio/Downloads/google-cloud-sdk/completion.zsh.inc'; fi

@@ -38,9 +38,8 @@ Plug 'tpope/vim-unimpaired'
 " enable repeating supported plugin maps with '.'.
 Plug 'tpope/vim-repeat'
 
-" File browser
-Plug 'francoiscabrol/ranger.vim'
-Plug 'rbgrouleff/bclose.vim'
+" improvements to netrw.
+Plug 'tpope/vim-vinegar'
 
 " continuously updated sessions files
 Plug 'tpope/vim-obsession'
@@ -346,10 +345,6 @@ let g:polyglot_disabled = ['typescript']
 " " === editorconfig.vim === "
 let g:EditorConfig_exclude_patterns = ['fugitive://.\*', 'scp://.\*']
 
-" " === ranger.vim === "
-" Open ranger instead of netrw when opening a directory
-let g:ranger_replace_netrw=1
-
 " " ============================================================================ "
 " " ===                                UI                                    === "
 " " ============================================================================ "
@@ -487,9 +482,6 @@ vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 " Normally space move the cursor to the right in normal mode. Since LEADER is
 " SPACE, disabling that behavior works better for me.
 nnoremap <space> <NOP>
-
-" Open Ranger in a tab, when existant or in new tab when not existant
-nnoremap <silent> <leader>f :RangerCurrentDirectoryExistingOrNewTab<CR>
 
 " " ============================================================================ "
 " " ===                               coc.nvim                               === "
