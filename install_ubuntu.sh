@@ -15,7 +15,7 @@ sudo apt-get install -y build-essential gcc curl git
 echo "---------------------------------------------------------"
 echo "$(tput setaf 2) Install tools.$(tput sgr 0)"
 echo "---------------------------------------------------------"
-sudo apt-get install -y file python3 tmux ripgrep htop hub zsh tree ranger highlight file w3m
+sudo apt-get install -y file python3 tmux ripgrep htop hub zsh tree highlight file w3m
 
 echo "---------------------------------------------------------"
 echo "$(tput setaf 2) Install node.$(tput sgr 0)"
