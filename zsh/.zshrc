@@ -29,6 +29,7 @@ alias adbs=adb_screenshot
 alias vims='nvim_session'
 alias vim='nvim'
 alias python='python3'
+alias lg='lazygit'
 
 # Take and pull a screenshot from connected Android device
 adb_screenshot() {

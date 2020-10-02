@@ -42,7 +42,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-vinegar'
 
 " continuously updated sessions files
-Plug 'tpope/vim-obsession'
+" Plug 'tpope/vim-obsession'
 
 " lean and mean status/tabline.
 Plug 'vim-airline/vim-airline'
@@ -56,20 +56,17 @@ Plug 'christoomey/vim-tmux-navigator'
 " toggle quicklist and loclist.
 Plug 'milkypostman/vim-togglelist'
 
-" " Trailing whitespace highlighting & automatic fixing.
-Plug 'ntpeters/vim-better-whitespace'
-
 " Intellisense engine with LSP support.
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 
 " Monokai Tasty Colorschema.
-Plug 'patstockwell/vim-monokai-tasty'
+" Plug 'patstockwell/vim-monokai-tasty'
 
 " Take notes with Wiki.
 Plug 'vimwiki/vimwiki'
 
 " auto-close brakets after pressing ENTER.
-Plug 'rstacruz/vim-closer'
+" Plug 'rstacruz/vim-closer'
 
 " Many syntax highlights
 Plug 'sheerun/vim-polyglot'
@@ -78,9 +75,9 @@ Plug 'sheerun/vim-polyglot'
 Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 
 " Display colors inline
-Plug 'RRethy/vim-hexokinase', { 'on': 'HexokinaseToggle', 'do': 'make hexokinase' }
+" Plug 'RRethy/vim-hexokinase', { 'on': 'HexokinaseToggle', 'do': 'make hexokinase' }
 
-" " A simple alignment operator
+" A simple alignment operator
 Plug 'tommcdo/vim-lion'
 
 " Speed up Vim by updating folds only when called-for.
@@ -101,35 +98,35 @@ Plug 'tpope/vim-abolish'
 " Show git changes in the sign column.
 Plug 'mhinz/vim-signify'
 
-" Preview markdown with :LivePreview.
-Plug 'shime/vim-livedown', { 'on': 'LivedownPreview' }
+" " Preview markdown with :LivePreview.
+" Plug 'shime/vim-livedown', { 'on': 'LivedownPreview' }
 
-" Syntax highlighting, matching rules and mappings for the original Markdown and extensions.
-Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] }
+" " Syntax highlighting, matching rules and mappings for the original Markdown and extensions.
+" Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] }
 
-" vim-markdown requries tabular to format tables
-Plug 'godlygeek/tabular'
+" " vim-markdown requries tabular to format tables
+" Plug 'godlygeek/tabular'
 
-" Show information about dependencies versions inside `package.json`.
-Plug 'meain/vim-package-info', { 'do': 'npm install' }
+" " Show information about dependencies versions inside `package.json`.
+" Plug 'meain/vim-package-info', { 'do': 'npm install' }
 
-" Wrap and unwrap function arguments, lists, and dictionaires
+" " Wrap and unwrap function arguments, lists, and dictionaires
 Plug 'FooSoft/vim-argwrap'
 
-" " Disctraction-free writing in vim
-Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
+" " " Disctraction-free writing in vim
+" Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 
-" Support for expanding abbreviations
-" Plug 'mattn/emmet-vim', { 'for': ['htm', 'vue', 'jsx'] }
+" " Support for expanding abbreviations
+" " Plug 'mattn/emmet-vim', { 'for': ['htm', 'vue', 'jsx'] }
 
-" Multi-language DBGP debugger client
-Plug 'vim-vdebug/vdebug', { 'on': 'Vdebug' }
+" " Multi-language DBGP debugger client
+" Plug 'vim-vdebug/vdebug', { 'on': 'Vdebug' }
 
 Plug 'editorconfig/editorconfig-vim'
 
 Plug 'joshdick/onedark.vim'
 
-Plug 'suy/vim-context-commentstring'
+" Plug 'suy/vim-context-commentstring'
 
 call plug#end()
 
@@ -257,8 +254,14 @@ set nowritebackup
 " Write swap files to disk quicker
 set updatetime=300
 
-" Always show signcolumns
-set signcolumn=yes
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+if has("patch-8.1.1564")
+  " Recently vim can merge signcolumn and number column into one
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
 
 set conceallevel=1
 
@@ -526,9 +529,6 @@ try
     endif
   endfunction
 
-  " Highlight symbol under cursor on CursorHold
-  autocmd CursorHold * silent call CocActionAsync('highlight')
-
   " Use tab for trigger completion with characters ahead and navigate.
   " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
   " other plugin before putting this into your config.
@@ -543,20 +543,27 @@ try
     return !col || getline('.')[col - 1]  =~# '\s'
   endfunction
 
-  " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
-  " position. Coc only does snippet and additional edit on confirm.
-  " if has('patch8.1.1068')
-  "   " Use `complete_info` if your (Neo)Vim version supports it.
-  "   inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-  " else
-  "   imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-  " endif
+  " Use <c-space> to trigger completion.
+  if has('nvim')
+    inoremap <silent><expr> <c-space> coc#refresh()
+  else
+    inoremap <silent><expr> <c-@> coc#refresh()
+  endif
+
+  " Use <cr> to confirm completion
+  inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<C-r>=coc#on_enter()\<CR>"
+
+  " Close the preview window when completion is done.
+  autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
   " Browse most recent files
   nnoremap <silent> <leader>m :CocList mru<CR>
 
   " Search for a symbol in the current directory
   nnoremap <silent> <leader>cs :CocList symbols<CR>
+  
+  " Resumse previous list
+  nnoremap <silent> <leader>r :CocResume<CR>
 
   " Search for a command
   nnoremap <silent> <leader>cc :CocCommand<CR>

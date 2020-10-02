@@ -30,6 +30,12 @@ echo "---------------------------------------------------------"
 brew reinstall gcc git python3 node tmux zsh ripgrep htop hub tree
 
 echo "---------------------------------------------------------"
+echo "$(tput setaf 2) Installing lazygit.$(tput sgr 0)"
+echo "---------------------------------------------------------"
+brew install jesseduffield/lazygit/lazygit
+ln -fs $PWD/git/lazygit.config.yml $HOME/Library/Application\ Support/jesseduffield/lazygit/config.yml
+
+echo "---------------------------------------------------------"
 echo "$(tput setaf 2) Cleaning Homebrew.$(tput sgr 0)"
 echo "---------------------------------------------------------"
 brew cleanup
