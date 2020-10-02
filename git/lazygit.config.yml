@@ -1,0 +1,5 @@
+git:
+  branchlogcmd: git log --graph --color=always --abbrev-commit --decorate --date=relative
+    --pretty=medium --oneline {{branchName}} --
+startuppopupversion: 1
+confirmOnQuit: true

@@ -1,15 +1,8 @@
 {
-  "diagnostic.virtualText": false,
+  "diagnostic.virtualText": true,
   "diagnostic.errorSign": "•",
   "diagnostic.warningSign": "•",
   "diagnostic.infoSign": "•",
-  "list.insertMappings": {
-    "<C-l>": "do:selectall",
-    "<C-q>": "action:quickfix",
-    "<C-c>": "do:exit",
-    "<C-s>": "action:vsplit",
-    "<C-h>": "action:split"
-  },
   "list.source.files.args": ["--hidden", "--files"],
   "list.source.files.excludePatterns": ["**/.git/**/*", "**/yarn.lock", "**/package-lock.json"],
   "list.source.grep.excludePatterns": ["**/.git/**/*", "**/yarn.lock", "**/package-lock.json"],
