@@ -29,6 +29,9 @@ call plug#begin('~/.local/share/nvim/plugged')
 " comment stuff out.
 Plug 'tpope/vim-commentary'
 
+" Change 'commentstring' according to context.
+Plug 'suy/vim-context-commentstring', { 'for': 'vue' }
+
 " provides mappings to easily delete, change and add surroundings (parantheses, brackets, quotes, etc).
 Plug 'tpope/vim-surround'
 
@@ -60,13 +63,16 @@ Plug 'milkypostman/vim-togglelist'
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 
 " Monokai Tasty Colorschema.
-" Plug 'patstockwell/vim-monokai-tasty'
+Plug 'patstockwell/vim-monokai-tasty'
 
 " Take notes with Wiki.
 Plug 'vimwiki/vimwiki'
 
 " auto-close brakets after pressing ENTER.
 " Plug 'rstacruz/vim-closer'
+
+" " === vim-polyglot === "
+let g:polyglot_disabled = ['typescript']
 
 " Many syntax highlights
 Plug 'sheerun/vim-polyglot'
@@ -81,7 +87,7 @@ Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 Plug 'tommcdo/vim-lion'
 
 " Speed up Vim by updating folds only when called-for.
-Plug 'Konfekt/FastFold'
+" Plug 'Konfekt/FastFold'
 
 " Make Vim persist editing state without fuss
 Plug 'zhimsel/vim-stay'
@@ -98,8 +104,11 @@ Plug 'tpope/vim-abolish'
 " Show git changes in the sign column.
 Plug 'mhinz/vim-signify'
 
-" " Preview markdown with :LivePreview.
-" Plug 'shime/vim-livedown', { 'on': 'LivedownPreview' }
+" Preview markdown with :LivePreview.
+Plug 'shime/vim-livedown', { 'on': 'LivedownPreview' }
+
+" Provides automatic closing of quotes, parenthesis, brackets, etc.
+" Plug 'Raimondi/delimitMate'
 
 " " Syntax highlighting, matching rules and mappings for the original Markdown and extensions.
 " Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] }
@@ -110,23 +119,19 @@ Plug 'mhinz/vim-signify'
 " " Show information about dependencies versions inside `package.json`.
 " Plug 'meain/vim-package-info', { 'do': 'npm install' }
 
-" " Wrap and unwrap function arguments, lists, and dictionaires
+" Wrap and unwrap function arguments, lists, and dictionaires
 Plug 'FooSoft/vim-argwrap'
 
 " " " Disctraction-free writing in vim
 " Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 
 " " Support for expanding abbreviations
-" " Plug 'mattn/emmet-vim', { 'for': ['htm', 'vue', 'jsx'] }
-
-" " Multi-language DBGP debugger client
-" Plug 'vim-vdebug/vdebug', { 'on': 'Vdebug' }
+" Plug 'mattn/emmet-vim', { 'for': [ 'html', 'vue', 'jsx'] }
 
 Plug 'editorconfig/editorconfig-vim'
 
-Plug 'joshdick/onedark.vim'
-
-" Plug 'suy/vim-context-commentstring'
+" Treesitter configurations and abstraction layer for Neovim.
+Plug 'nvim-treesitter/nvim-treesitter'
 
 call plug#end()
 
@@ -342,9 +347,6 @@ let g:Hexokinase_highlighters = ['virtual']
 let g:markdown_folding=1
 let g:javaScript_fold=1
 
-" " === vim-polyglot === "
-let g:polyglot_disabled = ['typescript']
-
 " " === editorconfig.vim === "
 let g:EditorConfig_exclude_patterns = ['fugitive://.\*', 'scp://.\*']
 
@@ -360,34 +362,35 @@ set background=dark
 " See https://gist.github.com/romainl/379904f91fa40533175dfaec4c833f2f for
 " details
 function! MyHighlights() abort
-  " " Make background signcolumn background transparent
-  " hi! SignColumn ctermfg=NONE guibg=NONE
+  " Make background signcolumn background transparent
+  hi! SignColumn ctermfg=NONE guibg=NONE
 
-  " " Make background color transparent for git changes
-  " hi! SignifySignAdd guibg=NONE
-  " hi! SignifySignDelete guibg=NONE
-  " hi! SignifySignChange guibg=NONE
+  " Make background color transparent for git changes
+  hi! SignifySignAdd guibg=NONE
+  hi! SignifySignDelete guibg=NONE
+  hi! SignifySignChange guibg=NONE
 
-  " " Highlight git change signs
-  " hi! SignifySignAdd guifg=#99c794
-  " hi! SignifySignDelete guifg=#ec5f67
+  " Highlight git change signs
+  hi! SignifySignAdd guifg=#99c794
+  hi! SignifySignDelete guifg=#ec5f67
 
-  " " Add a little bit more contrast to LineNr
-  " hi! LineNr guifg=#6a6a6a
+  " Add a little bit more contrast to LineNr
+  hi! LineNr guifg=#6a6a6a
 
-  " " Errors bold read with transparent background
-  " hi! Error cterm=bold ctermfg=231 ctermbg=NONE gui=bold guifg=#ff005f guibg=NONE
+  " Errors bold read with transparent background
+  hi! Error cterm=bold ctermfg=231 ctermbg=NONE gui=bold guifg=#ff005f guibg=NONE
 
-  " " Hide End Of Buffer tilde
+  " Hide End Of Buffer tilde
   " hi! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg
 
-  " " Change highlight
-  " hi! Search guifg=peru guibg=NONE
-  " hi! SignifySignChange guifg=#c594c5
+  " Change highlight
+  hi! Search guifg=peru guibg=NONE
+  hi! SignifySignChange guifg=#c594c5
 
-  " hi! NormalNC guibg=#202020
+  hi! NormalNC guibg=#202020
+  " hi! NonText ctermfg=59 ctermbg=0 cterm=NONE guifg=#414e58 guibg=#232c31 gui=NONE
 
-  " autocmd FileType json syntax match Comment +\/\/.\+$+
+  autocmd FileType json syntax match Comment +\/\/.\+$+
 endfunction
 
 augroup MyHighlights
@@ -396,42 +399,31 @@ augroup MyHighlights
 augroup END
 
 " Hide cursorline after losing window focus
-augroup CursorLine
-  au!
-  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-  au WinLeave * setlocal nocursorline
-augroup END
+" augroup CursorLine
+"   au!
+"   au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+"   au WinLeave * setlocal nocursorline
+" augroup END
 
 autocmd BufLeave * set laststatus=2
 
 " Only apply theme if vim-monokai plugin exists
-" if isdirectory( expand("$HOME/.local/share/nvim/plugged/vim-monokai-tasty") )
-"   " forces true colour on
-"   let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
-"   let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
+if isdirectory( expand("$HOME/.local/share/nvim/plugged/vim-monokai-tasty") )
+  " forces true colour on
+  " let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+  " let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
 
-"   let g:vim_monokai_tasty_italic = 1
+  " ???
+  " set t_ZH=[3m
+  " set t_ZR=[23m
 
-"   if isdirectory( expand("$HOME/.local/share/nvim/plugged/vim-airline") )
-"     let g:airline_theme='monokai_tasty'
-"   endif
-
-"   colorscheme vim-monokai-tasty
-" endif
-
-" Only apply theme if vim-monokai plugin exists
-if isdirectory( expand("$HOME/.local/share/nvim/plugged/onedark.vim") )
-  set t_ZH=[3m
-  set t_ZR=[23m
-
-  let g:onedark_hide_endofbuffer=1
-  let g:onedark_terminal_italics=1
+  let g:vim_monokai_tasty_italic = 1
 
   if isdirectory( expand("$HOME/.local/share/nvim/plugged/vim-airline") )
-    let g:airline_theme='onedark'
+    let g:airline_theme='monokai_tasty'
   endif
 
-  colorscheme onedark
+  colorscheme vim-monokai-tasty
 endif
 
 " " ============================================================================ "
@@ -596,3 +588,32 @@ try
   set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 catch
 endtry
+
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "all",
+  highlight = {
+    enable = true,
+  },
+}
+EOF
+
+function! OnVimEnter() abort
+  " Run PlugUpdate every week automatically when entering Vim.
+  if exists('g:plug_home')
+    let l:filename = printf('%s/.vim_plug_update', g:plug_home)
+    if filereadable(l:filename) == 0
+      call writefile([], l:filename)
+    endif
+
+    let l:this_week = strftime('%Y_%V')
+    let l:contents = readfile(l:filename)
+    if index(l:contents, l:this_week) < 0
+      call execute('PlugUpgrade')
+      call execute('PlugUpdate')
+      call writefile([l:this_week], l:filename, 'a')
+    endif
+  endif
+endfunction
+
+autocmd VimEnter * call OnVimEnter()
