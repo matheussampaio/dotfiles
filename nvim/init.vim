@@ -270,7 +270,8 @@ endif
 
 set conceallevel=1
 
-" set mouse=a
+" set blinking cursor
+set guicursor+=a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
 
 " " ============================================================================ "
 " " ===                           PLUGIN SETUP                               === "
