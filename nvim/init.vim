@@ -131,7 +131,7 @@ Plug 'FooSoft/vim-argwrap'
 Plug 'editorconfig/editorconfig-vim'
 
 " Treesitter configurations and abstraction layer for Neovim.
-Plug 'nvim-treesitter/nvim-treesitter'
+" Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 
 call plug#end()
 
@@ -219,6 +219,9 @@ set nopaste
 " Save fold and cursor positions to viewfile.
 set viewoptions=folds,cursor,slash,unix
 
+" Remove ~ from the left side of the window
+set fillchars=eob:\ " space here is important
+
 " Load local .nvimrc (:h exrc).
 set exrc
 
@@ -252,9 +255,7 @@ set foldmethod=indent
 " Set default to unfold
 set foldlevel=1000
 
-" Some LPS (coc.nvim) have issues with backup files
-set nobackup
-set nowritebackup
+set backupdir=$HOME/tmp
 
 " Write swap files to disk quicker
 set updatetime=300
@@ -315,7 +316,7 @@ try
   let g:airline_exclude_preview=1
 
   " Enable powerline fonts
-  let g:airline_powerline_fonts=0
+  let g:airline_powerline_fonts=1
 
   " Enable caching of syntax highlighting groups
   let g:airline_highlighting_cache=1
@@ -381,15 +382,11 @@ function! MyHighlights() abort
   " Errors bold read with transparent background
   hi! Error cterm=bold ctermfg=231 ctermbg=NONE gui=bold guifg=#ff005f guibg=NONE
 
-  " Hide End Of Buffer tilde
-  " hi! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg
-
   " Change highlight
   hi! Search guifg=peru guibg=NONE
   hi! SignifySignChange guifg=#c594c5
 
   hi! NormalNC guibg=#202020
-  " hi! NonText ctermfg=59 ctermbg=0 cterm=NONE guifg=#414e58 guibg=#232c31 gui=NONE
 
   autocmd FileType json syntax match Comment +\/\/.\+$+
 endfunction
@@ -590,14 +587,14 @@ try
 catch
 endtry
 
-lua <<EOF
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = "all",
-  highlight = {
-    enable = true,
-  },
-}
-EOF
+" lua <<EOF
+" require'nvim-treesitter.configs'.setup {
+"   ensure_installed = "all",
+"   highlight = {
+"     enable = true,
+"   },
+" }
+" EOF
 
 function! OnVimEnter() abort
   " Run PlugUpdate every week automatically when entering Vim.

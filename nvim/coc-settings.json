@@ -4,7 +4,7 @@
   "diagnostic.warningSign": "•",
   "diagnostic.infoSign": "•",
   "list.source.files.args": ["--hidden", "--files"],
-  "list.source.files.excludePatterns": ["**/.git/**/*", "**/yarn.lock", "**/package-lock.json"],
-  "list.source.grep.excludePatterns": ["**/.git/**/*", "**/yarn.lock", "**/package-lock.json"],
+  "list.source.files.excludePatterns": ["**/.git/**/*", "**/yarn.lock", "**/package-lock.json", "**/*.png"],
+  "list.source.grep.excludePatterns": ["**/.git/**/*", "**/yarn.lock", "**/package-lock.json", "**/*.png"],
   "suggest.minTriggerInputLength": 3
  }
