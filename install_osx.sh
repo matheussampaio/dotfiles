@@ -27,7 +27,7 @@ brew update
 echo "---------------------------------------------------------"
 echo "$(tput setaf 2) Installing system packages.$(tput sgr 0)"
 echo "---------------------------------------------------------"
-brew reinstall gcc git python3 node tmux zsh ripgrep htop hub tree wget jq
+brew reinstall gcc git python3 tmux zsh ripgrep htop hub tree wget jq
 
 echo "---------------------------------------------------------"
 echo "$(tput setaf 2) Installing lazygit.$(tput sgr 0)"
