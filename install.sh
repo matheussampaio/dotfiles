@@ -69,6 +69,8 @@ echo "---------------------------------------------------------"
 echo "$(tput setaf 2) Creating symbolic links.$(tput sgr 0)"
 echo "---------------------------------------------------------"
 
+mkdir $HOME/.tmp
+
 ln -fs $PWD/zsh/.zshrc $HOME/.zshrc
 ln -fs $PWD/zsh/.zshenv $HOME/.zshenv
 
