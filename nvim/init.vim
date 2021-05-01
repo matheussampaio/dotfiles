@@ -255,7 +255,7 @@ set foldmethod=indent
 " Set default to unfold
 set foldlevel=1000
 
-set backupdir=$HOME/tmp
+set backupdir=$HOME/.tmp
 
 " Write swap files to disk quicker
 set updatetime=300
