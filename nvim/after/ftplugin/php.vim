@@ -1,5 +1,3 @@
-call coc#add_extension('coc-phpls')
-
 setlocal list
 
 " Number of spaces that a <Tab> in the file counts for.

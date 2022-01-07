@@ -1,5 +1,3 @@
-call coc#add_extension('coc-json')
-
 if executable('python')
   setlocal formatprg=python\ -m\ json.tool
 endif

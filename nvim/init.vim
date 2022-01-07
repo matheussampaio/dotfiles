@@ -1,8 +1,8 @@
 scriptencoding utf-8
 
-" " ============================================================================ "
-" " ===                              VIM Plug                                === "
-" " ============================================================================ "
+" ============================================================================ "
+" ===                              VIM Plug                                === "
+" ============================================================================ "
 
 " check whether vim-plug is installed and install it if necessary
 let plugpath = expand('<sfile>:p:h'). '/autoload/plug.vim'
@@ -22,9 +22,9 @@ endif
 
 call plug#begin('~/.local/share/nvim/plugged')
 
-" " ============================================================================ "
-" " ===                               Plugins                                === "
-" " ============================================================================ "
+" ============================================================================ "
+" ===                               Plugins                                === "
+" ============================================================================ "
 
 " comment stuff out.
 Plug 'tpope/vim-commentary'
@@ -45,13 +45,13 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-vinegar'
 
 " continuously updated sessions files
-" Plug 'tpope/vim-obsession'
+Plug 'tpope/vim-obsession'
 
 " lean and mean status/tabline.
 Plug 'vim-airline/vim-airline'
 
 " place, toggle and display marks.
-Plug 'kshenoy/vim-signature'
+" Plug 'kshenoy/vim-signature'
 
 " make it easier to swap between vim and tmux.
 Plug 'christoomey/vim-tmux-navigator'
@@ -72,19 +72,16 @@ Plug 'vimwiki/vimwiki'
 " Plug 'rstacruz/vim-closer'
 
 " " === vim-polyglot === "
-let g:polyglot_disabled = ['typescript']
+" let g:polyglot_disabled = ['typescript']
 
 " Many syntax highlights
-Plug 'sheerun/vim-polyglot'
+" Plug 'sheerun/vim-polyglot'
 
 " TypeScript syntax highlights
-Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
-
-" Display colors inline
-" Plug 'RRethy/vim-hexokinase', { 'on': 'HexokinaseToggle', 'do': 'make hexokinase' }
+" Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 
 " A simple alignment operator
-Plug 'tommcdo/vim-lion'
+" Plug 'tommcdo/vim-lion'
 
 " Speed up Vim by updating folds only when called-for.
 " Plug 'Konfekt/FastFold'
@@ -93,19 +90,19 @@ Plug 'tommcdo/vim-lion'
 Plug 'zhimsel/vim-stay'
 
 " Git wrapper.
-Plug 'tpope/vim-fugitive'
+" Plug 'tpope/vim-fugitive'
 
 " fugitive github extension.
-Plug 'tpope/vim-rhubarb'
+" Plug 'tpope/vim-rhubarb'
 
 " Change word case
-Plug 'tpope/vim-abolish'
+" Plug 'tpope/vim-abolish'
 
 " Show git changes in the sign column.
 Plug 'mhinz/vim-signify'
 
 " Preview markdown with :LivePreview.
-Plug 'shime/vim-livedown', { 'on': 'LivedownPreview' }
+" Plug 'shime/vim-livedown', { 'on': 'LivedownPreview' }
 
 " Provides automatic closing of quotes, parenthesis, brackets, etc.
 " Plug 'Raimondi/delimitMate'
@@ -131,13 +128,13 @@ Plug 'FooSoft/vim-argwrap'
 Plug 'editorconfig/editorconfig-vim'
 
 " Treesitter configurations and abstraction layer for Neovim.
-" Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
+Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 
 call plug#end()
 
-" " ============================================================================ "
-" " ===                           EDITING OPTIONS                            === "
-" " ============================================================================ "
+" ============================================================================ "
+" ===                           EDITING OPTIONS                            === "
+" ============================================================================ "
 
 syntax on
 
@@ -176,10 +173,10 @@ set cmdheight=1
 set shortmess+=c
 
 " Always keep some lines before/after the current line when scrolling.
-set scrolloff=2
+set scrolloff=8
 
 " Always keep some characters before/after the current column.
-set sidescroll=5
+set sidescroll=8
 
 " ignore case when searching.
 set ignorecase
@@ -217,7 +214,7 @@ set termguicolors
 set nopaste
 
 " Save fold and cursor positions to viewfile.
-set viewoptions=folds,cursor,slash,unix
+set viewoptions=cursor,folds,slash,unix
 
 " Remove ~ from the left side of the window
 set fillchars=eob:\ " space here is important
@@ -250,54 +247,53 @@ set lazyredraw
 set regexpengine=1
 
 " Syntax highlighting items specify folds.
-set foldmethod=indent
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
 
 " Set default to unfold
-set foldlevel=1000
+" set foldlevel=1000
 
 set backupdir=$HOME/.tmp
 
 " Write swap files to disk quicker
 set updatetime=300
 
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
-if has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
+" Display signs in the number column
+set signcolumn=number
 
 set conceallevel=1
 
 " set blinking cursor
 set guicursor+=a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
 
-" " ============================================================================ "
-" " ===                           PLUGIN SETUP                               === "
-" " ============================================================================ "
+" pop up menu height
+set pumheight=10
+
+set smartindent
+" ============================================================================ "
+" ===                           PLUGIN SETUP                               === "
+" ============================================================================ "
 
 " Useful variable to detect the OS
-if !exists("g:os")
-  if has("win64") || has("win32") || has("win16")
-    let g:os = "Windows"
-  else
-    let g:os = substitute(system('uname'), '\n', '', '')
-  endif
-endif
+" if !exists("g:os")
+"   if has("win64") || has("win32") || has("win16")
+"     let g:os = "Windows"
+"   else
+"     let g:os = substitute(system('uname'), '\n', '', '')
+"   endif
+" endif
 
 " " === Vim airline ==== "
 " Wrap in try/catch to avoid errors on initial install before plugin is available
 try
   " Do not show current git branch
-  let g:airline#extensions#branch#enabled=0
+  " let g:airline#extensions#branch#enabled=0
 
   " Enable bufferline integration
-  let g:airline#extensions#fugitiveline#enabled=1
+  " let g:airline#extensions#fugitiveline#enabled=1
 
   " Do not draw separators for empty sections (only for the active window) >
-  let g:airline_skip_empty_sections=1
+  " let g:airline_skip_empty_sections=1
 
   " remove (fileencoding, fileformat) section
   let g:airline_section_y=''
@@ -305,12 +301,8 @@ try
   " remove (percentage, line number, column number) section
   let g:airline_section_z=''
 
-  let airline#extensions#coc#stl_format_err='%E{[%e(#%fe)]}'
-  let airline#extensions#coc#stl_format_warn='%W{[%w(#%fw)]}'
-
   " hide tabs close button
   let g:airline#extensions#tabline#show_close_button=1
-
 
   " Disable vim-airline in preview mode
   let g:airline_exclude_preview=1
@@ -326,35 +318,31 @@ try
 catch
 endtry
 
-" " === vimwiki ==== "
+" === vimwiki ==== "
 let g:vimwiki_list = [{ 'path': '~/Dropbox/wiki' }]
 
-" " === Signify === "
+" === Signify === "
 let g:signify_sign_delete = '-'
 
-" " === Netrw === "
+" === Netrw === "
 let g:netrw_altfile=1 " Don't add netwr buffers when jumping with <C-6>
 let g:netrw_localrmdir="rm -r" " delete non-empty folders
 let g:netrw_home='~/.local/share/nvim'
 
-" " === vim-hexokinase === "
-" Display colors as virtual text
-let g:Hexokinase_highlighters = ['virtual']
-
-" " " === emmet.vim === "
+" === emmet.vim === "
 " Change emmet key
 " let g:user_emmet_leader_key='<C-E>'
 
-" " === fastfold === "
-let g:markdown_folding=1
-let g:javaScript_fold=1
+" === fastfold === "
+" let g:markdown_folding=1
+" let g:javaScript_fold=1
 
-" " === editorconfig.vim === "
+" === editorconfig.vim === "
 let g:EditorConfig_exclude_patterns = ['fugitive://.\*', 'scp://.\*']
 
-" " ============================================================================ "
-" " ===                                UI                                    === "
-" " ============================================================================ "
+" ============================================================================ "
+" ===                                UI                                    === "
+" ============================================================================ "
 
 " Use dark background
 set background=dark
@@ -424,36 +412,18 @@ if isdirectory( expand("$HOME/.local/share/nvim/plugged/vim-monokai-tasty") )
   colorscheme vim-monokai-tasty
 endif
 
-" " ============================================================================ "
-" " ===                            Key Mappings                              === "
-" " ============================================================================ "
+" ============================================================================ "
+" ===                            Key Mappings                              === "
+" ============================================================================ "
 
-" " " === vim-better-whitespace === "
-" Automatically remove trailing whitespace
-nnoremap <leader>as :StripWhitespace<CR>
-
-" " === vim hexokinase === "
-" Toggle show colors beside colors hex, rgb, rgba, etc.
-nnoremap <leader>ac :HexokinaseToggle<CR>
-
-" " === Vim ArgWrap === "
 " Toggle argwrap
 nnoremap <silent> <leader>aw :ArgWrap<CR>
 
-" " === Others === "
 " Open .vimrc
 nnoremap <leader>ov :tabnew ~/git/dotfiles/nvim/init.vim<CR>
 
 " Ctrl+S to save the buffer
 nnoremap <C-s> :w<CR>
-
-" Update buffers
-nnoremap <leader>u :checktime<CR>
-
-" Debug hightlight group
-map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
-  \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-  \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 " move visual lines
 nnoremap j gj
@@ -474,20 +444,18 @@ vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 
 " Normally space move the cursor to the right in normal mode. Since LEADER is
 " SPACE, disabling that behavior works better for me.
-nnoremap <space> <NOP>
+" nnoremap <space> <NOP>
 
-" " ============================================================================ "
-" " ===                               coc.nvim                               === "
-" " ============================================================================ "
+" ============================================================================ "
+" ===                               coc.nvim                               === "
+" ============================================================================ "
+
 " Install basic lists, including `files`, `mru`, `grep`, etc.
 try
-  call coc#add_extension('coc-lists', 'coc-snippets')
+  call coc#add_extension('coc-css', 'coc-emmet', 'coc-html', 'coc-json', 'coc-lists', 'coc-python', 'coc-snippets', 'coc-tsserver', 'coc-vetur')
 
   " Got to current word definition
-  nmap <silent> <leader>gd <Plug>(coc-definition)
-
-  " Open current type definition
-  nmap <silent> <leader>gy <Plug>(coc-type-definition)
+  nmap <silent> gd <Plug>(coc-definition)
 
   " Search for current work references
   nmap <silent> <leader>gr <Plug>(coc-references)
@@ -534,13 +502,9 @@ try
   endfunction
 
   " Use <c-space> to trigger completion.
-  if has('nvim')
-    inoremap <silent><expr> <c-space> coc#refresh()
-  else
-    inoremap <silent><expr> <c-@> coc#refresh()
-  endif
+  inoremap <silent><expr> <c-space> coc#refresh()
 
-  " Use <cr> to confirm completion
+  " Use <cr> to confirk completion
   inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<C-r>=coc#on_enter()\<CR>"
 
   " Close the preview window when completion is done.
@@ -551,9 +515,9 @@ try
 
   " Search for a symbol in the current directory
   nnoremap <silent> <leader>cs :CocList symbols<CR>
-  
+ 
   " Resumse previous list
-  nnoremap <silent> <leader>r :CocResume<CR>
+  nnoremap <silent> leader>r :CocResume<CR>
 
   " Search for a command
   nnoremap <silent> <leader>cc :CocCommand<CR>
@@ -582,36 +546,46 @@ try
   let g:airline_section_warning='%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
   let g:airline_powerline_fonts=1
 
+  let airline#extensions#coc#stl_format_err='%E{[%e(#%fe)]}'
+  let airline#extensions#coc#stl_format_warn='%W{[%w(#%fw)]}'
+
   " Add status line support, for integration with other plugin, checkout `:h coc-status`
   set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 catch
 endtry
 
-" lua <<EOF
-" require'nvim-treesitter.configs'.setup {
-"   ensure_installed = "all",
-"   highlight = {
-"     enable = true,
-"   },
-" }
-" EOF
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  -- One of "all", "maintained" (parsers with maintainers), or a list of languages
+  ensure_installed = {
+      "bash",
+      "html",
+      "java",
+      "javascript",
+      "json",
+      "markdown",
+      "python",
+      "typescript",
+      "vim",
+      "vue"
+  },
 
-function! OnVimEnter() abort
-  " Run PlugUpdate every week automatically when entering Vim.
-  if exists('g:plug_home')
-    let l:filename = printf('%s/.vim_plug_update', g:plug_home)
-    if filereadable(l:filename) == 0
-      call writefile([], l:filename)
-    endif
+  -- Install languages synchronously (only applied to `ensure_installed`)
+  sync_install = false,
 
-    let l:this_week = strftime('%Y_%V')
-    let l:contents = readfile(l:filename)
-    if index(l:contents, l:this_week) < 0
-      call execute('PlugUpgrade')
-      call execute('PlugUpdate')
-      call writefile([l:this_week], l:filename, 'a')
-    endif
-  endif
-endfunction
+  highlight = {
+    -- `false` will disable the whole extension
+    enable = true,
 
-autocmd VimEnter * call OnVimEnter()
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+
+  indent = {
+    enable = true
+  },
+}
+EOF

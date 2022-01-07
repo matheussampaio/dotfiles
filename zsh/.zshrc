@@ -94,3 +94,4 @@ if [ -f '/Users/matheussampaio/Downloads/google-cloud-sdk/path.zsh.inc' ]; then 
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/matheussampaio/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/matheussampaio/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+export PATH="/usr/local/opt/python@3.8/bin:$PATH"
