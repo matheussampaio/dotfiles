@@ -41,9 +41,10 @@ Plug 'tpope/vim-unimpaired'
 " enable repeating supported plugin maps with '.'.
 Plug 'tpope/vim-repeat'
 
-" improvements to netrw.
-" Plug 'tpope/vim-vinegar'
+" Path navigator designed to work with Vim's built-in mechanisms and complementary plugins
 Plug 'justinmk/vim-dirvish'
+
+" The file manipulation commands for vim-dirvish
 Plug 'roginfarrer/vim-dirvish-dovish'
 
 " continuously updated sessions files
@@ -51,9 +52,6 @@ Plug 'tpope/vim-obsession'
 
 " lean and mean status/tabline.
 Plug 'vim-airline/vim-airline'
-
-" place, toggle and display marks.
-" Plug 'kshenoy/vim-signature'
 
 " make it easier to swap between vim and tmux.
 Plug 'christoomey/vim-tmux-navigator'
@@ -70,32 +68,11 @@ Plug 'patstockwell/vim-monokai-tasty'
 " Take notes with Wiki.
 Plug 'vimwiki/vimwiki'
 
-" auto-close brakets after pressing ENTER.
-" Plug 'rstacruz/vim-closer'
-
-" " === vim-polyglot === "
-" let g:polyglot_disabled = ['typescript']
-
-" Many syntax highlights
-" Plug 'sheerun/vim-polyglot'
-
-" TypeScript syntax highlights
-" Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
-
-" A simple alignment operator
-" Plug 'tommcdo/vim-lion'
-
-" Speed up Vim by updating folds only when called-for.
-" Plug 'Konfekt/FastFold'
-
 " Make Vim persist editing state without fuss
 Plug 'zhimsel/vim-stay'
 
 " Git wrapper.
 Plug 'tpope/vim-fugitive'
-
-" fugitive github extension.
-" Plug 'tpope/vim-rhubarb'
 
 " Change word case, add abbreviations, and search/replace
 Plug 'tpope/vim-abolish'
@@ -103,30 +80,16 @@ Plug 'tpope/vim-abolish'
 " Show git changes in the sign column.
 Plug 'mhinz/vim-signify'
 
-" Preview markdown with :LivePreview.
-" Plug 'shime/vim-livedown', { 'on': 'LivedownPreview' }
-
-" Provides automatic closing of quotes, parenthesis, brackets, etc.
-" Plug 'Raimondi/delimitMate'
-
-" " Syntax highlighting, matching rules and mappings for the original Markdown and extensions.
-" Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] }
-
 " vim-markdown requries tabular to format tables
 Plug 'godlygeek/tabular'
-
-" " Show information about dependencies versions inside `package.json`.
-" Plug 'meain/vim-package-info', { 'do': 'npm install' }
 
 " Wrap and unwrap function arguments, lists, and dictionaires
 Plug 'FooSoft/vim-argwrap'
 
-" " " Disctraction-free writing in vim
-" Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
-
 " Support for expanding abbreviations
 Plug 'mattn/emmet-vim', { 'for': [ 'html', 'vue', 'jsx'] }
 
+" Add support to .editorconfig files
 Plug 'editorconfig/editorconfig-vim'
 
 " Treesitter configurations and abstraction layer for Neovim.
@@ -280,26 +243,11 @@ set smartindent
 " ===                           PLUGIN SETUP                               === "
 " ============================================================================ "
 
-" Useful variable to detect the OS
-" if !exists("g:os")
-"   if has("win64") || has("win32") || has("win16")
-"     let g:os = "Windows"
-"   else
-"     let g:os = substitute(system('uname'), '\n', '', '')
-"   endif
-" endif
-
 " === Vim airline ==== "
 " Wrap in try/catch to avoid errors on initial install before plugin is available
 try
-  " Do not show current git branch
-  " let g:airline#extensions#branch#enabled=0
-
   " Enable bufferline integration
-  " let g:airline#extensions#fugitiveline#enabled=1
-
-  " Do not draw separators for empty sections (only for the active window) >
-  " let g:airline_skip_empty_sections=1
+  let g:airline#extensions#fugitiveline#enabled=1
 
   " remove (fileencoding, fileformat) section
   let g:airline_section_y=''
@@ -313,9 +261,6 @@ try
   " Disable vim-airline in preview mode
   let g:airline_exclude_preview=1
 
-  " Enable powerline fonts
-  " let g:airline_powerline_fonts=1
-
   " Enable caching of syntax highlighting groups
   let g:airline_highlighting_cache=1
 
@@ -325,7 +270,7 @@ catch
 endtry
 
 " === vimwiki ==== "
-let g:vimwiki_list = [{ 'path': '~/Dropbox/wiki' }]
+let g:vimwiki_list = [{ 'path': '~/wiki' }]
 
 " === Signify === "
 let g:signify_sign_delete = '-'
@@ -337,11 +282,7 @@ let g:netrw_home='~/.local/share/nvim'
 
 " === emmet.vim === "
 " Change emmet key
-" let g:user_emmet_leader_key='<C-E>'
-
-" === fastfold === "
-" let g:markdown_folding=1
-" let g:javaScript_fold=1
+let g:user_emmet_leader_key='<C-E>'
 
 " === editorconfig.vim === "
 let g:EditorConfig_exclude_patterns = ['fugitive://.\*', 'scp://.\*']
@@ -402,25 +343,10 @@ augroup MyHighlights
   autocmd ColorScheme * call MyHighlights()
 augroup END
 
-" Hide cursorline after losing window focus
-" augroup CursorLine
-"   au!
-"   au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-"   au WinLeave * setlocal nocursorline
-" augroup END
-
 autocmd BufLeave * set laststatus=2
 
 " Only apply theme if vim-monokai plugin exists
 if isdirectory( expand("$HOME/.local/share/nvim/plugged/vim-monokai-tasty") )
-  " forces true colour on
-  " let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
-  " let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
-
-  " ???
-  " set t_ZH=[3m
-  " set t_ZR=[23m
-
   let g:vim_monokai_tasty_italic = 1
 
   if isdirectory( expand("$HOME/.local/share/nvim/plugged/vim-airline") )
@@ -466,7 +392,7 @@ vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 
 " Normally space move the cursor to the right in normal mode. Since LEADER is
 " SPACE, disabling that behavior works better for me.
-" nnoremap <space> <NOP>
+nnoremap <space> <NOP>
 
 " ============================================================================ "
 " ===                               coc.nvim                               === "
@@ -562,14 +488,6 @@ try
   " Use `[g` and `]g` to navigate diagnostics
   nnoremap <silent> [g <Plug>(coc-diagnostic-prev)
   nnoremap <silent> ]g <Plug>(coc-diagnostic-next)
-
-  " Configure error/warning section to use coc.nvim
-  let g:airline_section_error='%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
-  let g:airline_section_warning='%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
-  let g:airline_powerline_fonts=1
-
-  let airline#extensions#coc#stl_format_err='%E{[%e(#%fe)]}'
-  let airline#extensions#coc#stl_format_warn='%W{[%w(#%fw)]}'
 
   " Add status line support, for integration with other plugin, checkout `:h coc-status`
   set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
