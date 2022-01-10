@@ -42,7 +42,9 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-repeat'
 
 " improvements to netrw.
-Plug 'tpope/vim-vinegar'
+" Plug 'tpope/vim-vinegar'
+Plug 'justinmk/vim-dirvish'
+Plug 'roginfarrer/vim-dirvish-dovish'
 
 " continuously updated sessions files
 Plug 'tpope/vim-obsession'
@@ -90,13 +92,13 @@ Plug 'vimwiki/vimwiki'
 Plug 'zhimsel/vim-stay'
 
 " Git wrapper.
-" Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 
 " fugitive github extension.
 " Plug 'tpope/vim-rhubarb'
 
-" Change word case
-" Plug 'tpope/vim-abolish'
+" Change word case, add abbreviations, and search/replace
+Plug 'tpope/vim-abolish'
 
 " Show git changes in the sign column.
 Plug 'mhinz/vim-signify'
@@ -110,8 +112,8 @@ Plug 'mhinz/vim-signify'
 " " Syntax highlighting, matching rules and mappings for the original Markdown and extensions.
 " Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] }
 
-" " vim-markdown requries tabular to format tables
-" Plug 'godlygeek/tabular'
+" vim-markdown requries tabular to format tables
+Plug 'godlygeek/tabular'
 
 " " Show information about dependencies versions inside `package.json`.
 " Plug 'meain/vim-package-info', { 'do': 'npm install' }
@@ -122,13 +124,16 @@ Plug 'FooSoft/vim-argwrap'
 " " " Disctraction-free writing in vim
 " Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 
-" " Support for expanding abbreviations
-" Plug 'mattn/emmet-vim', { 'for': [ 'html', 'vue', 'jsx'] }
+" Support for expanding abbreviations
+Plug 'mattn/emmet-vim', { 'for': [ 'html', 'vue', 'jsx'] }
 
 Plug 'editorconfig/editorconfig-vim'
 
 " Treesitter configurations and abstraction layer for Neovim.
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
+
+" Displays available keybindings in popup
+Plug 'liuchengxu/vim-which-key'
 
 call plug#end()
 
@@ -246,12 +251,12 @@ set lazyredraw
 " set default regexp engine
 set regexpengine=1
 
-" Syntax highlighting items specify folds.
+" syntax highlighting items specify folds.
 set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
 
 " Set default to unfold
-" set foldlevel=1000
+set foldlevel=1000
 
 set backupdir=$HOME/.tmp
 
@@ -270,6 +275,7 @@ set guicursor+=a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
 set pumheight=10
 
 set smartindent
+
 " ============================================================================ "
 " ===                           PLUGIN SETUP                               === "
 " ============================================================================ "
@@ -283,7 +289,7 @@ set smartindent
 "   endif
 " endif
 
-" " === Vim airline ==== "
+" === Vim airline ==== "
 " Wrap in try/catch to avoid errors on initial install before plugin is available
 try
   " Do not show current git branch
@@ -308,7 +314,7 @@ try
   let g:airline_exclude_preview=1
 
   " Enable powerline fonts
-  let g:airline_powerline_fonts=1
+  " let g:airline_powerline_fonts=1
 
   " Enable caching of syntax highlighting groups
   let g:airline_highlighting_cache=1
@@ -339,6 +345,18 @@ let g:netrw_home='~/.local/share/nvim'
 
 " === editorconfig.vim === "
 let g:EditorConfig_exclude_patterns = ['fugitive://.\*', 'scp://.\*']
+
+" == which key ===
+autocmd! FileType which_key
+autocmd  FileType which_key set laststatus=0 noshowmode noruler
+  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+
+let g:which_key_floating_relative_win = 1
+
+let g:which_key_map = {}
+let g:which_key_visual_map = {}
+
+call which_key#register('<Space>', "g:which_key_map")
 
 " ============================================================================ "
 " ===                                UI                                    === "
@@ -416,10 +434,14 @@ endif
 " ===                            Key Mappings                              === "
 " ============================================================================ "
 
-" Toggle argwrap
+" Show keybindings
+nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
+vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
+
+let g:which_key_map.aw = 'toggle-arg-warp'
 nnoremap <silent> <leader>aw :ArgWrap<CR>
 
-" Open .vimrc
+let g:which_key_map.ov = 'edit-vimrc'
 nnoremap <leader>ov :tabnew ~/git/dotfiles/nvim/init.vim<CR>
 
 " Ctrl+S to save the buffer
@@ -429,13 +451,13 @@ nnoremap <C-s> :w<CR>
 nnoremap j gj
 nnoremap k gk
 
-" Paste from "+ (system) register
+let g:which_key_map.v = 'paste-from-clipboard'
 nnoremap <leader>v o<ESC>"+p
 
-" Copy selection to "+ (system) register
+let g:which_key_visual_map.c = 'copy-to-clipboard'
 vnoremap <leader>c "+y
 
-" Clear highlighted search terms while preserving history
+let g:which_key_map.h = 'clear-search-highlight'
 noremap <leader>h :nohlsearch<CR>
 
 " By pressing ctrl+r in visual mode, you will be prompted to enter text to replace with.
@@ -517,7 +539,7 @@ try
   nnoremap <silent> <leader>cs :CocList symbols<CR>
  
   " Resumse previous list
-  nnoremap <silent> leader>r :CocResume<CR>
+  nnoremap <silent> <leader>r :CocResume<CR>
 
   " Search for a command
   nnoremap <silent> <leader>cc :CocCommand<CR>
