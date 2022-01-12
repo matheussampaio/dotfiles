@@ -272,11 +272,6 @@ let g:vimwiki_list = [{ 'path': '~/wiki' }]
 " === Signify === "
 let g:signify_sign_delete = '-'
 
-" === Netrw === "
-let g:netrw_altfile=1 " Don't add netwr buffers when jumping with <C-6>
-let g:netrw_localrmdir="rm -r" " delete non-empty folders
-let g:netrw_home='~/.local/share/nvim'
-
 " === emmet.vim === "
 " Change emmet key
 let g:user_emmet_leader_key='<C-E>'
