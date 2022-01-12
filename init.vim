@@ -98,6 +98,9 @@ Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 " Displays available keybindings in popup
 Plug 'liuchengxu/vim-which-key'
 
+" Vim motions on speed!
+Plug 'easymotion/vim-easymotion'
+
 call plug#end()
 
 " ============================================================================ "
@@ -105,12 +108,6 @@ call plug#end()
 " ============================================================================ "
 
 syntax on
-
-" Show line number in the sign column.
-set number
-
-" Show relative line numbers.
-set relativenumber
 
 " Don't show last command.
 set noshowcmd
@@ -141,10 +138,10 @@ set cmdheight=1
 set shortmess+=c
 
 " Always keep some lines before/after the current line when scrolling.
-set scrolloff=8
+set scrolloff=4
 
 " Always keep some characters before/after the current column.
-set sidescroll=8
+set sidescroll=4
 
 " ignore case when searching.
 set ignorecase
@@ -227,7 +224,7 @@ set backupdir=$HOME/.tmp
 set updatetime=300
 
 " Display signs in the number column
-set signcolumn=number
+set signcolumn=yes
 
 set conceallevel=1
 
@@ -262,10 +259,10 @@ try
   let g:airline_exclude_preview=1
 
   " Enable caching of syntax highlighting groups
-  let g:airline_highlighting_cache=1
+  " let g:airline_highlighting_cache=1
 
   " Don't show git changes to current file in airline
-  let g:airline#extensions#hunks#enabled=0
+  " let g:airline#extensions#hunks#enabled=0
 catch
 endtry
 
@@ -390,10 +387,6 @@ noremap <leader>h :nohlsearch<CR>
 " Press enter and then confirm each change you agree with y or decline with n.
 vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 
-" Normally space move the cursor to the right in normal mode. Since LEADER is
-" SPACE, disabling that behavior works better for me.
-nnoremap <space> <NOP>
-
 " ============================================================================ "
 " ===                               coc.nvim                               === "
 " ============================================================================ "
@@ -463,7 +456,7 @@ try
 
   " Search for a symbol in the current directory
   nnoremap <silent> <leader>cs :CocList symbols<CR>
- 
+
   " Resumse previous list
   nnoremap <silent> <leader>r :CocResume<CR>
 
@@ -494,7 +487,22 @@ try
 catch
 endtry
 
+" <Leader>f{char} to move to {char}
+map  <Leader>f <Plug>(easymotion-bd-f)
+nmap <Leader>f <Plug>(easymotion-overwin-f)
+
+" s{char}{char} to move to {char}{char}
+nmap s <Plug>(easymotion-overwin-f2)
+
+" Move to line
+map <Leader>L <Plug>(easymotion-bd-jk)
+nmap <Leader>L <Plug>(easymotion-overwin-line)
+
+" Move to word
+map  <Leader>w <Plug>(easymotion-bd-w)
+nmap <Leader>w <Plug>(easymotion-overwin-w)
 lua <<EOF
+
 require'nvim-treesitter.configs'.setup {
   -- One of "all", "maintained" (parsers with maintainers), or a list of languages
   ensure_installed = {
