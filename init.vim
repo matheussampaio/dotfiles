@@ -360,7 +360,7 @@ let g:which_key_map.aw = 'toggle-arg-warp'
 nnoremap <silent> <leader>aw :ArgWrap<CR>
 
 let g:which_key_map.ov = 'edit-vimrc'
-nnoremap <leader>ov :tabnew ~/git/dotfiles/nvim/init.vim<CR>
+nnoremap <silent> <leader>ov :tabnew $MYVIMRC<CR>
 
 " Ctrl+S to save the buffer
 nnoremap <C-s> :w<CR>
