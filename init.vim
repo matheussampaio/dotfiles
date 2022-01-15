@@ -1,9 +1,5 @@
 scriptencoding utf-8
 
-" ============================================================================ "
-" ===                              VIM Plug                                === "
-" ============================================================================ "
-
 " check whether vim-plug is installed and install it if necessary
 let plugpath = expand('<sfile>:p:h'). '/autoload/plug.vim'
 if !filereadable(plugpath)
@@ -22,9 +18,7 @@ endif
 
 call plug#begin('~/.local/share/nvim/plugged')
 
-" ============================================================================ "
-" ===                               Plugins                                === "
-" ============================================================================ "
+syntax on
 
 " comment stuff out.
 Plug 'tpope/vim-commentary'
@@ -84,7 +78,7 @@ Plug 'mhinz/vim-signify'
 Plug 'godlygeek/tabular'
 
 " Wrap and unwrap function arguments, lists, and dictionaires
-Plug 'FooSoft/vim-argwrap'
+Plug 'FooSoft/vim-argwrap', { 'on': 'ArgWarp' }
 
 " Support for expanding abbreviations
 Plug 'mattn/emmet-vim', { 'for': [ 'html', 'vue', 'jsx'] }
@@ -95,19 +89,16 @@ Plug 'editorconfig/editorconfig-vim'
 " Treesitter configurations and abstraction layer for Neovim.
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 
-" Displays available keybindings in popup
-Plug 'liuchengxu/vim-which-key'
-
 " Vim motions on speed!
-Plug 'easymotion/vim-easymotion'
+Plug 'phaazon/hop.nvim'
+
+" Kick off builds and test suites using one of several asynchronous adapters
+Plug 'tpope/vim-dispatch', { 'on': ['Make', 'Dispatch'] }
+
+" disables search highlighting when you are done searching
+Plug 'romainl/vim-cool'
 
 call plug#end()
-
-" ============================================================================ "
-" ===                           EDITING OPTIONS                            === "
-" ============================================================================ "
-
-syntax on
 
 " Don't show last command.
 set noshowcmd
@@ -179,16 +170,10 @@ set termguicolors
 set nopaste
 
 " Save fold and cursor positions to viewfile.
-set viewoptions=cursor,folds,slash,unix
+set viewoptions=cursor,folds
 
 " Remove ~ from the left side of the window
 set fillchars=eob:\ " space here is important
-
-" Load local .nvimrc (:h exrc).
-set exrc
-
-" Avoid trojan horses when loading local .nvimrc (:h trojan-horse).
-set secure
 
 " Start diffmode with vertical splits.
 set diffopt+=vertical
@@ -203,10 +188,7 @@ let mapleader=" "
 set list
 
 " Display tab characters
-set listchars=nbsp:·,tab:▶-
-
-" the screen will not be redrawn while executing macros, registers and other commands that have not been typed.
-set lazyredraw
+set listchars=nbsp:·,tab:▶-,trail:·
 
 " set default regexp engine
 set regexpengine=1
@@ -226,7 +208,7 @@ set updatetime=300
 " Display signs in the number column
 set signcolumn=yes
 
-set conceallevel=1
+set conceallevel=0
 
 " set blinking cursor
 set guicursor+=a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
@@ -236,35 +218,36 @@ set pumheight=10
 
 set smartindent
 
+" Use dark background
+set background=dark
+
 " ============================================================================ "
 " ===                           PLUGIN SETUP                               === "
 " ============================================================================ "
 
 " === Vim airline ==== "
-" Wrap in try/catch to avoid errors on initial install before plugin is available
-try
-  " Enable bufferline integration
-  let g:airline#extensions#fugitiveline#enabled=1
+" Enable bufferline integration
+let g:airline#extensions#fugitiveline#enabled=1
 
-  " remove (fileencoding, fileformat) section
-  let g:airline_section_y=''
+" remove (fileencoding, fileformat) section
+let g:airline_section_y=''
 
-  " remove (percentage, line number, column number) section
-  let g:airline_section_z=''
+" remove (percentage, line number, column number) section
+let g:airline_section_z=''
 
-  " hide tabs close button
-  let g:airline#extensions#tabline#show_close_button=1
+" hide tabs close button
+let g:airline#extensions#tabline#show_close_button=1
 
-  " Disable vim-airline in preview mode
-  let g:airline_exclude_preview=1
+" Disable vim-airline in preview mode
+let g:airline_exclude_preview=1
 
-  " Enable caching of syntax highlighting groups
-  " let g:airline_highlighting_cache=1
+let g:airline_theme='monokai_tasty'
 
-  " Don't show git changes to current file in airline
-  " let g:airline#extensions#hunks#enabled=0
-catch
-endtry
+" Enable caching of syntax highlighting groups
+" let g:airline_highlighting_cache=1
+
+" Don't show git changes to current file in airline
+" let g:airline#extensions#hunks#enabled=0
 
 " === vimwiki ==== "
 let g:vimwiki_list = [{ 'path': '~/wiki' }]
@@ -274,29 +257,64 @@ let g:signify_sign_delete = '-'
 
 " === emmet.vim === "
 " Change emmet key
-let g:user_emmet_leader_key='<C-E>'
+let g:user_emmet_leader_key = '<C-E>'
 
 " === editorconfig.vim === "
 let g:EditorConfig_exclude_patterns = ['fugitive://.\*', 'scp://.\*']
 
-" == which key ===
-autocmd! FileType which_key
-autocmd  FileType which_key set laststatus=0 noshowmode noruler
-  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+" === vim-dispatch ===
+let g:dispatch_no_tmux_make = 1
 
-let g:which_key_floating_relative_win = 1
+let g:toggle_list_no_mappings = 1
 
-let g:which_key_map = {}
-let g:which_key_visual_map = {}
+nmap <script> <silent> <leader>tl :call ToggleLocationList()<CR>
+nmap <script> <silent> <leader>tq :call ToggleQuickfixList()<CR>
 
-call which_key#register('<Space>', "g:which_key_map")
+lua <<EOF
+require'hop'.setup()
 
-" ============================================================================ "
-" ===                                UI                                    === "
-" ============================================================================ "
+vim.api.nvim_set_keymap('n', 'f', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true })<cr>", {})
+vim.api.nvim_set_keymap('n', 'F', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true })<cr>", {})
+vim.api.nvim_set_keymap('o', 'f', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true, inclusive_jump = true })<cr>", {})
+vim.api.nvim_set_keymap('o', 'F', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true, inclusive_jump = true })<cr>", {})
+vim.api.nvim_set_keymap('', 't', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true })<cr>", {})
+vim.api.nvim_set_keymap('', 'T', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true })<cr>", {})
 
-" Use dark background
-set background=dark
+require'nvim-treesitter.configs'.setup {
+    -- One of "all", "maintained" (parsers with maintainers), or a list of languages
+  ensure_installed = {
+      "bash",
+      "html",
+      "java",
+      "javascript",
+      "json",
+      "lua",
+      "markdown",
+      "python",
+      "typescript",
+      "vim",
+      "vue"
+    },
+
+  -- Install languages synchronously (only applied to `ensure_installed`)
+  sync_install = false,
+
+  highlight = {
+      -- `false` will disable the whole extension
+    enable = true,
+
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+
+  indent = {
+    enable = true
+  },
+}
+EOF
 
 " Add custom highlights in method that is executed every time a
 " colorscheme is sourced
@@ -337,30 +355,19 @@ augroup END
 
 autocmd BufLeave * set laststatus=2
 
-" Only apply theme if vim-monokai plugin exists
-if isdirectory( expand("$HOME/.local/share/nvim/plugged/vim-monokai-tasty") )
-  let g:vim_monokai_tasty_italic = 1
+let g:vim_monokai_tasty_italic = 1
 
-  if isdirectory( expand("$HOME/.local/share/nvim/plugged/vim-airline") )
-    let g:airline_theme='monokai_tasty'
-  endif
+colorscheme vim-monokai-tasty
 
-  colorscheme vim-monokai-tasty
-endif
+autocmd TextYankPost * silent! lua vim.highlight.on_yank()
 
-" ============================================================================ "
-" ===                            Key Mappings                              === "
-" ============================================================================ "
-
-" Show keybindings
-nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
-vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
-
-let g:which_key_map.aw = 'toggle-arg-warp'
 nnoremap <silent> <leader>aw :ArgWrap<CR>
 
-let g:which_key_map.ov = 'edit-vimrc'
-nnoremap <silent> <leader>ov :tabnew $MYVIMRC<CR>
+nnoremap <silent> <leader>ov :edit $MYVIMRC<CR>
+nnoremap <silent> <leader>ot :tabnew $MYVIMRC<CR>
+nnoremap <silent> <leader>os :source $MYVIMRC<CR>
+nnoremap <silent> <leader>oi :PlugInstall<CR>
+nnoremap <silent> <leader>oc :PlugClean<CR>
 
 " Ctrl+S to save the buffer
 nnoremap <C-s> :w<CR>
@@ -369,166 +376,113 @@ nnoremap <C-s> :w<CR>
 nnoremap j gj
 nnoremap k gk
 
-let g:which_key_map.v = 'paste-from-clipboard'
+" paste from clipboard
 nnoremap <leader>v o<ESC>"+p
 
-let g:which_key_visual_map.c = 'copy-to-clipboard'
+" save to clipboard
 vnoremap <leader>c "+y
-
-let g:which_key_map.h = 'clear-search-highlight'
-noremap <leader>h :nohlsearch<CR>
 
 " By pressing ctrl+r in visual mode, you will be prompted to enter text to replace with.
 " Press enter and then confirm each change you agree with y or decline with n.
 vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 
-" ============================================================================ "
-" ===                               coc.nvim                               === "
-" ============================================================================ "
-
 " Install basic lists, including `files`, `mru`, `grep`, etc.
-try
-  call coc#add_extension('coc-css', 'coc-emmet', 'coc-html', 'coc-json', 'coc-lists', 'coc-python', 'coc-snippets', 'coc-tsserver', 'coc-vetur')
+call coc#add_extension('coc-css', 'coc-emmet', 'coc-html', 'coc-json', 'coc-lists', 'coc-python', 'coc-tsserver', 'coc-vetur')
 
-  " Got to current word definition
-  nmap <silent> gd <Plug>(coc-definition)
+" Got to current word definition
+nmap <silent> gd <Plug>(coc-definition)
 
-  " Search for current work references
-  nmap <silent> <leader>gr <Plug>(coc-references)
+" Search for current work references
+nmap <silent> <leader>gr <Plug>(coc-references)
 
-  " Open current word implementation
-  nmap <silent> <leader>gi <Plug>(coc-implementation)
+" Open current word implementation
+nmap <silent> <leader>gi <Plug>(coc-implementation)
 
-  " Rename current word
-  nmap ,r <Plug>(coc-rename)
+" Rename current word
+nmap ,r <Plug>(coc-rename)
 
-  " Fix current line
-  nmap ,f <Plug>(coc-fix-current)
+" Fix current line
+nmap ,f <Plug>(coc-fix-current)
 
-  " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-  xmap <leader>a  <Plug>(coc-codeaction-selected)
-  nmap <leader>a  <Plug>(coc-codeaction-selected)
+" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
 
-  " Remap for do codeAction of current line
-  nmap <leader>ac  <Plug>(coc-codeaction)
+" Remap for do codeAction of current line
+nmap <leader>ac  <Plug>(coc-codeaction)
 
-  " Use K to show documentation in preview window
-  nmap <silent> K :call <SID>show_documentation()<CR>
+" Use K to show documentation in preview window
+nmap <silent> K :call <SID>show_documentation()<CR>
 
-  function! s:show_documentation()
-    if (index(['vim','help'], &filetype) >= 0)
-      execute 'h '.expand('<cword>')
-    else
-      call CocAction('doHover')
-    endif
-  endfunction
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
 
-  " Use tab for trigger completion with characters ahead and navigate.
-  " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-  " other plugin before putting this into your config.
-  inoremap <silent><expr> <TAB>
-        \ pumvisible() ? "\<C-n>" :
-        \ <SID>check_back_space() ? "\<TAB>" :
-        \ coc#refresh()
-  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-  function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~# '\s'
-  endfunction
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
 
-  " Use <c-space> to trigger completion.
-  inoremap <silent><expr> <c-space> coc#refresh()
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
 
-  " Use <cr> to confirk completion
-  inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<C-r>=coc#on_enter()\<CR>"
+" Use <cr> to confirk completion
+inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<C-r>=coc#on_enter()\<CR>"
 
-  " Close the preview window when completion is done.
-  autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+" Close the preview window when completion is done.
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
-  " Browse most recent files
-  nnoremap <silent> <leader>m :CocList mru<CR>
+" Browse most recent files
+nnoremap <silent> <leader>m :CocList mru<CR>
 
-  " Search for a symbol in the current directory
-  nnoremap <silent> <leader>cs :CocList symbols<CR>
+" Search for a symbol in the current directory
+nnoremap <silent> <leader>cs :CocList symbols<CR>
 
-  " Resumse previous list
-  nnoremap <silent> <leader>r :CocResume<CR>
+" Resumse previous list
+nnoremap <silent> <leader>r :CocResume<CR>
 
-  " Search for a command
-  nnoremap <silent> <leader>cc :CocCommand<CR>
+" Search for a command
+nnoremap <silent> <leader>cc :CocCommand<CR>
 
-  " Search for a term in the current directory
-  nnoremap <silent> <leader>s :CocList -I grep -ignorecase<CR>
+" Search for a term in the current directory
+nnoremap <silent> <leader>s :CocList -I grep -ignorecase<CR>
 
-  " Browse coc commands
-  nnoremap <silent> <leader>cp :CocList commands<CR>
+" Browse coc commands
+nnoremap <silent> <leader>cp :CocList commands<CR>
 
-  " Browse list of files in current directory
-  nnoremap <silent> <leader>p  :CocList files<CR>
+" Browse list of files in current directory
+nnoremap <silent> <leader>p  :CocList files<CR>
 
-  " Trigger completion
-  inoremap <silent><expr> <c-space> coc#refresh()
+" Trigger completion
+inoremap <silent><expr> <c-space> coc#refresh()
 
-  " Open vim notes
-  " nnoremap <leader>oc :tabnew ~/git/dotfiles/nvim/coc-settings.json<CR>
+" Open coc config
+nnoremap <leader>og :tabnew ~/git/dotfiles/nvim/coc-settings.json<CR>
 
-  " Use `[g` and `]g` to navigate diagnostics
-  nnoremap <silent> [g <Plug>(coc-diagnostic-prev)
-  nnoremap <silent> ]g <Plug>(coc-diagnostic-next)
+" Use `[g` and `]g` to navigate diagnostics
+nnoremap <silent> [g <Plug>(coc-diagnostic-prev)
+nnoremap <silent> ]g <Plug>(coc-diagnostic-next)
 
-  " Add status line support, for integration with other plugin, checkout `:h coc-status`
-  set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-catch
-endtry
+" Add status line support, for integration with other plugin, checkout `:h coc-status`
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
-" <Leader>f{char} to move to {char}
-map  <Leader>f <Plug>(easymotion-bd-f)
-nmap <Leader>f <Plug>(easymotion-overwin-f)
+nnoremap <silent> <leader>h :HopWord<CR>
+nnoremap <silent> <leader>l :HopLine<CR>
 
-" s{char}{char} to move to {char}{char}
-nmap s <Plug>(easymotion-overwin-f2)
-
-" Move to line
-map <Leader>L <Plug>(easymotion-bd-jk)
-nmap <Leader>L <Plug>(easymotion-overwin-line)
-
-" Move to word
-map  <Leader>w <Plug>(easymotion-bd-w)
-nmap <Leader>w <Plug>(easymotion-overwin-w)
-lua <<EOF
-
-require'nvim-treesitter.configs'.setup {
-  -- One of "all", "maintained" (parsers with maintainers), or a list of languages
-  ensure_installed = {
-      "bash",
-      "html",
-      "java",
-      "javascript",
-      "json",
-      "markdown",
-      "python",
-      "typescript",
-      "vim",
-      "vue"
-  },
-
-  -- Install languages synchronously (only applied to `ensure_installed`)
-  sync_install = false,
-
-  highlight = {
-    -- `false` will disable the whole extension
-    enable = true,
-
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
-    additional_vim_regex_highlighting = false,
-  },
-
-  indent = {
-    enable = true
-  },
-}
-EOF
+" Read a local nvimrc if available
+if filereadable(expand("$HOME/.nvimrc"))
+  " source $HOME/.nvimrc
+endif
