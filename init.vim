@@ -170,7 +170,7 @@ set termguicolors
 set nopaste
 
 " Save fold and cursor positions to viewfile.
-set viewoptions=cursor,folds
+set viewoptions=cursor,folds,slash,unix
 
 " Remove ~ from the left side of the window
 set fillchars=eob:\ " space here is important
@@ -269,6 +269,10 @@ let g:toggle_list_no_mappings = 1
 
 nmap <script> <silent> <leader>tl :call ToggleLocationList()<CR>
 nmap <script> <silent> <leader>tq :call ToggleQuickfixList()<CR>
+
+" Normally space move the cursor to the right in normal mode. Since LEADER is
+" SPACE, disabling that behavior works better for me.
+nnoremap <Space> <NOP>
 
 lua <<EOF
 require'hop'.setup()
@@ -469,7 +473,7 @@ nnoremap <silent> <leader>p  :CocList files<CR>
 " Trigger completion
 inoremap <silent><expr> <c-space> coc#refresh()
 
-" Open coc config
+" Open vim notes
 nnoremap <leader>og :tabnew ~/git/dotfiles/nvim/coc-settings.json<CR>
 
 " Use `[g` and `]g` to navigate diagnostics
@@ -484,5 +488,5 @@ nnoremap <silent> <leader>l :HopLine<CR>
 
 " Read a local nvimrc if available
 if filereadable(expand("$HOME/.nvimrc"))
-  " source $HOME/.nvimrc
+  source $HOME/.nvimrc
 endif
