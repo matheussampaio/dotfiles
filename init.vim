@@ -78,7 +78,7 @@ Plug 'mhinz/vim-signify'
 Plug 'godlygeek/tabular'
 
 " Wrap and unwrap function arguments, lists, and dictionaires
-Plug 'FooSoft/vim-argwrap', { 'on': 'ArgWarp' }
+Plug 'FooSoft/vim-argwrap', { 'on': 'ArgWrap' }
 
 " Support for expanding abbreviations
 Plug 'mattn/emmet-vim', { 'for': [ 'html', 'vue', 'jsx'] }
@@ -95,10 +95,20 @@ Plug 'phaazon/hop.nvim'
 " Kick off builds and test suites using one of several asynchronous adapters
 Plug 'tpope/vim-dispatch', { 'on': ['Make', 'Dispatch'] }
 
-" disables search highlighting when you are done searching
+" OSC 52 is a terminal sequence used to copy printed text into clipboard.
+" (copy from SSH session)
+Plug 'fcpg/vim-osc52'
+
+" Disables search highlighting when you are done searching
 Plug 'romainl/vim-cool'
 
+" Adds indentation guides to all lines
+Plug 'lukas-reineke/indent-blankline.nvim'
+
 call plug#end()
+
+" enable number columns
+set number
 
 " Don't show last command.
 set noshowcmd
@@ -382,8 +392,11 @@ nnoremap k gk
 
 " paste from clipboard
 nnoremap <leader>v o<ESC>"+p
+xnoremap <leader>v "+p
 
 " save to clipboard
+vnoremap <leader>co y:Oscyank<CR>
+xnoremap <leader>co y:Oscyank<CR>
 vnoremap <leader>c "+y
 
 " By pressing ctrl+r in visual mode, you will be prompted to enter text to replace with.
