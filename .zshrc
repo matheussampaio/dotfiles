@@ -6,92 +6,90 @@ stty -ixon
 # status check for large repositories much, much faster.
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-# Plugins can be found in ~/.oh-my-zsh/plugins/*
-plugins=(git wd z)
-
-# Load Oh My Zsh
-source $ZSH/oh-my-zsh.sh
+plugins=(git wd z zsh-vi-mode)
 
 # turn off all beeps
 unsetopt BEEP
 
-# Bindins
-# bindkey '^P' up-line-or-search
-# bindkey '^N' down-line-or-search
-
-bindkey '^P' history-beginning-search-backward
-bindkey '^N' history-beginning-search-forward
-
 # disable zsh's autocd
 unsetopt autocd
 
-alias adbs=adb_screenshot
-alias vims='nvim_session'
-alias vim='nvim'
-alias python='python3'
-alias lg='lazygit'
+# Path to oh-my-zsh installation.
+export ZSH=$HOME/.oh-my-zsh
 
-# Take and pull a screenshot from connected Android device
-adb_screenshot() {
-  SCREENSHOT_FILEPATH="/Users/$(whoami)/Desktop/screenshot_$(date +%d-%m-%Y:%H:%M:%S).png"
+# Name of the theme to load.
+export ZSH_THEME="robbyrussell"
 
-  # Record screenshot
-  adb shell screencap -p /sdcard/screenshot.png
+# Language settings
+export LC_CTYPE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
 
-  # Pull screenshot from device
-  adb pull /sdcard/screenshot.png
+# Enabled true color support for terminals
+export NVIM_TUI_ENABLE_TRUE_COLOR=1
 
-  # Clean screenshot from device
-  adb shell rm /sdcard/screenshot.png
+# Disable brew analytics
+export HOMEBREW_NO_ANALYTICS=1
 
-  # Move screenshot to Desktop and rename it to be unique
-  mv screenshot.png $SCREENSHOT_FILEPATH
+# Setting rg as the default source for fzf
+if command -v rg > /dev/null 2>&1; then
+  export FZF_DEFAULT_COMMAND='rg --files'
+fi
 
-  # Add image to clipboard
-  osascript -e "set the clipboard to (read (POSIX file \"$SCREENSHOT_FILEPATH\") as JPEG picture)"
+# Apply the command to CTRL-T as well
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+export XDG_CONFIG_HOME="$HOME/.config"
+
+export AUTO_TITLE_SCREENS="NO"
+
+# Load Oh My Zsh
+source $ZSH/oh-my-zsh.sh
+
+function my_zvm_init() {
+  [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+  bindkey '^P' history-beginning-search-backward
+  bindkey '^N' history-beginning-search-forward
 }
 
-# Force current branch to point to origin/$current_branch
+zvm_after_init_commands+=(my_zvm_init)
+
+if [ -d "$HOME/nvim/bin" ]; then
+  export PATH=$HOME/nvim/bin/:$PATH
+fi
+
+# Set default editor to nvim
+if command -v nvim > /dev/null 2>&1; then
+  export EDITOR='nvim'
+  alias vim='nvim'
+fi
+
+if [ -d "$HOME/.npm-global/bin" ]; then
+  export PATH=$HOME/.npm-global/bin:$PATH
+fi
+
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+  export PROMPT='%(?:%{$fg_bold[green]%}➜ :%{$fg_bold[red]%}➜ ) %{$fg[cyan]%}%c%{$reset_color%} %{$fg[yellow]%}[SSH]%{$reset_color%} $(git_prompt_info)'
+fi
+
 gbf() {
   TEMP_BRANCH_NAME=gbf-$(date +%F)
   CURRENT_BRANCH="$(git_current_branch)"
 
   git checkout --quiet -b $TEMP_BRANCH_NAME && \
-  git branch -f $CURRENT_BRANCH origin/$CURRENT_BRANCH && \
-  git checkout --quiet $CURRENT_BRANCH && \
-  git branch --quiet -D $TEMP_BRANCH_NAME
+    git branch -f $CURRENT_BRANCH origin/$CURRENT_BRANCH && \
+    git checkout --quiet $CURRENT_BRANCH && \
+    git branch --quiet -D $TEMP_BRANCH_NAME
 }
 
-# Open vim and create/load a session
-nvim_session() {
-  SESSIONS_FOLDER=~/.local/share/nvim/sessions
-  SESSION_FILE=${SESSIONS_FOLDER}/$1.vim
-
-  echo "$SESSION_FILE"
-
-  if [[ $# == 1 ]]; then
-    if [[  -f $SESSION_FILE ]]; then
-      nvim -S $SESSION_FILE
-    else
-      nvim -c ":Obsession $SESSION_FILE"
-    fi
-  else
-    SESSION_FILE=${SESSIONS_FOLDER}/$(ls ${SESSIONS_FOLDER} | fzf)
-
-    nvim -S $SESSION_FILE
-  fi
-}
-
-# Load hub
-if type hub > /dev/null; then
-  alias git=hub
+if command -v pyenv > /dev/null 2>&1; then
+  eval "$(pyenv init -)";
 fi
 
-[ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh ] && source "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh
+if command -v pyenv-virtualenv-init > /dev/null 2>&1; then
+  eval "$(pyenv virtualenv-init -)";
+fi
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/matheussampaio/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/matheussampaio/Downloads/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/matheussampaio/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/matheussampaio/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
-export PATH="/usr/local/opt/python@3.8/bin:$PATH"
+export JAVA_TOOLS_OPTIONS="-Dlog4j2.formatMsgNoLookups=true"
