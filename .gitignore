@@ -1,3 +1,4 @@
-.DS_Store
+nvim/.config/nvim/autoload
 
+.DS_Store
 .nvimrc
