@@ -24,7 +24,7 @@ syntax on
 Plug 'tpope/vim-commentary'
 
 " Change 'commentstring' according to context.
-Plug 'suy/vim-context-commentstring', { 'for': 'vue' }
+Plug 'suy/vim-context-commentstring'
 
 " provides mappings to easily delete, change and add surroundings (parantheses, brackets, quotes, etc).
 Plug 'tpope/vim-surround'
@@ -97,13 +97,13 @@ Plug 'tpope/vim-dispatch', { 'on': ['Make', 'Dispatch'] }
 
 " OSC 52 is a terminal sequence used to copy printed text into clipboard.
 " (copy from SSH session)
-Plug 'fcpg/vim-osc52'
+Plug 'ojroques/vim-oscyank'
 
 " Disables search highlighting when you are done searching
 Plug 'romainl/vim-cool'
 
-" Adds indentation guides to all lines
-Plug 'lukas-reineke/indent-blankline.nvim'
+" Place, toggle and display marks.
+Plug 'kshenoy/vim-signature'
 
 call plug#end()
 
@@ -231,6 +231,9 @@ set smartindent
 " Use dark background
 set background=dark
 
+" Highlight cursor line
+set cursorline
+
 " ============================================================================ "
 " ===                           PLUGIN SETUP                               === "
 " ============================================================================ "
@@ -260,7 +263,7 @@ let g:airline_theme='monokai_tasty'
 " let g:airline#extensions#hunks#enabled=0
 
 " === vimwiki ==== "
-let g:vimwiki_list = [{ 'path': '~/wiki' }]
+let g:vimwiki_list = [{ 'path': '~/wiki', 'syntax': 'markdown', 'ext': '.md' }]
 
 " === Signify === "
 let g:signify_sign_delete = '-'
@@ -383,6 +386,8 @@ nnoremap <silent> <leader>os :source $MYVIMRC<CR>
 nnoremap <silent> <leader>oi :PlugInstall<CR>
 nnoremap <silent> <leader>oc :PlugClean<CR>
 
+nnoremap <silent> <leader>e :!%:p<CR>
+
 " Ctrl+S to save the buffer
 nnoremap <C-s> :w<CR>
 
@@ -395,8 +400,8 @@ nnoremap <leader>v o<ESC>"+p
 xnoremap <leader>v "+p
 
 " save to clipboard
-vnoremap <leader>co y:Oscyank<CR>
-xnoremap <leader>co y:Oscyank<CR>
+vnoremap <leader>co :OSCYank<CR>
+xnoremap <leader>co :OSCYank<CR>
 vnoremap <leader>c "+y
 
 " By pressing ctrl+r in visual mode, you will be prompted to enter text to replace with.
@@ -469,7 +474,7 @@ nnoremap <silent> <leader>m :CocList mru<CR>
 nnoremap <silent> <leader>cs :CocList symbols<CR>
 
 " Resumse previous list
-nnoremap <silent> <leader>r :CocResume<CR>
+nnoremap <silent> <leader>r :CocListResume<CR>
 
 " Search for a command
 nnoremap <silent> <leader>cc :CocCommand<CR>
