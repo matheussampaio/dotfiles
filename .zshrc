@@ -6,6 +6,7 @@ stty -ixon
 # status check for large repositories much, much faster.
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
+# Plugins can be found in $HOME/.oh-my-zsh/plugins/*
 plugins=(git wd z zsh-vi-mode)
 
 # turn off all beeps
@@ -43,6 +44,8 @@ export XDG_CONFIG_HOME="$HOME/.config"
 
 export AUTO_TITLE_SCREENS="NO"
 
+export PATH=$HOME/.local/bin:$PATH
+
 # Load Oh My Zsh
 source $ZSH/oh-my-zsh.sh
 
@@ -56,7 +59,7 @@ function my_zvm_init() {
 zvm_after_init_commands+=(my_zvm_init)
 
 if [ -d "$HOME/nvim/bin" ]; then
-  export PATH=$HOME/nvim/bin/:$PATH
+  export PATH="$HOME/nvim/bin/:$PATH"
 fi
 
 # Set default editor to nvim
@@ -65,8 +68,16 @@ if command -v nvim > /dev/null 2>&1; then
   alias vim='nvim'
 fi
 
+if [ -d "$HOME/.rbenv/bin" ]; then
+  export PATH="$HOME/.rbenv/bin:$PATH"
+fi
+
+if command -v rbenv > /dev/null 2>&1; then
+  eval "$(rbenv init - zsh)"
+fi
+
 if [ -d "$HOME/.npm-global/bin" ]; then
-  export PATH=$HOME/.npm-global/bin:$PATH
+  export PATH="$HOME/.npm-global/bin:$PATH"
 fi
 
 # Preferred editor for local and remote sessions
@@ -91,5 +102,3 @@ fi
 if command -v pyenv-virtualenv-init > /dev/null 2>&1; then
   eval "$(pyenv virtualenv-init -)";
 fi
-
-export JAVA_TOOLS_OPTIONS="-Dlog4j2.formatMsgNoLookups=true"
