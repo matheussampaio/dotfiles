@@ -15,9 +15,6 @@ unsetopt BEEP
 # disable zsh's autocd
 unsetopt autocd
 
-# Path to oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
-
 # Name of the theme to load.
 export ZSH_THEME="robbyrussell"
 
@@ -32,6 +29,55 @@ export NVIM_TUI_ENABLE_TRUE_COLOR=1
 # Disable brew analytics
 export HOMEBREW_NO_ANALYTICS=1
 
+# Name of the theme to load.
+export ZSH_THEME="robbyrussell"
+
+export AUTO_TITLE_SCREENS="NO"
+
+# Path to oh-my-zsh installation.
+export ZSH=$HOME/.oh-my-zsh
+
+# Load Oh My Zsh
+source $ZSH/oh-my-zsh.sh
+
+# Set XDG values
+export XDG_CONFIG_HOME="$HOME/.config"
+
+# Add Go libraries to PATH
+if [ -d "$HOME/go/bin" ]; then
+    export PATH="$PATH:$HOME/go/bin/"
+fi
+
+if [ -d "/usr/local/go/bin" ]; then
+    export PATH="$PATH:/usr/local/go/bin"
+fi
+
+# Add NPM libraries to PATH
+if [ -d "$HOME/.npm/bin" ]; then
+    export PATH="$HOME/.npm/bin:$PATH"
+fi
+
+export N_PREFIX=$HOME/.n
+
+# Add N_PREFIX to PATH
+export PATH="$N_PREFIX/bin:$PATH"
+
+if [ -d "$HOME/.local/bin" ]; then
+    export PATH="$HOME/.local/bin:$PATH"
+fi
+
+if [ -d "$HOME/.rbenv/bin" ]; then
+  export PATH="$HOME/.rbenv/bin:$PATH"
+fi
+
+if [ -d "$HOME/.npm-global/bin" ]; then
+  export PATH="$HOME/.npm-global/bin:$PATH"
+fi
+
+if [ -d "$HOME/nvim/bin" ]; then
+  export PATH="$HOME/nvim/bin/:$PATH"
+fi
+
 # Setting rg as the default source for fzf
 if command -v rg > /dev/null 2>&1; then
   export FZF_DEFAULT_COMMAND='rg --files'
@@ -40,17 +86,8 @@ fi
 # Apply the command to CTRL-T as well
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-export XDG_CONFIG_HOME="$HOME/.config"
-
-export AUTO_TITLE_SCREENS="NO"
-
-export PATH=$HOME/.local/bin:$PATH
-
-# Load Oh My Zsh
-source $ZSH/oh-my-zsh.sh
-
 function my_zvm_init() {
-  [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+  [ -f $XDG_CONFIG_HOME/fzf/fzf.zsh ] && source $XDG_CONFIG_HOME/fzf/fzf.zsh
 
   bindkey '^P' history-beginning-search-backward
   bindkey '^N' history-beginning-search-forward
@@ -58,26 +95,22 @@ function my_zvm_init() {
 
 zvm_after_init_commands+=(my_zvm_init)
 
-if [ -d "$HOME/nvim/bin" ]; then
-  export PATH="$HOME/nvim/bin/:$PATH"
-fi
-
-# Set default editor to nvim
 if command -v nvim > /dev/null 2>&1; then
   export EDITOR='nvim'
-  alias vim='nvim'
-fi
 
-if [ -d "$HOME/.rbenv/bin" ]; then
-  export PATH="$HOME/.rbenv/bin:$PATH"
+  alias vim='nvim'
 fi
 
 if command -v rbenv > /dev/null 2>&1; then
   eval "$(rbenv init - zsh)"
 fi
 
-if [ -d "$HOME/.npm-global/bin" ]; then
-  export PATH="$HOME/.npm-global/bin:$PATH"
+if command -v pyenv > /dev/null 2>&1; then
+  eval "$(pyenv init -)";
+fi
+
+if command -v pyenv-virtualenv-init > /dev/null 2>&1; then
+  eval "$(pyenv virtualenv-init -)";
 fi
 
 # Preferred editor for local and remote sessions
@@ -94,11 +127,3 @@ gbf() {
     git checkout --quiet $CURRENT_BRANCH && \
     git branch --quiet -D $TEMP_BRANCH_NAME
 }
-
-if command -v pyenv > /dev/null 2>&1; then
-  eval "$(pyenv init -)";
-fi
-
-if command -v pyenv-virtualenv-init > /dev/null 2>&1; then
-  eval "$(pyenv virtualenv-init -)";
-fi

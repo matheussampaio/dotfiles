@@ -1,6 +1,7 @@
-Matheus Sampaio's dotfiles
+# Matheus Sampaio's dotfiles
 
-How to install
+## How to install
+
 ```sh
-$ ./install.sh
+$ make
 ```
