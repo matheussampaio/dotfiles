@@ -1,4 +1,5 @@
 SHELL = /bin/bash
+DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 UNAME_S := $(shell uname -s)
 
@@ -8,19 +9,17 @@ else
 	OS := linux
 endif
 
-all: $(OS)
+all: 
+	@echo $(DIR)
 
 macos: install-brew-packages install-node-packages install-nvim link
 
 link:
-	stow --verbose --target=$$HOME --restow zsh nvim git tmux
-
-unlink:
-	stow --verbose --target=$$HOME --delete zsh nvim git tmux
+	stow --verbose --target=$$HOME --dir=$(DIR) --restow zsh nvim git tmux
 
 install-brew-packages: install-brew
 	brew install gcc git stow tmux ripgrep wget jq fzf node; \
-		$HOME/.fzf/install --xdg --no-bash --no-fish --no-key-bindings --no-update-rc --completion
+		/usr/local/opt/fzf/install --xdg --no-bash --no-fish --no-key-bindings --no-update-rc --completion
 
 install-brew:
 	if ! type "brew" >/dev/null 2>&1; then \
@@ -32,4 +31,4 @@ install-nvim: install-brew-packages link
 
 install-node-packages: install-brew-packages
 	npm install -g n tldr neovim; \
-		mkdir -p $HOME/.n
+		mkdir -p $$HOME/.n

@@ -58,3 +58,7 @@ fi
 if [ -d "$HOME/nvim/bin" ]; then
   export PATH="$HOME/nvim/bin/:$PATH"
 fi
+
+if [ -f "$HOME/.zshenv.local" ]; then
+  source "$HOME/.zshenv.local"
+fi
