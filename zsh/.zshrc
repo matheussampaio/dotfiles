@@ -67,3 +67,7 @@ gbf() {
     git checkout --quiet $CURRENT_BRANCH && \
     git branch --quiet -D $TEMP_BRANCH_NAME
 }
+
+if [ -f "$HOME/.zshrc.local" ]; then
+  source "$HOME/.zshrc.local"
+fi
