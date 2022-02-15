@@ -19,7 +19,7 @@ link:
 
 install-brew-packages: install-brew
 	brew install gcc git stow tmux ripgrep wget jq fzf node; \
-		/usr/local/opt/fzf/install --xdg --no-bash --no-fish --no-key-bindings --no-update-rc --completion
+		/usr/local/opt/fzf/install --xdg --no-bash --no-fish --key-bindings --no-update-rc --completion
 
 install-brew:
 	if ! type "brew" >/dev/null 2>&1; then \
