@@ -2,34 +2,38 @@ SHELL = /bin/bash
 DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 UNAME_S := $(shell uname -s)
 
-SYSTEM_PACKAGES   := gcc g++ make git stow tmux ripgrep wget jq
+
+SYSTEM_PACKAGES   := gcc g++ make git stow tmux ripgrep wget jq zsh
 NODE_PACKAGES     := n tldr neovim
 
 
-ifeq ($(UNAME_S), Darwin)
-	OS := macos
-	PKG_INSTALLER := brew install
-else
-	OS := linux
-	PKG_INSTALLER := sudo apt-get install -y
-endif
-
-
-all: $(OS)
-
-
-macos: install-brew install-system-packages install-node-packages install-neovim install-fzf link
-
-
-linux: install-system-packages install-node install-node-packages install-neovim install-fzf link
+all: install-system-packages install-node setup-node install-neovim setup-neovim install-ohmyzsh setup-ohmyzsh install-fzf link
 
 
 link:
-	stow --verbose --target=$$HOME --dir=$(DIR) --restow zsh nvim git tmux
+	stow --verbose --target=$$HOME --dir=$(DIR) --restow zsh nvim git tmux npm
 
 
 install-system-packages:
-	$(PKG_INSTALLER) $(SYSTEM_PACKAGES)
+ifeq ($(UNAME_S), Darwin)
+	if ! type "brew" >/dev/null 2>&1; then \
+		curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | bash; \
+	fi; && \
+	brew install $(SYSTEM_PACKAGES)
+else
+	sudo apt-get update && \
+	sudo apt-get install -y $(SYSTEM_PACKAGES)
+endif
+
+
+install-ohmyzsh:
+	wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh && \
+	KEEP_ZSHRC=yes RUNZSH=no sh install.sh && \
+	rm install.sh
+
+
+setup-ohmyzsh:
+	git clone https://github.com/jeffreytse/zsh-vi-mode $$HOME/.oh-my-zsh/plugins/zsh-vi-mode
 
 
 install-fzf:
@@ -37,32 +41,31 @@ install-fzf:
 	~/.fzf/install --xdg --no-bash --no-fish --key-bindings --no-update-rc --completion
 
 
-install-brew:
-	if ! type "brew" >/dev/null 2>&1; then \
-		curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | bash; \
-	fi
-
-
 install-node:
-ifeq ($(OS), macos)
-	$(PKG_INSTALLER) node
+ifeq ($(UNAME_S), Darwin)
+	brew install node
 else
 	curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash - && \
-	$(PKG_INSTALLER) nodejs
+	sudo apt-get install -y nodejs
 endif
+
+
+setup-node:
+	mkdir -p $$HOME/.npm $$HOME/.n && \
+	npm install --prefix $$HOME/.npm -g n && \
+	N_PREFIX=$$HOME/.n $$HOME/.npm/bin/n lts && \
+	$$HOME/.n/bin/npm install --prefix $$HOME/.npm -g $(NODE_PACKAGES)
 
 
 install-neovim:
-ifeq ($(OS), macos)
-	$(PKG_INSTALLER) neovim --HEAD
+ifeq ($(UNAME_S), Darwin)
+	brew install neovim --HEAD
 else
 	sudo add-apt-repository ppa:neovim-ppa/unstable -y && \
 	sudo apt-get update && \
-	$(PKG_INSTALLER) neovim
+	sudo apt-get install -y neovim
 endif
 
 
-install-node-packages:
-	npm install -g $(NODE_PACKAGES) && \
-	mkdir -p $$HOME/.n
-
+setup-neovim:
+	nvim --headless +"PlugInstall --sync" +qa
