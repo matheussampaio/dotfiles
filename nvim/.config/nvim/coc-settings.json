@@ -1,6 +1,5 @@
 {
   "codeLens.enable": true,
-  "javascript.referencesCodeLens.enable": true,
 
   "diagnostic.virtualText": true,
   "diagnostic.virtualTextCurrentLineOnly": false,
