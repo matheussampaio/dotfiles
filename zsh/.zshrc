@@ -2,21 +2,56 @@
 # https://unix.stackexchange.com/a/12108
 stty -ixon
 
-# Disable marking untracked files under VCS as dirty. This makes repository
-# status check for large repositories much, much faster.
-DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Plugins can be found in $HOME/.oh-my-zsh/plugins/*
-plugins=(git wd z zsh-vi-mode)
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
 
 # turn off all beeps
 unsetopt BEEP
 
-# disable zsh's autocd
-unsetopt autocd
+if [ ! -d "$HOME/.zplug" ]; then
+  curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+fi
 
-# Load Oh My Zsh
-source $ZSH/oh-my-zsh.sh
+source $HOME/.zplug/init.zsh
+
+# better and friendly vi(vim) mode plugin for ZSH
+zplug "jeffreytse/zsh-vi-mode"
+
+# provides many aliases and a few useful functions
+zplug "plugins/git", from:oh-my-zsh
+
+# adds support for doing system clipboard copy and paste operations
+zplug "lib/clipboard", from:oh-my-zsh
+
+# improves history command
+zplug "lib/history", from:oh-my-zsh
+
+# improves history command
+zplug "lib/directories", from:oh-my-zsh
+
+# provides many aliases and a few useful functions
+zplug "plugins/aliases", from:oh-my-zsh
+
+# (warp directory) lets you jump to custom directories in zsh
+zplug "mfaerevaag/wd"
+
+# Tracks your most used directories, based on 'frecency'.
+zplug "rupa/z", use:"z.sh"
+
+# Powerlevel10k is a theme for Zsh.
+zplug "romkatv/powerlevel10k", as:theme, depth:1
+
+# Install plugins if there are plugins that have not been installed
+if ! zplug check; then
+  zplug install
+fi
+
+# Then, source plugins and add commands to $PATH
+zplug load
 
 # Setting rg as the default source for fzf
 if command -v rg > /dev/null 2>&1; then
@@ -74,4 +109,9 @@ gbf() {
 
 if [ -f "$HOME/.zshrc.local" ]; then
   source "$HOME/.zshrc.local"
+fi
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+if [ -f "$HOME/.p10k.zsh" ]; then
+  source "$HOME/.p10k.zsh"
 fi
