@@ -263,7 +263,7 @@ let g:airline_theme='monokai_tasty'
 " let g:airline#extensions#hunks#enabled=0
 
 " === vimwiki ==== "
-let g:vimwiki_list = [{ 'path': '~/wiki', 'syntax': 'markdown' }]
+let g:vimwiki_list = [{ 'path': '~/wiki', 'syntax': 'markdown', 'ext': '.md' }]
 
 " === Signify === "
 let g:signify_sign_delete = '-'
