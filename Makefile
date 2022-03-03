@@ -3,7 +3,7 @@ DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 UNAME_S := $(shell uname -s)
 
 
-SYSTEM_PACKAGES   := gcc g++ make git stow tmux ripgrep wget jq zsh
+SYSTEM_PACKAGES   := git stow tmux ripgrep wget jq zsh
 NODE_PACKAGES     := n tldr neovim
 
 
@@ -18,7 +18,7 @@ install-system-packages:
 ifeq ($(UNAME_S), Darwin)
 	if ! type "brew" >/dev/null 2>&1; then \
 		curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | bash; \
-	fi; && \
+	fi; \
 	brew install $(SYSTEM_PACKAGES)
 else
 	sudo apt-get update && \
