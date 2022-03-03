@@ -7,7 +7,7 @@ SYSTEM_PACKAGES   := gcc g++ make git stow tmux ripgrep wget jq zsh
 NODE_PACKAGES     := n tldr neovim
 
 
-all: install-system-packages install-node setup-node install-neovim setup-neovim install-ohmyzsh setup-ohmyzsh install-fzf link
+all: install-system-packages install-node setup-node install-neovim setup-neovim install-fzf link
 
 
 link:
@@ -24,16 +24,6 @@ else
 	sudo apt-get update && \
 	sudo apt-get install -y $(SYSTEM_PACKAGES)
 endif
-
-
-install-ohmyzsh:
-	wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh && \
-	KEEP_ZSHRC=yes RUNZSH=no sh install.sh && \
-	rm install.sh
-
-
-setup-ohmyzsh:
-	git clone https://github.com/jeffreytse/zsh-vi-mode $$HOME/.oh-my-zsh/plugins/zsh-vi-mode
 
 
 install-fzf:
