@@ -27,8 +27,8 @@ endif
 
 
 install-fzf:
-	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
-	~/.fzf/install --xdg --no-bash --no-fish --key-bindings --no-update-rc --completion
+	if [ ! -d $$HOME/.fzf ]; then git clone --depth 1 https://github.com/junegunn/fzf.git $$HOME/.fzf; fi; \
+	$$HOME/.fzf/install --xdg --no-bash --no-fish --key-bindings --no-update-rc --completion
 
 
 install-node:
