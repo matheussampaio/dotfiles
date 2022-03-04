@@ -45,6 +45,8 @@ zplug "rupa/z", use:"z.sh"
 # Powerlevel10k is a theme for Zsh.
 zplug "romkatv/powerlevel10k", as:theme, depth:1
 
+zplug "zsh-users/zsh-autosuggestions"
+
 # Install plugins if there are plugins that have not been installed
 if ! zplug check; then
   zplug install
