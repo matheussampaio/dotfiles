@@ -7,7 +7,7 @@ SYSTEM_PACKAGES   := git stow tmux ripgrep wget jq zsh
 NODE_PACKAGES     := n tldr neovim
 
 
-all: install-system-packages install-node setup-node install-neovim setup-neovim install-fzf link
+all: install-system-packages install-node setup-node install-neovim setup-neovim install-fzf install-zplug link
 
 
 link:
@@ -24,6 +24,12 @@ else
 	sudo apt-get update && \
 	sudo apt-get install -y $(SYSTEM_PACKAGES)
 endif
+
+
+install-zplug:
+	if [ ! -d "$$HOME/.zplug" ]; then \
+		curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh; \
+	fi;
 
 
 install-fzf:
