@@ -57,7 +57,7 @@ zplug load
 
 # Setting rg as the default source for fzf
 if command -v rg > /dev/null 2>&1; then
-  export FZF_DEFAULT_COMMAND='rg --files'
+  export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 fi
 
 # Apply the command to CTRL-T as well

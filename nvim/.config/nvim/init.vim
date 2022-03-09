@@ -53,9 +53,6 @@ Plug 'christoomey/vim-tmux-navigator'
 " toggle quicklist and loclist.
 Plug 'milkypostman/vim-togglelist'
 
-" Intellisense engine with LSP support.
-Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-
 " Monokai Tasty Colorschema.
 Plug 'patstockwell/vim-monokai-tasty'
 
@@ -104,6 +101,9 @@ Plug 'romainl/vim-cool'
 
 " Place, toggle and display marks.
 Plug 'kshenoy/vim-signature'
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 call plug#end()
 
@@ -390,6 +390,7 @@ nnoremap <silent> <leader>e :!%:p<CR>
 
 " Ctrl+S to save the buffer
 nnoremap <C-s> :w<CR>
+inoremap <C-s> <ESC>:w<CR>
 
 " move visual lines
 nnoremap j gj
@@ -409,97 +410,87 @@ vnoremap <leader>c "+y
 vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 
 " Install basic lists, including `files`, `mru`, `grep`, etc.
-call coc#add_extension('coc-css', 'coc-emmet', 'coc-html', 'coc-json', 'coc-lists', 'coc-python', 'coc-tsserver', 'coc-vetur')
+" call coc#add_extension('coc-css', 'coc-emmet', 'coc-html', 'coc-json', 'coc-lists', 'coc-python', 'coc-tsserver', 'coc-vetur')
 
-" Got to current word definition
-nmap <silent> gd <Plug>(coc-definition)
+" " Got to current word definition
+" nmap <silent> gd <Plug>(coc-definition)
 
-" Search for current work references
-nmap <silent> <leader>gr <Plug>(coc-references)
+" " Search for current work references
+" nmap <silent> <leader>gr <Plug>(coc-references)
 
-" Open current word implementation
-nmap <silent> <leader>gi <Plug>(coc-implementation)
+" " Open current word implementation
+" nmap <silent> <leader>gi <Plug>(coc-implementation)
 
-" Rename current word
-nmap ,r <Plug>(coc-rename)
+" " Rename current word
+" nmap ,r <Plug>(coc-rename)
 
-" Fix current line
-nmap ,f <Plug>(coc-fix-current)
+" " Fix current line
+" nmap ,f <Plug>(coc-fix-current)
 
-" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
+" " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+" xmap <leader>a  <Plug>(coc-codeaction-selected)
+" nmap <leader>a  <Plug>(coc-codeaction-selected)
 
-" Remap for do codeAction of current line
-nmap <leader>ac  <Plug>(coc-codeaction)
+" " Remap for do codeAction of current line
+" nmap <leader>ac  <Plug>(coc-codeaction)
 
-" Use K to show documentation in preview window
-nmap <silent> K :call <SID>show_documentation()<CR>
+" " Use K to show documentation in preview window
+" nmap <silent> K :call <SID>show_documentation()<CR>
 
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
+" function! s:show_documentation()
+"   if (index(['vim','help'], &filetype) >= 0)
+"     execute 'h '.expand('<cword>')
+"   else
+"     call CocAction('doHover')
+"   endif
+" endfunction
+
+" " Use tab for trigger completion with characters ahead and navigate.
+" " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" " other plugin before putting this into your config.
+" inoremap <silent><expr> <TAB>
+"       \ pumvisible() ? "\<C-n>" :
+"       \ <SID>check_back_space() ? "\<TAB>" :
+"       \ coc#refresh()
+" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+" function! s:check_back_space() abort
+"   let col = col('.') - 1
+"   return !col || getline('.')[col - 1]  =~# '\s'
+" endfunction
+
+" " Use <c-space> to trigger completion.
+" inoremap <silent><expr> <c-space> coc#refresh()
+
+" " Use <cr> to confirk completion
+" inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<C-r>=coc#on_enter()\<CR>"
+
+" " Close the preview window when completion is done.
+" autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
+" " Search for a symbol in the current directory
+" nnoremap <silent> <leader>cs :CocList symbols<CR>
+
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --hidden --column --line-number --no-heading --color=always --smart-case -g "!{node_modules,.git}" -- %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
 endfunction
 
-" Use tab for trigger completion with characters ahead and navigate.
-" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+let g:fzf_preview_window = ['right:50%:hidden', 'ctrl-/']
 
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-
-" Use <cr> to confirk completion
-inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<C-r>=coc#on_enter()\<CR>"
-
-" Close the preview window when completion is done.
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-
-" Browse most recent files
-nnoremap <silent> <leader>m :CocList mru<CR>
-
-" Search for a symbol in the current directory
-nnoremap <silent> <leader>cs :CocList symbols<CR>
-
-" Resumse previous list
-nnoremap <silent> <leader>r :CocListResume<CR>
-
-" Search for a command
-nnoremap <silent> <leader>cc :CocCommand<CR>
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 
 " Search for a term in the current directory
-nnoremap <silent> <leader>s :CocList -I grep -ignorecase<CR>
-
-" Browse coc commands
-nnoremap <silent> <leader>cp :CocList commands<CR>
+nnoremap <silent> <leader>s :RG<CR>
 
 " Browse list of files in current directory
-nnoremap <silent> <leader>p  :CocList files<CR>
+nnoremap <silent> <leader>p :Files<CR>
 
-" Trigger completion
-inoremap <silent><expr> <c-space> coc#refresh()
-
-" Open vim notes
+" " Open vim notes
 nnoremap <leader>og :tabnew ~/git/dotfiles/nvim/coc-settings.json<CR>
-
-" Use `[g` and `]g` to navigate diagnostics
-nnoremap <silent> [g <Plug>(coc-diagnostic-prev)
-nnoremap <silent> ]g <Plug>(coc-diagnostic-next)
-
-" Add status line support, for integration with other plugin, checkout `:h coc-status`
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 nnoremap <silent> <leader>h :HopWord<CR>
 nnoremap <silent> <leader>l :HopLine<CR>

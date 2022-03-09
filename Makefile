@@ -3,7 +3,7 @@ DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 UNAME_S := $(shell uname -s)
 
 
-SYSTEM_PACKAGES   := git stow tmux ripgrep wget jq zsh
+SYSTEM_PACKAGES   := git stow tmux ripgrep wget jq zsh fd
 NODE_PACKAGES     := n tldr neovim
 
 
