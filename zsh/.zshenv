@@ -15,6 +15,8 @@ export CLICOLOR=1
 # Set XDG values
 export XDG_CONFIG_HOME="$HOME/.config"
 
+export FZF_DEFAULT_OPTS="--tiebreak end,length,index"
+
 #  n (node manager packages) should install node versions here
 export N_PREFIX=$HOME/.n
 

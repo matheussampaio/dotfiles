@@ -56,12 +56,10 @@ fi
 zplug load
 
 # Setting rg as the default source for fzf
-if command -v rg > /dev/null 2>&1; then
-  export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+if command -v fd > /dev/null 2>&1; then
+  export FZF_DEFAULT_COMMAND='fd --tiebreak end,length,index --type f --hidden --follow --exclude .git'
+  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 fi
-
-# Apply the command to CTRL-T as well
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 function my_zvm_init() {
   [ -f $XDG_CONFIG_HOME/fzf/fzf.zsh ] && source $XDG_CONFIG_HOME/fzf/fzf.zsh
@@ -74,6 +72,7 @@ zvm_after_init_commands+=(my_zvm_init)
 
 if command -v nvim > /dev/null 2>&1; then
   export EDITOR='nvim'
+  export MANPAGER='nvim -c "Man!"'
 
   alias vim='nvim'
 fi
