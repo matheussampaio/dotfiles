@@ -3,8 +3,10 @@ DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 UNAME_S := $(shell uname -s)
 
 
-SYSTEM_PACKAGES   := git stow tmux ripgrep wget jq zsh fd
-NODE_PACKAGES     := n tldr neovim typescript typescript-language-server
+SYSTEM_PACKAGES        := git stow tmux ripgrep wget jq zsh
+MACOS_SYSTEM_PACKAGES  := fd
+LINUX_SYSTEM_PACKAGES  := fd-find
+NODE_PACKAGES          := n tldr neovim typescript typescript-language-server trash-cli
 
 
 all: install-system-packages install-node setup-node install-neovim setup-neovim install-fzf install-zplug link
@@ -19,10 +21,10 @@ ifeq ($(UNAME_S), Darwin)
 	if ! type "brew" >/dev/null 2>&1; then \
 		curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | bash; \
 	fi; \
-	brew install $(SYSTEM_PACKAGES)
+	brew install $(SYSTEM_PACKAGES) $(MACOS_SYSTEM_PACKAGES)
 else
 	sudo apt-get update && \
-	sudo apt-get install -y $(SYSTEM_PACKAGES)
+	sudo apt-get install -y $(SYSTEM_PACKAGES) $(LINUX_SYSTEM_PACKAGES)
 endif
 
 
