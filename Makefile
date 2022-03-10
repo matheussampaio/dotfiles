@@ -24,7 +24,8 @@ ifeq ($(UNAME_S), Darwin)
 	brew install $(SYSTEM_PACKAGES) $(MACOS_SYSTEM_PACKAGES)
 else
 	sudo apt-get update && \
-	sudo apt-get install -y $(SYSTEM_PACKAGES) $(LINUX_SYSTEM_PACKAGES)
+	sudo apt-get install -y $(SYSTEM_PACKAGES) $(LINUX_SYSTEM_PACKAGES) && \
+	mkdir -p $$HOME/.local/bin && ln -s /usr/bin/fdfind $$HOME/.local/bin/fd
 endif
 
 
