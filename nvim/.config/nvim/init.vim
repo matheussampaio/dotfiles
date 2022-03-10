@@ -466,6 +466,7 @@ function! RipgrepFzf(query, fullscreen)
 endfunction
 
 let g:fzf_preview_window = ['right:50%:hidden', 'ctrl-/']
+let g:fzf_action = { 'ctrl-x': 'split', 'ctrl-s': 'vsplit' }
 
 command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 
