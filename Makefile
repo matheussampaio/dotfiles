@@ -4,7 +4,7 @@ UNAME_S := $(shell uname -s)
 
 
 SYSTEM_PACKAGES   := git stow tmux ripgrep wget jq zsh fd
-NODE_PACKAGES     := n tldr neovim
+NODE_PACKAGES     := n tldr neovim typescript typescript-language-server
 
 
 all: install-system-packages install-node setup-node install-neovim setup-neovim install-fzf install-zplug link
@@ -64,4 +64,4 @@ endif
 
 
 setup-neovim:
-	nvim --headless +"PlugInstall --sync" +qa
+	nvim --headless +"PlugInstall --sync" +"PlugClean\!" +qa
