@@ -13,7 +13,7 @@ all: install-system-packages install-node setup-node install-neovim setup-neovim
 
 
 link:
-	stow --verbose --target=$$HOME --dir=$(DIR) --restow zsh nvim git tmux npm
+	stow --verbose --target=$$HOME --dir=$(DIR) --restow zsh nvim git tmux npm alacritty
 
 
 install-system-packages:
