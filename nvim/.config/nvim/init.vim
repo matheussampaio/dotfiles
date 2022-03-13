@@ -84,8 +84,8 @@ Plug 'tpope/vim-abolish'
 " Show git changes in the sign column.
 Plug 'mhinz/vim-signify'
 
-" vim-markdown requries tabular to format tables
-Plug 'godlygeek/tabular'
+" " vim-markdown requries tabular to format tables
+" Plug 'godlygeek/tabular'
 
 " Wrap and unwrap function arguments, lists, and dictionaires
 Plug 'FooSoft/vim-argwrap', { 'on': 'ArgWrap' }
@@ -103,14 +103,14 @@ Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 Plug 'phaazon/hop.nvim'
 
 " Kick off builds and test suites using one of several asynchronous adapters
-Plug 'tpope/vim-dispatch', { 'on': ['Make', 'Dispatch'] }
+" Plug 'tpope/vim-dispatch', { 'on': ['Make', 'Dispatch'] }
 
 " OSC 52 is a terminal sequence used to copy printed text into clipboard.
 " (copy from SSH session)
 Plug 'ojroques/vim-oscyank'
 
 " Disables search highlighting when you are done searching
-Plug 'romainl/vim-cool'
+" Plug 'romainl/vim-cool'
 
 " Place, toggle and display marks.
 Plug 'kshenoy/vim-signature'
@@ -271,14 +271,8 @@ let g:airline_exclude_preview=1
 
 let g:airline_theme='monokai_tasty'
 
-" Enable caching of syntax highlighting groups
-" let g:airline_highlighting_cache=1
-
-" Don't show git changes to current file in airline
-" let g:airline#extensions#hunks#enabled=0
-
 " === vimwiki ==== "
-let g:vimwiki_list = [{ 'path': '~/wiki', 'syntax': 'markdown', 'ext': '.md' }]
+let g:vimwiki_list = [{ 'path': '~/wiki' }]
 
 " === Signify === "
 let g:signify_sign_delete = '-'
@@ -290,9 +284,6 @@ let g:user_emmet_leader_key = '<C-E>'
 " === editorconfig.vim === "
 let g:EditorConfig_exclude_patterns = ['fugitive://.\*', 'scp://.\*']
 
-" === vim-dispatch ===
-let g:dispatch_no_tmux_make = 1
-
 let g:toggle_list_no_mappings = 1
 
 nmap <script> <silent> <leader>tl :call ToggleLocationList()<CR>
@@ -301,7 +292,6 @@ nmap <script> <silent> <leader>tq :call ToggleQuickfixList()<CR>
 " Normally space move the cursor to the right in normal mode. Since LEADER is
 " SPACE, disabling that behavior works better for me.
 nnoremap <Space> <NOP>
-
 
 " Add custom highlights in method that is executed every time a
 " colorscheme is sourced
@@ -369,7 +359,6 @@ nnoremap <silent> <leader>aw :ArgWrap<CR>
 
 nnoremap <silent> <leader>ov :edit $MYVIMRC<CR>
 nnoremap <silent> <leader>ot :tabnew $MYVIMRC<CR>
-nnoremap <silent> <leader>os :source $MYVIMRC<CR>
 nnoremap <silent> <leader>oi :PlugInstall<CR>
 nnoremap <silent> <leader>oc :PlugClean<CR>
 
@@ -395,68 +384,6 @@ vnoremap <leader>c "+y
 " Press enter and then confirm each change you agree with y or decline with n.
 vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 
-" Install basic lists, including `files`, `mru`, `grep`, etc.
-" call coc#add_extension('coc-css', 'coc-emmet', 'coc-html', 'coc-json', 'coc-lists', 'coc-python', 'coc-tsserver', 'coc-vetur')
-
-" " Got to current word definition
-" nmap <silent> gd <Plug>(coc-definition)
-
-" " Search for current work references
-" nmap <silent> <leader>gr <Plug>(coc-references)
-
-" " Open current word implementation
-" nmap <silent> <leader>gi <Plug>(coc-implementation)
-
-" " Rename current word
-" nmap ,r <Plug>(coc-rename)
-
-" " Fix current line
-" nmap ,f <Plug>(coc-fix-current)
-
-" " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-" xmap <leader>a  <Plug>(coc-codeaction-selected)
-" nmap <leader>a  <Plug>(coc-codeaction-selected)
-
-" " Remap for do codeAction of current line
-" nmap <leader>ac  <Plug>(coc-codeaction)
-
-" " Use K to show documentation in preview window
-" nmap <silent> K :call <SID>show_documentation()<CR>
-
-" function! s:show_documentation()
-"   if (index(['vim','help'], &filetype) >= 0)
-"     execute 'h '.expand('<cword>')
-"   else
-"     call CocAction('doHover')
-"   endif
-" endfunction
-
-" " Use tab for trigger completion with characters ahead and navigate.
-" " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" " other plugin before putting this into your config.
-" inoremap <silent><expr> <TAB>
-"       \ pumvisible() ? "\<C-n>" :
-"       \ <SID>check_back_space() ? "\<TAB>" :
-"       \ coc#refresh()
-" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-" function! s:check_back_space() abort
-"   let col = col('.') - 1
-"   return !col || getline('.')[col - 1]  =~# '\s'
-" endfunction
-
-" " Use <c-space> to trigger completion.
-" inoremap <silent><expr> <c-space> coc#refresh()
-
-" " Use <cr> to confirk completion
-" inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<C-r>=coc#on_enter()\<CR>"
-
-" " Close the preview window when completion is done.
-" autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-
-" " Search for a symbol in the current directory
-" nnoremap <silent> <leader>cs :CocList symbols<CR>
-
 function! RipgrepFzf(query, fullscreen)
   let command_fmt = 'rg --hidden --column --line-number --no-heading --color=always --smart-case -g "!{node_modules,.git}" -- %s || true'
   let initial_command = printf(command_fmt, shellescape(a:query))
@@ -476,128 +403,9 @@ nnoremap <silent> <leader>s :RG<CR>
 " Browse list of files in current directory
 nnoremap <silent> <leader>p :Files<CR>
 
-" " Open vim notes
-nnoremap <leader>og :tabnew ~/git/dotfiles/nvim/coc-settings.json<CR>
-
-nnoremap <silent> <leader>h :HopWord<CR>
-nnoremap <silent> <leader>l :HopLine<CR>
-
-lua <<EOF
-require'hop'.setup()
-
-vim.api.nvim_set_keymap('n', 'f', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true })<cr>", {})
-vim.api.nvim_set_keymap('n', 'F', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true })<cr>", {})
-vim.api.nvim_set_keymap('o', 'f', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true, inclusive_jump = true })<cr>", {})
-vim.api.nvim_set_keymap('o', 'F', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true, inclusive_jump = true })<cr>", {})
-vim.api.nvim_set_keymap('', 't', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true })<cr>", {})
-vim.api.nvim_set_keymap('', 'T', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true })<cr>", {})
-
-require'nvim-treesitter.configs'.setup {
-    -- One of "all", "maintained" (parsers with maintainers), or a list of languages
-  ensure_installed = {
-      "bash",
-      "html",
-      "java",
-      "javascript",
-      "json",
-      "lua",
-      "markdown",
-      "python",
-      "typescript",
-      "vim",
-      "vue"
-    },
-
-  -- Install languages synchronously (only applied to `ensure_installed`)
-  sync_install = false,
-
-  highlight = {
-      -- `false` will disable the whole extension
-    enable = true,
-
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
-    additional_vim_regex_highlighting = false,
-  },
-
-  indent = {
-    enable = true
-  },
-}
-
--- Mappings.
--- See `:help vim.diagnostic.*` for documentation on any of the below functions
-local opts = { noremap=true, silent=true }
-
-vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
-vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
-
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
-local on_attach = function(client, bufnr)
-  -- Enable completion triggered by <c-x><c-o>
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  -- Mappings.
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
-end
-
--- Use a loop to conveniently call 'setup' on multiple servers and
--- map buffer local keybindings when the language server attaches
--- Setup nvim-cmp.
-local cmp = require'cmp'
-
-cmp.setup({
-  snippet = {
-    expand = function(args)
-      vim.fn["vsnip#anonymous"](args.body)
-    end,
-  },
-  mapping = {
-    ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-    ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-    ['<C-e>'] = cmp.mapping({
-      i = cmp.mapping.abort(),
-      c = cmp.mapping.close(),
-    }),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-  },
-  sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
-    { name = 'nvim_lsp_signature_help' },
-    { name = 'vsnip' },
-  }, {
-    { name = 'buffer' },
-  }),
-  experimental = {
-    ghost_text = true
-  }
-})
-
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-
-require('lspconfig')['tsserver'].setup {
-  on_attach = on_attach,
-  capabilities = capabilities
-}
-EOF
+lua require 'mhop'
+lua require 'mtreesitter'
+lua require 'mlsp'
 
 " Read a local nvimrc if available
 if filereadable(expand("$HOME/.nvimrc"))

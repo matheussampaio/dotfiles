@@ -93,11 +93,6 @@ if command -v plenv > /dev/null 2>&1; then
   eval "$(plenv init -)"
 fi
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export PROMPT='%(?:%{$fg_bold[green]%}➜ :%{$fg_bold[red]%}➜ ) %{$fg[cyan]%}%c%{$reset_color%} %{$fg[yellow]%}[SSH]%{$reset_color%} $(git_prompt_info)'
-# fi
-
 gbf() {
   TEMP_BRANCH_NAME=gbf-$(date +%F)
   CURRENT_BRANCH="$(git_current_branch)"
