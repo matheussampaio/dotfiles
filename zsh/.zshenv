@@ -16,6 +16,7 @@ export CLICOLOR=1
 export XDG_CONFIG_HOME="$HOME/.config"
 
 export FZF_DEFAULT_OPTS="--tiebreak end,length,index"
+export FZF_CTRL_R_OPTS="--reverse --info hidden"
 
 #  n (node manager packages) should install node versions here
 export N_PREFIX=$HOME/.n
