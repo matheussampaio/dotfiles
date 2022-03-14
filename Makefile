@@ -13,7 +13,7 @@ all: install-system-packages install-node setup-node install-neovim setup-neovim
 
 
 link:
-	stow --verbose --target=$$HOME --dir=$(DIR) --restow zsh nvim git tmux npm alacritty
+	stow --verbose --target=$$HOME --dir=$(DIR) --restow zsh nvim git tmux npm
 
 
 install-system-packages:
@@ -25,7 +25,7 @@ ifeq ($(UNAME_S), Darwin)
 else
 	sudo apt-get update && \
 	sudo apt-get install -y $(SYSTEM_PACKAGES) $(LINUX_SYSTEM_PACKAGES) && \
-	mkdir -p $$HOME/.local/bin && ln -s /usr/bin/fdfind $$HOME/.local/bin/fd
+	mkdir -p $$HOME/.local/bin && ln -fs /usr/bin/fdfind $$HOME/.local/bin/fd
 endif
 
 
