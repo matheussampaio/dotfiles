@@ -9,7 +9,7 @@ LINUX_SYSTEM_PACKAGES  := fd-find
 NODE_PACKAGES          := n tldr neovim typescript typescript-language-server trash-cli
 
 
-all: install-system-packages install-node setup-node install-neovim setup-neovim install-fzf install-zplug link
+all: install-system-packages install-node setup-node install-neovim setup-neovim install-fzf install-zplug install-alacritty link
 
 
 link:
@@ -68,3 +68,11 @@ endif
 
 setup-neovim:
 	nvim --headless +"PlugInstall --sync" +"PlugClean\!" +qa
+
+
+install-alacritty:
+ifeq ($(UNAME_S), Darwin)
+	brew install --cask alacritty
+else
+	echo "Install alacritty on linux"
+endif
