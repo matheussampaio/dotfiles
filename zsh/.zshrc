@@ -12,6 +12,11 @@ fi
 # turn off all beeps
 unsetopt BEEP
 
+# If a command is issued that can’t be executed as a normal command, and the
+# command is the name of a directory, perform the cd command to that directory.
+# useful to call `..` and `...` to go up folders.
+setopt AUTO_CD
+
 if [ ! -d "$HOME/.zplug" ]; then
   curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
 fi
