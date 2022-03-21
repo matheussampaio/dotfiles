@@ -362,7 +362,8 @@ nnoremap <silent> <leader>ot :tabnew $MYVIMRC<CR>
 nnoremap <silent> <leader>oi :PlugInstall<CR>
 nnoremap <silent> <leader>oc :PlugClean<CR>
 
-nnoremap <silent> <leader>e :!%:p<CR>
+" execute current buffer
+nnoremap <silent> <leader>ge :!%:p<CR>
 
 " Ctrl+S to save the buffer
 nnoremap <C-s> :w<CR>
