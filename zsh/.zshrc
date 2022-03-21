@@ -108,6 +108,14 @@ gbf() {
     git branch --quiet -D $TEMP_BRANCH_NAME
 }
 
+ssh-copy-terminfo() {
+  infocmp | ssh $1 "cat > /tmp/terminfo && tic -x /tmp/terminfo; rm /tmp/terminfo"
+}
+
+download-alacritty-terminfo() {
+  wget https://raw.githubusercontent.com/alacritty/alacritty/master/extra/alacritty.info && tic -xe alacritty,alacritty-direct alacritty.info && rm alacritty.info
+}
+
 if [ -f "$HOME/.zshrc.local" ]; then
   source "$HOME/.zshrc.local"
 fi
