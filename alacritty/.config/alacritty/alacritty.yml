@@ -189,11 +189,11 @@ font:
 draw_bold_text_with_bright_colors: true
 
 # Colors (Tomorrow Night)
-#colors:
+colors:
   # Default colors
-  #primary:
-  #  background: '#1d1f21'
-  #  foreground: '#c5c8c6'
+  primary:
+   background: '#1c1c1c'
+   # foreground: '#c5c8c6'
 
     # Bright and dim foreground colors
     #
@@ -853,6 +853,7 @@ key_bindings:
   #- { key: W,              mods: Command,                    action: Quit                  }
   - { key: N,              mods: Command,                    action: CreateNewWindow        }
   - { key: F,              mods: Command|Control,            action: ToggleFullscreen       }
+  - { key: Key6,           mods: Control,                    chars: "\x1e"                  }
   #- { key: F,              mods: Command, mode: ~Search,     action: SearchForward         }
   #- { key: B,              mods: Command, mode: ~Search,     action: SearchBackward        }
 

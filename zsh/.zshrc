@@ -13,6 +13,10 @@ unsetopt BEEP
 # useful to call `..` and `...` to go up folders.
 setopt AUTO_CD
 
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 if [ ! -d "$HOME/.zplug" ]; then
   curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
 fi
@@ -56,10 +60,6 @@ fi
 # Then, source plugins and add commands to $PATH
 zplug load
 
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 # Setting rg as the default source for fzf
 if command -v fd > /dev/null 2>&1; then
   export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
@@ -77,7 +77,7 @@ zvm_after_init_commands+=(my_zvm_init)
 
 if command -v nvim > /dev/null 2>&1; then
   export EDITOR='nvim'
-  export MANPAGER='nvim -c "Man!"'
+  export MANPAGER='nvim +Man!'
 
   alias vim='nvim'
 fi
@@ -98,6 +98,10 @@ if command -v plenv > /dev/null 2>&1; then
   eval "$(plenv init -)"
 fi
 
+if [ $(ps ax | grep "[s]sh-agent" | wc -l) -eq 0 ] ; then
+  eval $(ssh-agent -s) > /dev/null
+fi
+
 gbf() {
   TEMP_BRANCH_NAME=gbf-$(date +%F)
   CURRENT_BRANCH="$(git_current_branch)"
@@ -116,15 +120,18 @@ download-alacritty-terminfo() {
   wget https://raw.githubusercontent.com/alacritty/alacritty/master/extra/alacritty.info && tic -xe alacritty,alacritty-direct alacritty.info && rm alacritty.info
 }
 
-if [ -f "$HOME/.zshrc.local" ]; then
-  source "$HOME/.zshrc.local"
-fi
+table-colors() {
+  for i in {0..255}; do
+    printf "\x1b[38;5;${i}mcolour${i}\x1b[0m\n"
+  done
+}
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+alias ls="ls --color=auto"
+
 if [ -f "$HOME/.p10k.zsh" ]; then
   source "$HOME/.p10k.zsh"
 fi
 
-if [ $(ps ax | grep "[s]sh-agent" | wc -l) -eq 0 ] ; then
-    eval $(ssh-agent -s) > /dev/null
+if [ -f "$HOME/.zshrc.local" ]; then
+  source "$HOME/.zshrc.local"
 fi
