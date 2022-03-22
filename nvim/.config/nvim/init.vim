@@ -269,7 +269,7 @@ let g:airline#extensions#tabline#show_close_button=1
 " Disable vim-airline in preview mode
 let g:airline_exclude_preview=1
 
-" let g:airline_theme='monokai_tasty'
+let g:airline_theme='monokai_tasty'
 
 " === vimwiki ==== "
 let g:vimwiki_list = [{ 'path': '~/wiki' }]
