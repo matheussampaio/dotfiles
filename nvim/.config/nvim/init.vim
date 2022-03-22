@@ -269,7 +269,7 @@ let g:airline#extensions#tabline#show_close_button=1
 " Disable vim-airline in preview mode
 let g:airline_exclude_preview=1
 
-let g:airline_theme='monokai_tasty'
+" let g:airline_theme='monokai_tasty'
 
 " === vimwiki ==== "
 let g:vimwiki_list = [{ 'path': '~/wiki' }]
@@ -302,13 +302,12 @@ function! MyHighlights() abort
   hi! SignColumn ctermfg=NONE guibg=NONE
 
   " Make background color transparent for git changes
-  hi! SignifySignAdd guibg=NONE
-  hi! SignifySignDelete guibg=NONE
-  hi! SignifySignChange guibg=NONE
+  hi! SignifySignAdd guibg=NONE guifg=#99c794
+  hi! SignifySignDelete guibg=NONE guifg=#ec5f67
+  hi! SignifySignChange guibg=NONE guifg=#c594c5
 
-  " Highlight git change signs
-  hi! SignifySignAdd guifg=#99c794
-  hi! SignifySignDelete guifg=#ec5f67
+  " Change highlight
+  hi! Search guifg=peru guibg=NONE
 
   " Add a little bit more contrast to LineNr
   hi! LineNr guifg=#6a6a6a
@@ -316,11 +315,7 @@ function! MyHighlights() abort
   " Errors bold read with transparent background
   hi! Error cterm=bold ctermfg=231 ctermbg=NONE gui=bold guifg=#ff005f guibg=NONE
 
-  " Change highlight
-  hi! Search guifg=peru guibg=NONE
-  hi! SignifySignChange guifg=#c594c5
-
-  hi! NormalNC guibg=#202020
+  hi! NormalNC guibg=#1c1c1c
 
   " gray
   hi! CmpItemAbbrDeprecated guibg=NONE gui=strikethrough guifg=#808080
