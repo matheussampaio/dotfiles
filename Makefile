@@ -76,3 +76,11 @@ ifeq ($(UNAME_S), Darwin)
 else
 	echo "Install alacritty on linux"
 endif
+
+
+update:
+	brew update && brew upgrade && \
+	$$HOME/.tmux/plugins/tpm/bin/update_plugins all && \
+	cd $$HOME/.fzf && git pull && \
+	nvim --headless +"PlugUpgrade" +"PlugUpdate --sync" +"PlugClean\!" +qa
+
