@@ -126,7 +126,12 @@ table-colors() {
   done
 }
 
-alias ls="ls --color=auto"
+# colored ls
+if [ "$(uname -s)" = Darwin ]; then
+  alias ls='ls -G'
+else
+  alias ls='ls --color=auto'
+fi
 
 if [ -f "$HOME/.p10k.zsh" ]; then
   source "$HOME/.p10k.zsh"
