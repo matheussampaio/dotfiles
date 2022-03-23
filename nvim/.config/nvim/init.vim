@@ -231,8 +231,6 @@ set updatetime=300
 " Display signs in the number column
 set signcolumn=yes
 
-set conceallevel=0
-
 " set blinking cursor
 set guicursor+=a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
 
