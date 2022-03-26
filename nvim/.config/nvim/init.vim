@@ -1,6 +1,6 @@
 scriptencoding utf-8
 
-" check whether vim-plug is installed and install it if necessary
+" Check whether vim-plug is installed and install it if necessary.
 let plugpath = expand('<sfile>:p:h'). '/autoload/plug.vim'
 if !filereadable(plugpath)
     if executable('curl')
@@ -48,13 +48,13 @@ Plug 'tpope/vim-unimpaired'
 " enable repeating supported plugin maps with '.'.
 Plug 'tpope/vim-repeat'
 
-" Path navigator designed to work with Vim's built-in mechanisms and complementary plugins
+" Path navigator designed to work with Vim's built-in mechanisms and complementary plugins.
 Plug 'justinmk/vim-dirvish'
 
 " The file manipulation commands for vim-dirvish
 Plug 'roginfarrer/vim-dirvish-dovish'
 
-" continuously updated sessions files
+" Continuously updated sessions files.
 Plug 'tpope/vim-obsession'
 
 " lean and mean status/tabline.
@@ -72,13 +72,19 @@ Plug 'patstockwell/vim-monokai-tasty'
 " Take notes with Wiki.
 Plug 'vimwiki/vimwiki'
 
-" Make Vim persist editing state without fuss
+" Make Vim persist editing state without fuss.
 Plug 'zhimsel/vim-stay'
 
 " Git wrapper.
 Plug 'tpope/vim-fugitive'
 
-" Change word case, add abbreviations, and search/replace
+" Git commit browser.
+Plug 'junegunn/gv.vim'
+
+" Enables :GBrowse from fugitive.vim to open GitHub URLs.
+Plug 'tpope/vim-rhubarb'
+
+" Change word case, add abbreviations, and search/replace.
 Plug 'tpope/vim-abolish'
 
 " Show git changes in the sign column.
@@ -87,13 +93,13 @@ Plug 'mhinz/vim-signify'
 " " vim-markdown requries tabular to format tables
 " Plug 'godlygeek/tabular'
 
-" Wrap and unwrap function arguments, lists, and dictionaires
+" Wrap and unwrap function arguments, lists, and dictionaires.
 Plug 'FooSoft/vim-argwrap', { 'on': 'ArgWrap' }
 
-" Support for expanding abbreviations
+" Support for expanding abbreviations.
 Plug 'mattn/emmet-vim', { 'for': [ 'html', 'vue', 'jsx'] }
 
-" Add support to .editorconfig files
+" Add support to .editorconfig files.
 Plug 'editorconfig/editorconfig-vim'
 
 " Treesitter configurations and abstraction layer for Neovim.
@@ -102,14 +108,14 @@ Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 " Vim motions on speed!
 Plug 'phaazon/hop.nvim'
 
-" Kick off builds and test suites using one of several asynchronous adapters
+" Kick off builds and test suites using one of several asynchronous adapters.
 " Plug 'tpope/vim-dispatch', { 'on': ['Make', 'Dispatch'] }
 
 " OSC 52 is a terminal sequence used to copy printed text into clipboard.
 " (copy from SSH session)
 Plug 'ojroques/vim-oscyank'
 
-" Disables search highlighting when you are done searching
+" Disables search highlighting when you are done searching.
 " Plug 'romainl/vim-cool'
 
 " Place, toggle and display marks.
@@ -120,13 +126,13 @@ Plug 'junegunn/fzf.vim'
 
 call plug#end()
 
-" enable number columns
+" Enable number columns.
 set number
 
 " Don't show last command.
 set noshowcmd
 
-" Leave buffer without saving
+" Leave buffer without saving.
 set hidden
 
 " Insert spaces when TAB is pressed.
@@ -397,6 +403,12 @@ nnoremap <silent> <leader>s :RG<CR>
 
 " Browse list of files in current directory
 nnoremap <silent> <leader>p :Files<CR>
+
+" Open Git status
+nnoremap <silent> <leader>g :Git<CR>
+
+nnoremap <silent> <leader>gl :GV<CR>
+nnoremap <silent> <leader>gla :GV --all<CR>
 
 lua require 'mhop'
 lua require 'mtreesitter'
