@@ -383,14 +383,14 @@ selection:
 
 cursor:
   # Cursor style
-  style:
+  # style:
     # Cursor shape
     #
     # Values for `shape`:
     #   - ▇ Block
     #   - _ Underline
     #   - | Beam
-    shape: Block
+    # shape: Block
 
     # Cursor blinking state
     #
@@ -399,7 +399,7 @@ cursor:
     #   - Off: Disable blinking by default
     #   - On: Enable blinking by default
     #   - Always: Force the cursor to always blink
-    blinking: Always
+    # blinking: Always
 
   # Vi mode cursor style
   #
@@ -410,7 +410,7 @@ cursor:
   #vi_mode_style: None
 
   # Cursor blinking interval in milliseconds.
-  blink_interval: 750
+  # blink_interval: 750
 
   # If this is `true`, the cursor will be rendered as a hollow box when the
   # window is not focused.
