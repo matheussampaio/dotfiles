@@ -48,13 +48,14 @@ cmp.setup({
       i = cmp.mapping.abort(),
       c = cmp.mapping.close(),
     }),
-    ['<Tab>'] = cmp.mapping.confirm({ select = true }),
+    -- ['<Tab>'] = cmp.mapping.confirm({ select = true }),
     ['<CR>'] = cmp.mapping.confirm({ select = true }),
   },
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
     { name = 'nvim_lsp_signature_help' },
     { name = 'vsnip' },
+    { name = 'copilot' },
   }, {
     { name = 'buffer' },
   }),
