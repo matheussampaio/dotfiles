@@ -58,7 +58,8 @@ setup-node:
 
 install-neovim:
 ifeq ($(UNAME_S), Darwin)
-	brew install neovim --HEAD
+	brew install --HEAD luajit
+	brew install --HEAD neovim
 else
 	sudo add-apt-repository ppa:neovim-ppa/unstable -y && \
 	sudo apt-get update && \
