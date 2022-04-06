@@ -247,6 +247,9 @@ set cursorline
 
 set completeopt=menu,noinsert,preview
 
+" only show statusline in the last window
+set laststatus=3
+
 " ============================================================================ "
 " ===                           PLUGIN SETUP                               === "
 " ============================================================================ "
@@ -339,8 +342,6 @@ augroup MyHighlights
   autocmd!
   autocmd ColorScheme * call MyHighlights()
 augroup END
-
-autocmd BufLeave * set laststatus=2
 
 let g:vim_monokai_tasty_italic = 1
 
