@@ -127,8 +127,14 @@ Plug 'ojroques/vim-oscyank'
 " Place, toggle and display marks.
 Plug 'kshenoy/vim-signature'
 
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
+" telescope
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+Plug 'nvim-telescope/telescope.nvim'
+" Plug 'kyazdani42/nvim-web-devicons'
+
+" Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+" Plug 'junegunn/fzf.vim'
 
 call plug#end()
 
@@ -260,7 +266,7 @@ set cursorline
 set completeopt=menu,noinsert,preview
 
 " only show statusline in the last window
-set laststatus=3
+" set laststatus=3
 
 " ============================================================================ "
 " ===                           PLUGIN SETUP                               === "
@@ -394,24 +400,24 @@ vnoremap <leader>c "+y
 " Press enter and then confirm each change you agree with y or decline with n.
 vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 
-function! RipgrepFzf(query, fullscreen)
-  let command_fmt = 'rg --hidden --column --line-number --no-heading --color=always --smart-case -g "!{node_modules,.git}" -- %s || true'
-  let initial_command = printf(command_fmt, shellescape(a:query))
-  let reload_command = printf(command_fmt, '{q}')
-  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
-endfunction
+" function! RipgrepFzf(query, fullscreen)
+"   let command_fmt = 'rg --hidden --column --line-number --no-heading --color=always --smart-case -g "!{node_modules,.git}" -- %s || true'
+"   let initial_command = printf(command_fmt, shellescape(a:query))
+"   let reload_command = printf(command_fmt, '{q}')
+"   let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+"   call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+" endfunction
 
-let g:fzf_preview_window = ['right:50%:hidden', 'ctrl-/']
-let g:fzf_action = { 'ctrl-x': 'split', 'ctrl-s': 'vsplit' }
+" let g:fzf_preview_window = ['right:50%:hidden', 'ctrl-/']
+" let g:fzf_action = { 'ctrl-x': 'split', 'ctrl-s': 'vsplit' }
 
-command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+" command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 
 " Search for a term in the current directory
-nnoremap <silent> <leader>s :RG<CR>
+nnoremap <silent> <leader>s <CMD>Telescope live_grep<CR>
 
 " Browse list of files in current directory
-nnoremap <silent> <leader>p :Files<CR>
+nnoremap <silent> <leader>p <CMD>Telescope find_files<CR>
 
 " Open Git status
 nnoremap <silent> <leader>g :Git<CR>
@@ -420,8 +426,9 @@ nnoremap <silent> <leader>gl :GV<CR>
 nnoremap <silent> <leader>gla :GV --all<CR>
 
 lua require 'mhop'
-lua require 'mtreesitter'
 lua require 'mlsp'
+lua require 'mtreesitter'
+lua require 'mtelescope'
 
 " Read a local nvimrc if available
 if filereadable(expand("$HOME/.nvimrc"))
