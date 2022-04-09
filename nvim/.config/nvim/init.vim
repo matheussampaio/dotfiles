@@ -36,6 +36,8 @@ Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
 
+" tiny plugin adds vscode-like pictograms to neovim built-in lsp
+Plug 'onsails/lspkind-nvim'
 
 " comment stuff out.
 Plug 'tpope/vim-commentary'
@@ -296,6 +298,9 @@ let g:user_emmet_leader_key = '<C-E>'
 let g:EditorConfig_exclude_patterns = ['fugitive://.\*', 'scp://.\*']
 
 let g:toggle_list_no_mappings = 1
+
+let g:copilot_no_tab_map = v:true
+imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
 
 nmap <script> <silent> <leader>tl :call ToggleLocationList()<CR>
 nmap <script> <silent> <leader>tq :call ToggleQuickfixList()<CR>
