@@ -40,6 +40,7 @@ cmp.setup({
       vim.fn["vsnip#anonymous"](args.body)
     end,
   },
+
   mapping = {
     ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
     ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
@@ -48,17 +49,34 @@ cmp.setup({
       i = cmp.mapping.abort(),
       c = cmp.mapping.close(),
     }),
-    -- ['<Tab>'] = cmp.mapping.confirm({ select = true }),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ['<C-k>'] = cmp.mapping.confirm({ select = true }),
+    -- ['<CR>'] = cmp.mapping.confirm({ select = true }),
   },
+
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
     { name = 'nvim_lsp_signature_help' },
+    { name = 'path' },
     { name = 'vsnip' },
-    { name = 'copilot' },
-  }, {
     { name = 'buffer' },
+    { name = 'copilot' },
   }),
+
+  formatting = {
+    format = require('lspkind').cmp_format({
+      mode = 'symbol_text',
+
+      menu = {
+        nvim_lsp = "[LSP]",
+        nvim_lsp_signature_help = "[LSP Sig]",
+        path = "[path]",
+        vsnip = "[snip]",
+        buffer = "[buf]",
+        copilot = "[copilot]",
+      }
+    })
+  },
+
   experimental = {
     ghost_text = true
   }
@@ -66,8 +84,7 @@ cmp.setup({
 
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
-require('lspconfig')['tsserver'].setup {
+require('lspconfig').tsserver.setup({
   on_attach = on_attach,
   capabilities = capabilities
-}
-
+})
