@@ -111,6 +111,13 @@ vim.o.cursorline = true
 
 vim.o.completeopt = 'menu,noinsert,preview'
 
+-- disable ruby and perl providers
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_perl_provider = 0
+
+-- set python3 path
+vim.g.python3_host_prog = '/usr/local/bin/python3'
+
 -- Change leader to SPACE.
 vim.g.mapleader = ' '
 
@@ -210,11 +217,12 @@ end
 -- Highlights the yanked text.
 vim.api.nvim_create_autocmd('BufWritePost', {
   group = vim.api.nvim_create_augroup('PackerAutoCompile', { clear = true }),
-  pattern = { 'plugins.lua' },
-  callback = function() vim.cmd('source <afile> | PackerCompile') end
+  pattern = { 'init.lua' },
+  callback = function() 
+    vim.cmd('source <afile> | PackerCompile') 
+  end
 })
 
--- vim.cmd('packadd packer.nvim')
 return require('packer').startup(function(use)
   use {
     'wbthomason/packer.nvim',
@@ -223,11 +231,21 @@ return require('packer').startup(function(use)
     end
   }
 
-  -- Monokai Tasty Colorschema.
+  -- Monokai Colorschema.
   use {
+    disable = true,
     'tanvirtin/monokai.nvim',
     config = function()
       vim.cmd('colorscheme monokai')
+    end
+  }
+  
+  -- Gruvbox Colorschema.
+  use {
+    disable = false,
+    'morhetz/gruvbox',
+    config = function()
+      vim.cmd('colorscheme gruvbox')
     end
   }
 
@@ -324,9 +342,9 @@ return require('packer').startup(function(use)
   -- Take notes with Wiki.
   use {
     'vimwiki/vimwiki',
-    cmd = 'VimwikiIndex',
+    keys = '<Leader>ww',
     setup = function()
-      vim.cmd("let g:vimwiki_list = [{ 'path': '~/wiki' }]")
+      vim.g.vimwiki_list = {{ path = '~/wiki' }}
     end
   }
 
@@ -342,7 +360,7 @@ return require('packer').startup(function(use)
       {
         'mhinz/vim-signify',
         config = function()
-          vim.cmd("let g:signify_sign_delete = '-'")
+          vim.g.signify_sign_delete = '-'
         end
       }
     },
@@ -369,7 +387,7 @@ return require('packer').startup(function(use)
     'mattn/emmet-vim',
     ft = { 'html', 'vue', 'jsx', 'riot' },
     setup = function()
-      vim.cmd("let g:user_emmet_leader_key = '<C-e>'")
+      vim.g.user_emmet_leader_key = '<C-e>'
     end
   }
 
@@ -405,7 +423,7 @@ return require('packer').startup(function(use)
       {
         'github/copilot.vim',
         config = function()
-          vim.cmd("let g:copilot_no_tab_map = v:true")
+          vim.g.copilot_no_tab_map = true
 
           vim.api.nvim_set_keymap('i', '<C-j>', "copilot#Accept('<CR>')", { script = true, expr = true, silent = true })
         end
