@@ -28,7 +28,7 @@ vim.o.ruler = false
 -- vim.o.cmdheight = 1
 
 -- Don't give completion messages like 'match 1 of 2' or 'The only match'.
-vim.o.shortmess = vim.o.shortmess .. "c"
+vim.o.shortmess = vim.o.shortmess .. 'c'
 
 -- Always keep some lines before/after the current line when scrolling.
 vim.o.scrolloff = 4
@@ -43,7 +43,7 @@ vim.o.ignorecase = true
 vim.o.smartcase = true
 
 -- Show the effects of a command incrementally, as you type
-vim.o.inccommand = "nosplit"
+vim.o.inccommand = 'nosplit'
 
 -- Automatically re-read file if a change was detected outside of vim.
 vim.o.autoread = true
@@ -72,13 +72,13 @@ vim.o.termguicolors = true
 vim.o.paste = false
 
 -- Save fold and cursor positions to viewfile.
-vim.o.viewoptions = "cursor,folds,slash,unix"
+vim.o.viewoptions = 'cursor,folds,slash,unix'
 
 -- Remove ~ from the left side of the window
-vim.o.fillchars = "eob: "
+vim.o.fillchars = 'eob: '
 
 -- Start diffmode with vertical splits.
--- vim.o.diffopt = "vertical"
+-- vim.o.diffopt = 'vertical'
 
 -- Disable bells.
 vim.o.visualbell = true
@@ -87,7 +87,7 @@ vim.o.visualbell = true
 vim.o.list = true
 
 -- Display tab characters
-vim.o.listchars = "nbsp:·,tab:▶-,trail:·"
+vim.o.listchars = 'nbsp:·,tab:▶-,trail:·'
 
 -- set default regexp engine
 vim.o.regexpengine = 1
@@ -96,7 +96,7 @@ vim.o.regexpengine = 1
 vim.o.foldlevel = 1000
 
 -- Display signs in the number column
-vim.o.signcolumn = "yes"
+vim.o.signcolumn = 'yes'
 
 -- pop up menu height
 vim.o.pumheight = 10
@@ -109,10 +109,10 @@ vim.o.background = dark
 -- Highlight cursor line
 vim.o.cursorline = true
 
-vim.o.completeopt = "menu,noinsert,preview"
+vim.o.completeopt = 'menu,noinsert,preview'
 
 -- Change leader to SPACE.
-vim.g.mapleader = " "
+vim.g.mapleader = ' '
 
 -- Normally space move the cursor to the right in normal mode. Since LEADER is
 -- SPACE, disabling that behavior works better for me.
@@ -144,8 +144,9 @@ vim.api.nvim_set_keymap('v', '<Leader>c', '"+y', { noremap = true })
 vim.api.nvim_set_keymap('v', '<C-r>', '"hy:%s/<C-r>h//gc<left><left><left>', { noremap = true })
 
 -- Highlights the yanked text.
-vim.api.nvim_create_autocmd("TextYankPost", {
-  pattern = { "*" },
+vim.api.nvim_create_autocmd('TextYankPost', {
+  group = vim.api.nvim_create_augroup('HilightTextYank', { clear = true }),
+  pattern = { '*' },
   callback = vim.highlight.on_yank
 })
 
@@ -192,19 +193,28 @@ local override_highlights = function()
 end
 
 -- Call override_highlights after colorschem is set.
-vim.api.nvim_create_autocmd("ColorScheme", {
-  pattern = { "*" },
+vim.api.nvim_create_autocmd('ColorScheme', {
+  group = vim.api.nvim_create_augroup('ColorSchemeOverrides', { clear = true }),
+  pattern = { '*' },
   callback = override_highlights
 })
 
--- local install_path = vim.fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
--- 
--- if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
---   packer_bootstrap = vim.fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
--- end
+local install_path = vim.fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
 
-vim.cmd [[packadd packer.nvim]]
+if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+  -- packer_bootstrap = vim.fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
+  packer_bootstrap = vim.fn.system('git clone --depth 1 https://github.com/wbthomason/packer.nvim ' .. install_path)
+  vim.cmd('packadd packer.nvim')
+end
 
+-- Highlights the yanked text.
+vim.api.nvim_create_autocmd('BufWritePost', {
+  group = vim.api.nvim_create_augroup('PackerAutoCompile', { clear = true }),
+  pattern = { 'plugins.lua' },
+  callback = function() vim.cmd('source <afile> | PackerCompile') end
+})
+
+-- vim.cmd('packadd packer.nvim')
 return require('packer').startup(function(use)
   use {
     'wbthomason/packer.nvim',
@@ -313,8 +323,8 @@ return require('packer').startup(function(use)
 
   -- Take notes with Wiki.
   use {
-    "vimwiki/vimwiki",
-    cmd = "VimwikiIndex",
+    'vimwiki/vimwiki',
+    cmd = 'VimwikiIndex',
     setup = function()
       vim.cmd("let g:vimwiki_list = [{ 'path': '~/wiki' }]")
     end
@@ -340,6 +350,7 @@ return require('packer').startup(function(use)
       vim.api.nvim_set_keymap('n', '<Leader>g', ':Git<CR>', { noremap = true, silent = true })
       vim.api.nvim_set_keymap('n', '<Leader>gl', ':GV<CR>', { noremap = true, silent = true })
       vim.api.nvim_set_keymap('n', '<Leader>gla', ':GV --all<CR>', { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('n', '<Leader>gb', ':GBrowse', { noremap = true, silent = true })
     end
   }
 
@@ -396,7 +407,7 @@ return require('packer').startup(function(use)
         config = function()
           vim.cmd("let g:copilot_no_tab_map = v:true")
 
-          vim.api.nvim_set_keymap('i', '<C-j>', 'copilot#Accept("<CR>")', { script = true, expr = true, silent = true })
+          vim.api.nvim_set_keymap('i', '<C-j>', "copilot#Accept('<CR>')", { script = true, expr = true, silent = true })
         end
       },
       'neovim/nvim-lspconfig',
@@ -416,12 +427,12 @@ return require('packer').startup(function(use)
   -- use 'tpope/vim-obsession'
   -- use 'milkypostman/vim-togglelist'
 
-  --   if packer_bootstrap then
-  --     require('packer').sync()
-  --   end
+  if packer_bootstrap then
+     require('packer').sync()
+  end
 
   -- Read a local nvimrc if available
-  -- if filereadable(expand("$HOME/.nvimrc"))
-  --   source $HOME/.nvimrc
-  -- endif
+  if vim.fn.filereadable(vim.fn.expand("$HOME/.nvimrc")) then
+    vim.cmd('source $HOME/.nvimrc')
+  end
 end)
