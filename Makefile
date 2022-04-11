@@ -81,7 +81,12 @@ endif
 
 install-terminfo:
 	curl -LO https://invisible-island.net/datafiles/current/terminfo.src.gz && gunzip terminfo.src.gz && \
-		/usr/bin/tic -xe tmux-256color terminfo.src
+	/usr/bin/tic -xe tmux-256color terminfo.src
+
+
+download-theme:
+	wget https://raw.githubusercontent.com/mbadolato/iTerm2-Color-Schemes/master/schemes/Gruvbox%20Light.itermcolors && \
+	wget https://raw.githubusercontent.com/mbadolato/iTerm2-Color-Schemes/master/schemes/Gruvbox%20Dark.itermcolors
 
 
 update:

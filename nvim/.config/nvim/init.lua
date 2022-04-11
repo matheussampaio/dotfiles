@@ -104,7 +104,7 @@ vim.o.pumheight = 10
 vim.o.smartindent = true
 
 -- Use dark background
-vim.o.background = dark
+-- vim.o.background = light
 
 -- Highlight cursor line
 vim.o.cursorline = true
@@ -219,7 +219,7 @@ vim.api.nvim_create_autocmd('BufWritePost', {
   group = vim.api.nvim_create_augroup('PackerAutoCompile', { clear = true }),
   pattern = { 'init.lua' },
   callback = function() 
-    vim.cmd('source <afile> | PackerCompile') 
+    vim.cmd('source <afile> | PackerSync') 
   end
 })
 
@@ -245,6 +245,8 @@ return require('packer').startup(function(use)
     disable = false,
     'morhetz/gruvbox',
     config = function()
+      vim.g.gruvbox_italic = 1
+      vim.o.background = light
       vim.cmd('colorscheme gruvbox')
     end
   }
