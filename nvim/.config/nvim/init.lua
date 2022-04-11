@@ -103,9 +103,6 @@ vim.o.pumheight = 10
 
 vim.o.smartindent = true
 
--- Use dark background
--- vim.o.background = light
-
 -- Highlight cursor line
 vim.o.cursorline = true
 
@@ -246,7 +243,13 @@ return require('packer').startup(function(use)
     'morhetz/gruvbox',
     config = function()
       vim.g.gruvbox_italic = 1
-      vim.o.background = light
+
+      if vim.env.ITERM_PROFILE == 'light' then
+        vim.o.background = light
+      else
+        vim.o.background = dark
+      end
+
       vim.cmd('colorscheme gruvbox')
     end
   }

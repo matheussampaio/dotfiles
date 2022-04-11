@@ -126,6 +126,27 @@ table-colors() {
   done
 }
 
+# Switch iTerm profiles
+set-iterm-profile () {
+  echo -e "\033]50;SetProfile=$1\a"; 
+
+  export ITERM_PROFILE=$1;
+
+  if [[ -n $TMUX ]]; then
+    tmux set-environment ITERM_PROFILE $1
+    tmux source-file ~/.tmux/plugins/tmux-gruvbox/tmux-gruvbox-$1.conf
+  fi
+}
+
+# Toggle between dark and light profiles
+toggle-iterm-profile () {
+  if [ "$ITERM_PROFILE" = 'light' ]; then
+    set-iterm-profile dark
+  else
+    set-iterm-profile light
+  fi
+}
+
 # colored ls
 if [ "$(uname -s)" = Darwin ]; then
   alias ls='ls -G'
