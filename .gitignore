@@ -1,4 +1,5 @@
 nvim/.config/nvim/autoload
+nvim/.config/nvim/plugin/packer_compiled.lua
 
 .DS_Store
 .nvimrc

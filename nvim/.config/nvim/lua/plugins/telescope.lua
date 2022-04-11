@@ -16,7 +16,12 @@ require('telescope').setup {
       "--iglob",
       "!package-lock.json",
     },
-    file_ignore_patterns = { "node_modules", ".git" }
+    file_ignore_patterns = { "node_modules", ".git" },
+    mappings = {
+      i = {
+        ["<Esc>"] = require('telescope.actions').close,
+      }
+    }
   },
 
   pickers = {
@@ -24,10 +29,14 @@ require('telescope').setup {
       hidden = true,
       follow = true
     }
-  },
-
-  extensions = {
   }
 }
 
 require('telescope').load_extension('fzf')
+
+-- Search for a term in the current directory
+vim.api.nvim_set_keymap('', '<Leader>s', ':Telescope live_grep<CR>', { noremap = true, silent = true })
+
+-- Browse list of files in current directory
+vim.api.nvim_set_keymap('', '<Leader>p', ':Telescope find_files<CR>', { noremap = true, silent = true })
+

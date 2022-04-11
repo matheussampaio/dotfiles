@@ -1,24 +1,23 @@
-require'nvim-treesitter.configs'.setup {
-    -- One of "all", "maintained" (parsers with maintainers), or a list of languages
+require('nvim-treesitter.configs').setup {
   ensure_installed = {
-      "bash",
-      "html",
-      "java",
-      "javascript",
-      "json",
-      "lua",
-      "markdown",
-      "python",
-      "typescript",
-      "vim",
-      "vue"
-    },
+    "bash",
+    "html",
+    "java",
+    "javascript",
+    "json",
+    "lua",
+    "markdown",
+    "python",
+    "typescript",
+    "vim",
+    "vue"
+  },
 
   -- Install languages synchronously (only applied to `ensure_installed`)
   sync_install = false,
 
   highlight = {
-      -- `false` will disable the whole extension
+    -- `false` will disable the whole extension
     enable = true,
 
     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
@@ -30,5 +29,9 @@ require'nvim-treesitter.configs'.setup {
 
   indent = {
     enable = true
-  },
+  }
 }
+
+-- syntax highlighting items specify folds.
+vim.o.foldmethod = "expr"
+vim.cmd("set foldexpr=nvim_treesitter#foldexpr()")
