@@ -455,7 +455,7 @@ return require('packer').startup(function(use)
   end
 
   -- Read a local nvimrc if available
-  if vim.fn.filereadable(vim.fn.expand("$HOME/.nvimrc")) then
+  if vim.fn.filereadable(vim.fn.expand("$HOME/.nvimrc")) > 0 then
     vim.cmd('source $HOME/.nvimrc')
   end
 end)
