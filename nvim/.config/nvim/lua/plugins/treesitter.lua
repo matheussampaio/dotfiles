@@ -8,6 +8,7 @@ require('nvim-treesitter.configs').setup {
     "lua",
     "markdown",
     "python",
+    "ruby",
     "typescript",
     "vim",
     "vue"

@@ -48,6 +48,10 @@ if [ -d "$HOME/.rbenv/bin" ]; then
   export PATH="$HOME/.rbenv/bin:$PATH"
 fi
 
+if [ -d "$HOME/.gem/ruby/2.6.0/bin/" ]; then
+  export PATH="$HOME/.gem/ruby/2.6.0/bin:$PATH"
+fi
+
 if [ -d "$HOME/.npm-global/bin" ]; then
   export PATH="$HOME/.npm-global/bin:$PATH"
 fi
