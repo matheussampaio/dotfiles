@@ -106,7 +106,7 @@ vim.o.smartindent = true
 -- Highlight cursor line
 vim.o.cursorline = true
 
-vim.o.completeopt = 'menu,noinsert,preview'
+vim.o.completeopt = 'menu,menuone,noinsert,preview'
 
 -- disable ruby and perl providers
 vim.g.loaded_ruby_provider = 0
@@ -243,11 +243,17 @@ return require('packer').startup(function(use)
     'morhetz/gruvbox',
     config = function()
       vim.g.gruvbox_italic = 1
+      vim.g.gruvbox_bold = 1
+      vim.g.gruvbox_undercul = 1
+      vim.g.gruvbox_underline = 1
+      vim.g.termcolors = 1
+      vim.g.gruvbox_invert_selection = 0
+      vim.g.gruvbox_improved_warnings = 1
 
-      if vim.env.ITERM_PROFILE == 'light' then
-        vim.o.background = light
+      if vim.env.THEME == 'light' then
+        vim.o.background = 'light'
       else
-        vim.o.background = dark
+        vim.o.background = 'dark'
       end
 
       vim.cmd('colorscheme gruvbox')
@@ -315,7 +321,6 @@ return require('packer').startup(function(use)
   -- Treesitter configurations and abstraction layer for Neovim.
   use {
     'nvim-treesitter/nvim-treesitter',
-    event = 'UIEnter',
     run = ':TSUpdate',
     config = function() require('plugins/treesitter') end
   }
@@ -393,6 +398,13 @@ return require('packer').startup(function(use)
     ft = { 'html', 'vue', 'jsx', 'riot' },
     setup = function()
       vim.g.user_emmet_leader_key = '<C-e>'
+    end
+  }
+
+  use {
+    'norcalli/nvim-colorizer.lua',
+    config = function()
+      require('colorizer').setup()
     end
   }
 

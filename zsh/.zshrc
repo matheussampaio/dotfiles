@@ -79,7 +79,12 @@ if command -v nvim > /dev/null 2>&1; then
   export EDITOR='nvim'
   export MANPAGER='nvim +Man!'
 
-  alias vim='nvim'
+  _nvim() {
+    nvim --listen /tmp/nvim-$(date +%s).pipe
+  }
+
+  alias vim=_nvim
+  alias nvim=_nvim
 fi
 
 if command -v rbenv > /dev/null 2>&1; then
@@ -126,24 +131,31 @@ table-colors() {
   done
 }
 
-# Switch iTerm profiles
-set-iterm-profile () {
-  echo -e "\033]50;SetProfile=$1\a"; 
+# Set theme
+set-theme () {
+  echo "Set theme to $1"
 
-  export ITERM_PROFILE=$1;
+  echo -e "\033]50;SetColors=preset=$1\a"; 
 
-  if [[ -n $TMUX ]]; then
-    tmux set-environment ITERM_PROFILE $1
-    tmux source-file ~/.tmux/plugins/tmux-gruvbox/tmux-gruvbox-$1.conf
+  export THEME=$1;
+
+  if tmux has &> /dev/null; then
+    tmux list-sessions -F "#{session_name}" | xargs -n 1 -I $ tmux set-environment -t $ THEME $1
+
+    tmux source-file $XDG_CONFIG_HOME/tmux/set-theme.conf
   fi
+
+  for pipe in $(ls /tmp/nvim-*.pipe); do
+    \nvim --server $pipe --remote-send "<ESC>:set background=$1<CR>"
+  done
 }
 
-# Toggle between dark and light profiles
-toggle-iterm-profile () {
-  if [ "$ITERM_PROFILE" = 'light' ]; then
-    set-iterm-profile dark
+# Toggle between dark and light theme
+toggle-theme () {
+  if [ "$THEME" = 'light' ]; then
+    set-theme dark
   else
-    set-iterm-profile light
+    set-theme light
   fi
 }
 
