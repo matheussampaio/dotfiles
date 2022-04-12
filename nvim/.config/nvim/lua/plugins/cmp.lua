@@ -40,30 +40,74 @@ cmp.setup({
     end,
   },
 
+  window = {
+    completion = {
+      border = 'rounded',
+      scrollbar = "║",
+      autocomplete = {
+        require("cmp.types").cmp.TriggerEvent.InsertEnter,
+        require("cmp.types").cmp.TriggerEvent.TextChanged,
+      },
+    },
+    documentation = {
+      border = 'rounded',
+      scrollbar = "║",
+    },
+  },
+
   mapping = {
-    ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-    ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+    ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+    ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+    ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-f>"] = cmp.mapping.scroll_docs(4),
     ['<C-e>'] = cmp.mapping({
       i = cmp.mapping.abort(),
       c = cmp.mapping.close(),
     }),
-    ['<C-k>'] = cmp.mapping.confirm({ select = true }),
-    -- ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ["<C-h>"] = cmp.mapping.complete({
+      config = {
+        sources = {
+          { name = 'copilot' }
+        }
+      }
+    }),
+    ["<C-Space>"] = cmp.mapping.confirm({
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
+    }),
+    ["<CR>"] = cmp.mapping.confirm({
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = false,
+    }),
+    ["<Tab>"] = function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+      else
+        fallback()
+      end
+    end,
+    ["<S-Tab>"] = function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+      else
+        fallback()
+      end
+    end
   },
 
   sources = cmp.config.sources({
+    { name = 'copilot' },
     { name = 'nvim_lsp' },
     { name = 'nvim_lsp_signature_help' },
     { name = 'path' },
     { name = 'vsnip' },
-    { name = 'buffer' },
-    { name = 'copilot' },
-  }),
+  }, {
+      { name = 'buffer' },
+    }),
 
   formatting = {
     format = require('lspkind').cmp_format({
-      mode = 'symbol_text',
+      mode = 'symbol',
 
       menu = {
         nvim_lsp = "[LSP]",
@@ -77,8 +121,21 @@ cmp.setup({
   },
 
   experimental = {
-    ghost_text = true
-  }
+    ghost_text = true,
+  },
+
+  sorting = {
+    comparators = {
+      cmp.config.compare.recently_used,
+      cmp.config.compare.offset,
+      cmp.config.compare.score,
+      cmp.config.compare.sort_text,
+      cmp.config.compare.length,
+      cmp.config.compare.order,
+    },
+  },
+
+  preselect = cmp.PreselectMode.Item,
 })
 
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
@@ -97,3 +154,5 @@ require('lspconfig').solargraph.setup({
     }
   }
 })
+
+vim.cmd [[autocmd! CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false, scope="cursor"})]]

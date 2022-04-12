@@ -56,6 +56,9 @@ vim.o.undofile = true
 vim.o.undolevels = 3000
 vim.o.undoreload = 10000
 
+-- Faster cursorhold events
+vim.g.updatetime = 200
+
 -- Create vertical splits to the ride of the current split.
 vim.o.splitright = true
 
@@ -216,7 +219,8 @@ vim.api.nvim_create_autocmd('BufWritePost', {
   group = vim.api.nvim_create_augroup('PackerAutoCompile', { clear = true }),
   pattern = { 'init.lua' },
   callback = function() 
-    vim.cmd('source <afile> | PackerSync') 
+    vim.cmd('source <afile> | PackerCompile') 
+
   end
 })
 
@@ -325,7 +329,7 @@ return require('packer').startup(function(use)
     config = function() require('plugins/treesitter') end
   }
 
-  use 'ryym/vim-riot'
+  use { 'ryym/vim-riot', ft = { 'riot' } }
 
   -- Path navigator designed to work with Vim's built-in mechanisms and complementary plugins.
   use {
@@ -363,9 +367,9 @@ return require('packer').startup(function(use)
     'tpope/vim-fugitive',
     requires = {
       -- Git commit browser.
-      'junegunn/gv.vim',
+      { 'junegunn/gv.vim', keys = { '<Leader>gl', '<Leader>gla' } },
       -- Enables :GBrowse from fugitive.vim to open GitHub URLs.
-      'tpope/vim-rhubarb',
+      { 'tpope/vim-rhubarb', cmd = 'GBrowse' },
       -- Show git changes in the sign column.
       {
         'mhinz/vim-signify',
@@ -402,6 +406,13 @@ return require('packer').startup(function(use)
   }
 
   use {
+    'antoinemadec/FixCursorHold.nvim',
+    config = function()
+      vim.g.cursorhold_updatetime = 100
+    end
+  }
+
+  use {
     'norcalli/nvim-colorizer.lua',
     config = function()
       require('colorizer').setup()
@@ -433,25 +444,33 @@ return require('packer').startup(function(use)
     config = function() require('plugins/telescope') end
   }
 
+  -- copilot
+  -- zbirenbaum/copilot.lua does not support authentication yet. for new machines, we need to uso tpope's and run :Copilot enable
+  -- use { 'github/copilot.vim' }
+  use { 
+    'zbirenbaum/copilot.lua',
+    event = "InsertEnter",
+    config = function ()
+      vim.schedule(function() require("copilot").setup() end)
+    end
+  }
+
+  use 'neovim/nvim-lspconfig'
+
   -- Completion
   use {
     'hrsh7th/nvim-cmp',
+    branch = 'dev',
     requires = {
-      {
-        'github/copilot.vim',
-        config = function()
-          vim.g.copilot_no_tab_map = true
-
-          vim.api.nvim_set_keymap('i', '<C-j>', "copilot#Accept('<CR>')", { script = true, expr = true, silent = true })
-        end
-      },
-      'neovim/nvim-lspconfig',
       'hrsh7th/cmp-nvim-lsp',
       { 'hrsh7th/cmp-nvim-lsp-signature-help', after = 'nvim-cmp' },
       { 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
       { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
       { 'hrsh7th/cmp-cmdline', after = 'nvim-cmp' },
-      { 'hrsh7th/cmp-copilot', after = 'nvim-cmp' },
+      {
+        "zbirenbaum/copilot-cmp",
+        after = {"copilot.lua", "nvim-cmp"},
+      },
       { 'hrsh7th/cmp-vsnip', after = 'nvim-cmp' },
       'hrsh7th/vim-vsnip',
       'onsails/lspkind-nvim',
@@ -463,7 +482,7 @@ return require('packer').startup(function(use)
   -- use 'milkypostman/vim-togglelist'
 
   if packer_bootstrap then
-     require('packer').sync()
+    require('packer').sync()
   end
 
   -- Read a local nvimrc if available
