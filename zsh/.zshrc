@@ -80,7 +80,7 @@ if command -v nvim > /dev/null 2>&1; then
   export MANPAGER='nvim +Man!'
 
   _nvim() {
-    nvim --listen /tmp/nvim-$(date +%s).pipe
+    nvim --listen $XDG_DATA_HOME/nvim/nvim-$(date +%s).pipe "$@"
   }
 
   alias vim=_nvim
@@ -107,6 +107,45 @@ if [ $(ps ax | grep "[s]sh-agent" | wc -l) -eq 0 ] ; then
   eval $(ssh-agent -s) > /dev/null
 fi
 
+mkdir -p $XDG_CONFIG_HOME/zsh
+
+if [ -f $XDG_CONFIG_HOME/zsh/theme ]; then
+  export THEME=$(cat $XDG_CONFIG_HOME/zsh/theme)
+else
+  export THEME=dark
+fi
+
+# set iterm color scheme
+echo -e "\033]50;SetColors=preset=$THEME\a"
+
+# Set theme
+set-theme () {
+  echo -e "\033]50;SetColors=preset=$1\a"
+
+  export THEME=$1
+
+  echo $1 > $XDG_CONFIG_HOME/zsh/theme
+
+  if tmux has &> /dev/null; then
+    tmux list-sessions -F "#{session_name}" | xargs -n 1 -I $ tmux set-environment -t $ THEME $1
+
+    tmux source-file $XDG_CONFIG_HOME/tmux/set-theme.conf
+  fi
+
+  for pipe in $(find $XDG_DATA_HOME/nvim -type s -name 'nvim-*.pipe'); do
+    \nvim --clean --server $pipe --remote-send "<ESC>:set background=$1<CR>"
+  done
+}
+
+# Toggle between dark and light theme
+toggle-theme () {
+  if [ "$THEME" = 'light' ]; then
+    set-theme dark
+  else
+    set-theme light
+  fi
+}
+
 gbf() {
   TEMP_BRANCH_NAME=gbf-$(date +%F)
   CURRENT_BRANCH="$(git_current_branch)"
@@ -129,34 +168,6 @@ table-colors() {
   for i in {0..255}; do
     printf "\x1b[38;5;${i}mcolour${i}\x1b[0m\n"
   done
-}
-
-# Set theme
-set-theme () {
-  echo "Set theme to $1"
-
-  echo -e "\033]50;SetColors=preset=$1\a"; 
-
-  export THEME=$1;
-
-  if tmux has &> /dev/null; then
-    tmux list-sessions -F "#{session_name}" | xargs -n 1 -I $ tmux set-environment -t $ THEME $1
-
-    tmux source-file $XDG_CONFIG_HOME/tmux/set-theme.conf
-  fi
-
-  for pipe in $(ls /tmp/nvim-*.pipe); do
-    \nvim --server $pipe --remote-send "<ESC>:set background=$1<CR>"
-  done
-}
-
-# Toggle between dark and light theme
-toggle-theme () {
-  if [ "$THEME" = 'light' ]; then
-    set-theme dark
-  else
-    set-theme light
-  fi
 }
 
 # colored ls
