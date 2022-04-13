@@ -135,32 +135,33 @@ vim.g.mapleader = ' '
 vim.api.nvim_set_keymap('', '<Space>', '<NOP>', { noremap = true })
 
 -- Quick ways to get to MYVIMRC
-vim.api.nvim_set_keymap('n', '<Leader>ov', ':edit $MYVIMRC<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<Leader>ot', ':tabnew $MYVIMRC<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<Leader>ov', ':edit $MYVIMRC<CR>', { noremap = true, silent = true, desc = "Edit $MYVIMRC" })
+vim.api.nvim_set_keymap('n', '<Leader>ot', ':tabnew $MYVIMRC<CR>', { noremap = true, silent = true, desc = "Edit $MYVIMRC in a new tab" })
 
 -- Erase search highlight
-vim.api.nvim_set_keymap('n', '<Leader>h', ':nohlsearch<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<Leader>h', ':nohlsearch<CR>', { noremap = true, silent = true, desc = "Remove search highlight" })
 
 -- Ctrl + S to save the buffer
-vim.api.nvim_set_keymap('n', '<C-s>', ':w<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-s>', ':w<CR>', { noremap = true, desc = "Save current file" })
 
 -- Move visual lines
 vim.api.nvim_set_keymap('n', 'j', 'gj', { noremap = true })
 vim.api.nvim_set_keymap('n', 'k', 'gk', { noremap = true })
 
 -- Paste from clipboard
-vim.api.nvim_set_keymap('n', '<Leader>v', 'o<ESC>"+p', { noremap = true })
-vim.api.nvim_set_keymap('x', '<Leader>v', '"+p', { noremap = true })
+vim.api.nvim_set_keymap('n', '<Leader>v', 'o<ESC>"+p', { noremap = true, desc = "Paste from clipboard" })
+vim.api.nvim_set_keymap('x', '<Leader>v', '"+p', { noremap = true, desc = "Paste from clipboard" })
 
 -- Save to clipboard
-vim.api.nvim_set_keymap('v', '<Leader>c', '"+y', { noremap = true })
+vim.api.nvim_set_keymap('v', '<Leader>c', '"+y', { noremap = true, desc = "Copy to clipboard" })
 
 -- By pressing ctrl+r in visual mode, you will be prompted to enter text to replace with.
 -- Press enter and then confirm each change you agree with y or decline with n.
-vim.api.nvim_set_keymap('v', '<C-r>', '"hy:%s/<C-r>h//gc<left><left><left>', { noremap = true })
+vim.api.nvim_set_keymap('v', '<C-r>', '"hy:%s/<C-r>h//gc<left><left><left>', { noremap = true, desc = "Replace current selection" })
 
 -- Highlights the yanked text.
 vim.api.nvim_create_autocmd('TextYankPost', {
+  desc = "Highlight yanked text",
   group = vim.api.nvim_create_augroup('HilightTextYank', { clear = true }),
   pattern = { '*' },
   callback = function() vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 500 }) end
@@ -217,6 +218,7 @@ end
 
 -- Call override_highlights after colorschem is set.
 vim.api.nvim_create_autocmd('ColorScheme', {
+  desc = "Reload custom highlight overrides",
   group = vim.api.nvim_create_augroup('ColorSchemeOverrides', { clear = true }),
   pattern = { '*' },
   callback = override_highlights
@@ -245,7 +247,7 @@ return require('packer').startup(function(use)
   use {
     'wbthomason/packer.nvim',
     config = function()
-      vim.api.nvim_set_keymap('n', '<Leader>oi', ':PackerSync<CR>', { noremap = true })
+      vim.api.nvim_set_keymap('n', '<Leader>oi', ':PackerSync<CR>', { noremap = true, desc = "Run :PackerSync" })
     end
   }
 
@@ -346,8 +348,8 @@ return require('packer').startup(function(use)
     cmd = 'OSCYank',
     keys = '<Leader>co',
     config = function()
-      vim.api.nvim_set_keymap('v', '<Leader>co', ':OSCYank<CR>', { noremap = true, silent = true })
-      vim.api.nvim_set_keymap('x', '<Leader>co', ':OSCYank<CR>', { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('v', '<Leader>co', ':OSCYank<CR>', { noremap = true, silent = true, desc = "OSC yank" })
+      vim.api.nvim_set_keymap('x', '<Leader>co', ':OSCYank<CR>', { noremap = true, silent = true, desc = "OSC yank" })
     end
   }
 
@@ -377,16 +379,18 @@ return require('packer').startup(function(use)
       }
     },
     config = function()
-      vim.api.nvim_set_keymap('n', '<Leader>g', ':Git<CR>', { noremap = true, silent = true, desc = "Git" })
-      vim.api.nvim_set_keymap('n', '<Leader>gl', ':GV<CR>', { noremap = true, silent = true, desc = "Logs tree" })
-      vim.api.nvim_set_keymap('n', '<Leader>gla', ':GV --all<CR>', { noremap = true, silent = true, desc = "Logs tree all" })
-      vim.api.nvim_set_keymap('n', '<Leader>gb', ':GBrowse<CR>', { noremap = true, silent = true, desc = "Open line in hosting provider" })
+      vim.api.nvim_set_keymap('n', '<Leader>gs', ':Git<CR>', { noremap = true, silent = true, desc = "Git status" })
+      vim.api.nvim_set_keymap('n', '<Leader>gl', ':GV<CR>', { noremap = true, silent = true, desc = "Git log tree" })
+      vim.api.nvim_set_keymap('n', '<Leader>ga', ':GV --all<CR>', { noremap = true, silent = true, desc = "Git log tree --all" })
+      vim.api.nvim_set_keymap('n', '<Leader>gb', ':GBrowse<CR>', { noremap = true, silent = true, desc = "Git browse" })
     end
   }
 
   -- Lua
   use {
-    "folke/which-key.nvim",
+    -- 'folke/which-key.nvim',
+    -- tracking PR https://github.com/folke/which-key.nvim/pull/253
+    'xiyaowong/which-key.nvim',
     config = function()
       require("which-key").setup({
         window = {
@@ -409,7 +413,7 @@ return require('packer').startup(function(use)
     cmd = 'ArgWrap',
     keys = '<Leader>aw',
     config = function()
-      vim.api.nvim_set_keymap('n', '<Leader>aw', ':ArgWrap<CR>', { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('n', '<Leader>aw', ':ArgWrap<CR>', { noremap = true, silent = true, desc = "Arg Wrap" })
     end
   }
 
@@ -444,8 +448,8 @@ return require('packer').startup(function(use)
     config = function()
       require('hop').setup()
 
-      vim.api.nvim_set_keymap('n', 's', ':HopChar2<CR>', { noremap = true, silent = true })
-      vim.api.nvim_set_keymap('n', '<Leader>l', ':HopLine<CR>', { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('n', 's', ':HopChar2<CR>', { noremap = true, silent = true, desc = "Hop to char" })
+      vim.api.nvim_set_keymap('n', '<Leader>l', ':HopLine<CR>', { noremap = true, silent = true, desc = "Hop to line" })
     end
   }
 

@@ -35,11 +35,11 @@ require('telescope').setup {
 require('telescope').load_extension('fzf')
 
 -- Search for a term in the current directory
-vim.api.nvim_set_keymap('', '<Leader>s', ':Telescope live_grep<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('', '<Leader>s', ':Telescope live_grep<CR>', { noremap = true, silent = true, desc = "Telescope Live Grep" })
 
 -- Browse list of files in current directory
-vim.api.nvim_set_keymap('', '<Leader>p', ':Telescope find_files<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('', '<Leader>p', ':Telescope find_files<CR>', { noremap = true, silent = true, desc = "Telescope Find Files" })
 
 -- Search help tags
-vim.api.nvim_set_keymap('', '<Leader>th', ':Telescope help_tags<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('', '<Leader>th', ':Telescope help_tags<CR>', { noremap = true, silent = true, desc = "Telescope Help Tags" })
 
