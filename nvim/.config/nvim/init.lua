@@ -395,6 +395,9 @@ return require('packer').startup(function(use)
           spelling = {
             enabled = true
           }
+        },
+        layout = {
+          width = { min = 20, max = 40 }
         }
       })
     end
@@ -450,7 +453,7 @@ return require('packer').startup(function(use)
   use {
     'nvim-telescope/telescope.nvim',
     cmd = 'Telescope',
-    keys = { '<Leader>s', '<Leader>p' },
+    keys = { '<Leader>s', '<Leader>p', '<Leader>th' },
     requires = {
       'nvim-lua/plenary.nvim',
       { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
