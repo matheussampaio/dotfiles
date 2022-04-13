@@ -135,33 +135,33 @@ vim.g.mapleader = ' '
 vim.api.nvim_set_keymap('', '<Space>', '<NOP>', { noremap = true })
 
 -- Quick ways to get to MYVIMRC
-vim.api.nvim_set_keymap('n', '<Leader>ov', ':edit $MYVIMRC<CR>', { noremap = true, silent = true, desc = "Edit $MYVIMRC" })
-vim.api.nvim_set_keymap('n', '<Leader>ot', ':tabnew $MYVIMRC<CR>', { noremap = true, silent = true, desc = "Edit $MYVIMRC in a new tab" })
+vim.api.nvim_set_keymap('n', '<Leader>ov', ':edit $MYVIMRC<CR>', { noremap = true, silent = true, desc = 'Edit $MYVIMRC' })
+vim.api.nvim_set_keymap('n', '<Leader>ot', ':tabnew $MYVIMRC<CR>', { noremap = true, silent = true, desc = 'Edit $MYVIMRC in a new tab' })
 
 -- Erase search highlight
-vim.api.nvim_set_keymap('n', '<Leader>h', ':nohlsearch<CR>', { noremap = true, silent = true, desc = "Remove search highlight" })
+vim.api.nvim_set_keymap('n', '<Leader>h', ':nohlsearch<CR>', { noremap = true, silent = true, desc = 'Remove search highlight' })
 
 -- Ctrl + S to save the buffer
-vim.api.nvim_set_keymap('n', '<C-s>', ':w<CR>', { noremap = true, desc = "Save current file" })
+vim.api.nvim_set_keymap('n', '<C-s>', ':w<CR>', { noremap = true, desc = 'Save current file' })
 
 -- Move visual lines
 vim.api.nvim_set_keymap('n', 'j', 'gj', { noremap = true })
 vim.api.nvim_set_keymap('n', 'k', 'gk', { noremap = true })
 
 -- Paste from clipboard
-vim.api.nvim_set_keymap('n', '<Leader>v', 'o<ESC>"+p', { noremap = true, desc = "Paste from clipboard" })
-vim.api.nvim_set_keymap('x', '<Leader>v', '"+p', { noremap = true, desc = "Paste from clipboard" })
+vim.api.nvim_set_keymap('n', '<Leader>v', 'o<ESC>"+p', { noremap = true, desc = 'Paste from clipboard' })
+vim.api.nvim_set_keymap('x', '<Leader>v', '"+p', { noremap = true, desc = 'Paste from clipboard' })
 
 -- Save to clipboard
-vim.api.nvim_set_keymap('v', '<Leader>c', '"+y', { noremap = true, desc = "Copy to clipboard" })
+vim.api.nvim_set_keymap('v', '<Leader>c', '"+y', { noremap = true, desc = 'Copy to clipboard' })
 
 -- By pressing ctrl+r in visual mode, you will be prompted to enter text to replace with.
 -- Press enter and then confirm each change you agree with y or decline with n.
-vim.api.nvim_set_keymap('v', '<C-r>', '"hy:%s/<C-r>h//gc<left><left><left>', { noremap = true, desc = "Replace current selection" })
+vim.api.nvim_set_keymap('v', '<C-r>', '"hy:%s/<C-r>h//gc<left><left><left>', { noremap = true, desc = 'Replace current selection' })
 
 -- Highlights the yanked text.
 vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = "Highlight yanked text",
+  desc = 'Highlight yanked text',
   group = vim.api.nvim_create_augroup('HilightTextYank', { clear = true }),
   pattern = { '*' },
   callback = function() vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 500 }) end
@@ -218,7 +218,7 @@ end
 
 -- Call override_highlights after colorschem is set.
 vim.api.nvim_create_autocmd('ColorScheme', {
-  desc = "Reload custom highlight overrides",
+  desc = 'Reload custom highlight overrides',
   group = vim.api.nvim_create_augroup('ColorSchemeOverrides', { clear = true }),
   pattern = { '*' },
   callback = override_highlights
@@ -229,7 +229,7 @@ local install_path = vim.fn.stdpath('data')..'/site/pack/packer/start/packer.nvi
 local packer_bootstrap = false
 
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-  packer_bootstrap = vim.fn.system('git clone --depth 1 https://github.com/wbthomason/packer.nvim ' .. install_path)
+  packer_bootstrap = vim.fn.system('git clone --branch keys-desc --depth 1 https://github.com/matheussampaio/packer.nvim ' .. install_path)
 
   vim.cmd('packadd packer.nvim')
 end
@@ -245,11 +245,14 @@ end
 
 return require('packer').startup(function(use)
   use {
-    'wbthomason/packer.nvim',
+    'matheussampaio/packer.nvim',
+    branch = 'keys-desc',
     config = function()
-      vim.api.nvim_set_keymap('n', '<Leader>oi', ':PackerSync<CR>', { noremap = true, desc = "Run :PackerSync" })
+      vim.api.nvim_set_keymap('n', '<Leader>oi', ':PackerSync<CR>', { noremap = true, desc = 'Run :PackerSync' })
     end
   }
+
+  use 'nvim-lua/plenary.nvim'
 
   -- Gruvbox Colorschema.
   use {
@@ -345,18 +348,22 @@ return require('packer').startup(function(use)
   -- (copy from SSH session)
   use {
     'ojroques/vim-oscyank',
-    cmd = 'OSCYank',
-    keys = '<Leader>co',
+    keys = {
+      {'v', '<Leader>co', 'OSC yank' },
+      {'x', '<Leader>co', 'OSC yank' }
+    },
     config = function()
-      vim.api.nvim_set_keymap('v', '<Leader>co', ':OSCYank<CR>', { noremap = true, silent = true, desc = "OSC yank" })
-      vim.api.nvim_set_keymap('x', '<Leader>co', ':OSCYank<CR>', { noremap = true, silent = true, desc = "OSC yank" })
+      vim.api.nvim_set_keymap('v', '<Leader>co', ':OSCYank<CR>', { noremap = true, silent = true, desc = 'OSC yank' })
+      vim.api.nvim_set_keymap('x', '<Leader>co', ':OSCYank<CR>', { noremap = true, silent = true, desc = 'OSC yank' })
     end
   }
 
   -- Take notes with Wiki.
   use {
     'vimwiki/vimwiki',
-    keys = '<Leader>ww',
+    keys = {
+      { 'n', '<Leader>ww', 'Open wiki' }
+    },
     setup = function()
       vim.g.vimwiki_list = {{ path = '~/wiki' }}
     end
@@ -379,10 +386,10 @@ return require('packer').startup(function(use)
       }
     },
     config = function()
-      vim.api.nvim_set_keymap('n', '<Leader>gs', ':Git<CR>', { noremap = true, silent = true, desc = "Git status" })
-      vim.api.nvim_set_keymap('n', '<Leader>gl', ':GV<CR>', { noremap = true, silent = true, desc = "Git log tree" })
-      vim.api.nvim_set_keymap('n', '<Leader>ga', ':GV --all<CR>', { noremap = true, silent = true, desc = "Git log tree --all" })
-      vim.api.nvim_set_keymap('n', '<Leader>gb', ':GBrowse<CR>', { noremap = true, silent = true, desc = "Git browse" })
+      vim.api.nvim_set_keymap('n', '<Leader>gs', ':Git<CR>', { noremap = true, silent = true, desc = 'Git status' })
+      vim.api.nvim_set_keymap('n', '<Leader>gl', ':GV<CR>', { noremap = true, silent = true, desc = 'Git log tree' })
+      vim.api.nvim_set_keymap('n', '<Leader>ga', ':GV --all<CR>', { noremap = true, silent = true, desc = 'Git log tree --all' })
+      vim.api.nvim_set_keymap('n', '<Leader>gb', ':GBrowse<CR>', { noremap = true, silent = true, desc = 'Git browse' })
     end
   }
 
@@ -392,7 +399,7 @@ return require('packer').startup(function(use)
     -- tracking PR https://github.com/folke/which-key.nvim/pull/253
     'xiyaowong/which-key.nvim',
     config = function()
-      require("which-key").setup({
+      require('which-key').setup({
         window = {
           border = 'single',
           margin = { 1, 1, 1, 1 },
@@ -410,10 +417,11 @@ return require('packer').startup(function(use)
   -- Wrap and unwrap function arguments, lists, and dictionaires.
   use {
     'FooSoft/vim-argwrap',
-    cmd = 'ArgWrap',
-    keys = '<Leader>aw',
+    keys = {
+      { 'n', '<Leader>aw', 'Arg Wrap' }
+    },
     config = function()
-      vim.api.nvim_set_keymap('n', '<Leader>aw', ':ArgWrap<CR>', { noremap = true, silent = true, desc = "Arg Wrap" })
+      vim.api.nvim_set_keymap('n', '<Leader>aw', ':ArgWrap<CR>', { noremap = true, silent = true, desc = 'Arg Wrap' })
     end
   }
 
@@ -443,13 +451,15 @@ return require('packer').startup(function(use)
   -- Vim motions on speed!
   use {
     'phaazon/hop.nvim',
-    cmd = { 'HopChar2', 'HopLine' },
-    keys = { 's', '<Leader>l' },
+    keys = {
+      { 'n', 's', 'Hop to char' },
+      { 'n', '<Leader>l', 'Hop to line' },
+    },
     config = function()
       require('hop').setup()
 
-      vim.api.nvim_set_keymap('n', 's', ':HopChar2<CR>', { noremap = true, silent = true, desc = "Hop to char" })
-      vim.api.nvim_set_keymap('n', '<Leader>l', ':HopLine<CR>', { noremap = true, silent = true, desc = "Hop to line" })
+      vim.api.nvim_set_keymap('n', 's', ':HopChar2<CR>', { noremap = true, silent = true, desc = 'Hop to char' })
+      vim.api.nvim_set_keymap('n', '<Leader>l', ':HopLine<CR>', { noremap = true, silent = true, desc = 'Hop to line' })
     end
   }
 
@@ -457,9 +467,12 @@ return require('packer').startup(function(use)
   use {
     'nvim-telescope/telescope.nvim',
     cmd = 'Telescope',
-    keys = { '<Leader>s', '<Leader>p', '<Leader>th' },
+    keys = {
+      { 'n', '<Leader>s', 'Telescope live grep' },
+      { 'n', '<Leader>p', 'Telescope find files' },
+      { 'n', '<Leader>th', 'Telescope help tags' }
+    },
     requires = {
-      'nvim-lua/plenary.nvim',
       { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
     },
     config = function() require('plugins/telescope') end
@@ -474,9 +487,9 @@ return require('packer').startup(function(use)
   use {
     'zbirenbaum/copilot.lua',
     commit = '04a618dd678e7dc9c9d9680a4cce62d5aefa917a',
-    event = "InsertEnter",
+    event = 'InsertEnter',
     config = function ()
-      vim.schedule(function() require("copilot").setup() end)
+      vim.schedule(function() require('copilot').setup() end)
     end
   }
 
@@ -490,7 +503,6 @@ return require('packer').startup(function(use)
 
   use {
     'jose-elias-alvarez/null-ls.nvim',
-    requires = 'nvim-lua/plenary.nvim',
     config = function()
       require('plugins/null-ls')
     end
@@ -499,7 +511,7 @@ return require('packer').startup(function(use)
   -- Completion
   use {
     'hrsh7th/nvim-cmp',
-    branch = 'dev',
+    event = 'InsertEnter',
     after = 'nvim-lspconfig',
     requires = {
       'hrsh7th/cmp-nvim-lsp',
@@ -508,8 +520,8 @@ return require('packer').startup(function(use)
       { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
       { 'hrsh7th/cmp-cmdline', after = 'nvim-cmp' },
       {
-        "zbirenbaum/copilot-cmp",
-        after = {"copilot.lua", "nvim-cmp"},
+        'zbirenbaum/copilot-cmp',
+        after = {'copilot.lua', 'nvim-cmp'},
       },
       { 'hrsh7th/cmp-vsnip', after = 'nvim-cmp' },
       'hrsh7th/vim-vsnip',
@@ -523,7 +535,7 @@ return require('packer').startup(function(use)
   end
 
   -- Read a local nvimrc if available
-  if vim.fn.filereadable(vim.fn.expand("$HOME/.nvimrc")) > 0 then
+  if vim.fn.filereadable(vim.fn.expand('$HOME/.nvimrc')) > 0 then
     vim.cmd('source $HOME/.nvimrc')
   end
 end)
