@@ -114,8 +114,8 @@ vim.o.cursorline = true
 
 vim.o.completeopt = 'menu,menuone,noinsert,preview'
 
-if vim.env.THEME == 'light' then
-  vim.o.background = 'light'
+if vim.fn.filereadable(vim.fn.expand("$XDG_CONFIG_HOME/theme")) > 0 then
+  vim.cmd('let &background = readfile(glob("$XDG_CONFIG_HOME/theme"))[0]')
 else
   vim.o.background = 'dark'
 end

@@ -109,26 +109,18 @@ fi
 
 mkdir -p $XDG_CONFIG_HOME/zsh
 
-if [ -f $XDG_CONFIG_HOME/zsh/theme ]; then
-  export THEME=$(cat $XDG_CONFIG_HOME/zsh/theme)
-else
-  export THEME=dark
-fi
-
 # set iterm color scheme
-echo -e "\033]50;SetColors=preset=$THEME\a"
+if [ -f $XDG_CONFIG_HOME/theme ]; then
+  echo -e "\033]50;SetColors=preset=$(cat $XDG_CONFIG_HOME/theme)\a"
+fi
 
 # Set theme
 set-theme () {
   echo -e "\033]50;SetColors=preset=$1\a"
 
-  export THEME=$1
-
-  echo $1 > $XDG_CONFIG_HOME/zsh/theme
+  echo $1 > $XDG_CONFIG_HOME/theme
 
   if tmux has &> /dev/null; then
-    tmux list-sessions -F "#{session_name}" | xargs -n 1 -I $ tmux set-environment -t $ THEME $1
-
     tmux source-file $XDG_CONFIG_HOME/tmux/set-theme.conf
   fi
 
@@ -139,7 +131,7 @@ set-theme () {
 
 # Toggle between dark and light theme
 toggle-theme () {
-  if [ "$THEME" = 'light' ]; then
+  if [ -f $XDG_CONFIG_HOME/theme ] && [ "$(cat $XDG_CONFIG_HOME/theme)" = 'light' ]; then
     set-theme dark
   else
     set-theme light
