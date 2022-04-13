@@ -303,8 +303,8 @@ return require('packer').startup(function(use)
 
   -- Comment stuff out.
   use {
-    'tpope/vim-commentary',
-    requires = 'suy/vim-context-commentstring'
+    'numToStr/Comment.nvim',
+    config = function() require('Comment').setup() end
   }
 
   -- Provides mappings to easily delete, change and add surroundings (parantheses, brackets, quotes, etc).
@@ -329,6 +329,7 @@ return require('packer').startup(function(use)
   use {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
+    requires = 'JoosepAlviste/nvim-ts-context-commentstring',
     config = function() require('plugins/treesitter') end
   }
 
