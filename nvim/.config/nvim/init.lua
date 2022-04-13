@@ -180,8 +180,6 @@ local override_highlights = function()
   -- Errors bold read with transparent background
   vim.api.nvim_set_hl(0, 'Error', { bg = 'NONE', fg = '#ff005f', bold = true })
 
-  -- vim.api.nvim_set_hl(0, 'NormalNC', { bg = '#1c1c1c' })
-
   -- gray
   vim.api.nvim_set_hl(0, 'CmpItemAbbrDeprecated', { bg = 'NONE', fg = '#808080', strikethrough = true })
   -- blue
@@ -223,7 +221,6 @@ vim.api.nvim_create_autocmd('BufWritePost', {
   pattern = { 'init.lua' },
   callback = function()
     vim.cmd('source <afile> | PackerCompile')
-
   end
 })
 
@@ -231,7 +228,7 @@ return require('packer').startup(function(use)
   use {
     'wbthomason/packer.nvim',
     config = function()
-      vim.api.nvim_set_keymap('n', '<Leader>oi', ':PackerSync<CR>', { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('n', '<Leader>oi', ':PackerSync<CR>', { noremap = true })
     end
   }
 
@@ -243,8 +240,6 @@ return require('packer').startup(function(use)
       vim.g.gruvbox_bold = 1
       vim.g.gruvbox_undercul = 1
       vim.g.gruvbox_underline = 1
-      -- vim.g.gruvbox_invert_selection = 0
-      -- vim.g.gruvbox_improved_warnings = 1
 
       if vim.env.THEME == 'light' then
         vim.o.background = 'light'
@@ -262,7 +257,6 @@ return require('packer').startup(function(use)
     config = function()
       require('lualine').setup({
         options = {
-          -- icons_enabled = false,
           theme = 'auto',
           component_separators = { left = nil, right = nil },
           section_separators = { left = nil, right = nil },
