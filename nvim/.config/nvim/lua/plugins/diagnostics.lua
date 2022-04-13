@@ -9,8 +9,8 @@ vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', { 
 vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', { noremap = true, silent = true })
 
 -- show diagnostic problem when hovering line
-vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-  group = vim.api.nvim_create_augroup('DiagnosticOnHover', { clear = true }),
-  pattern = { '*' },
-  callback = function() vim.diagnostic.open_float(nil, {focus=false, scope="cursor"}) end
-})
+-- vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+--   group = vim.api.nvim_create_augroup('DiagnosticOnHover', { clear = true }),
+--   pattern = { '*' },
+--   callback = function() vim.diagnostic.open_float(nil, {focus=false, scope="cursor"}) end
+-- })

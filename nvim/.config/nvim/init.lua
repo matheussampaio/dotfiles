@@ -114,6 +114,12 @@ vim.o.cursorline = true
 
 vim.o.completeopt = 'menu,menuone,noinsert,preview'
 
+if vim.env.THEME == 'light' then
+  vim.o.background = 'light'
+else
+  vim.o.background = 'dark'
+end
+
 -- disable ruby and perl providers
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
@@ -157,28 +163,17 @@ vim.api.nvim_set_keymap('v', '<C-r>', '"hy:%s/<C-r>h//gc<left><left><left>', { n
 vim.api.nvim_create_autocmd('TextYankPost', {
   group = vim.api.nvim_create_augroup('HilightTextYank', { clear = true }),
   pattern = { '*' },
-  callback = vim.highlight.on_yank
+  callback = function() vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 500 }) end
 })
 
 -- Add custom highlights in method that is executed every time a colorscheme is sourced.
 -- See https://gist.github.com/romainl/379904f91fa40533175dfaec4c833f2f for details
 local override_highlights = function()
-  -- Make background signcolumn background transparent
-  vim.api.nvim_set_hl(0, 'SignColumn', { bg='NONE', fg='NONE' })
-
-  -- Make background color transparent for git changes
-  vim.api.nvim_set_hl(0, 'SignifySignAdd', { bg = 'NONE', fg = '#99c794' })
-  vim.api.nvim_set_hl(0, 'SignifySignDelete', { bg = 'NONE', fg = '#ec5f67' })
-  vim.api.nvim_set_hl(0, 'SignifySignChange', { bg = 'NONE', fg = '#c594c5' })
-
   -- Change highlight
-  vim.api.nvim_set_hl(0, 'Search', { bg = 'NONE', fg = 'peru' })
-
-  -- Add a little bit more contrast to LineNr
-  vim.api.nvim_set_hl(0, 'LineNr', { fg = '#6a6a6a' })
+  vim.api.nvim_set_hl(0, 'Search', { bg = 'NONE', fg = 'peru', bold = true })
 
   -- Errors bold read with transparent background
-  vim.api.nvim_set_hl(0, 'Error', { bg = 'NONE', fg = '#ff005f', bold = true })
+  -- vim.api.nvim_set_hl(0, 'Error', { bg = 'NONE', fg = '#ff005f', bold = true })
 
   -- gray
   vim.api.nvim_set_hl(0, 'CmpItemAbbrDeprecated', { bg = 'NONE', fg = '#808080', strikethrough = true })
@@ -196,6 +191,28 @@ local override_highlights = function()
   vim.api.nvim_set_hl(0, 'CmpItemKindKeyword', { bg = 'NONE', fg = '#D4D4D4' })
   vim.api.nvim_set_hl(0, 'CmpItemKindProperty', { bg = 'NONE', fg = '#D4D4D4' })
   vim.api.nvim_set_hl(0, 'CmpItemKindUnit', { bg = 'NONE', fg = '#D4D4D4' })
+
+  vim.cmd([[
+    hi! SignColumn ctermfg=NONE guibg=NONE
+
+    hi! SignifySignAdd guibg=NONE
+    hi! SignifySignDelete guibg=NONE
+    hi! SignifySignChange guibg=NONE
+
+    hi! default link Operator GruvboxFg0
+
+    hi! default link WhichKey GruvboxYellowBold
+    hi! default link WhichKeyGroup GruvboxBlueBold
+    hi! default link WhichKeyDesc GruvboxFg1
+    hi! default link WhichKeySeperator GruvboxFg4
+    hi! default link WhichKeyFloat GruvboxBg0
+    hi! default link WhichKeyValue GruvboxFg4
+
+    hi! default link DiagnosticError GruvboxRed
+    hi! default link DiagnosticWarn GruvboxYellow
+    hi! default link DiagnosticInfo GruvboxBlue
+    hi! default link DiagnosticHint GruvboxAqua
+  ]])
 end
 
 -- Call override_highlights after colorschem is set.
@@ -216,13 +233,13 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 end
 
 -- Highlights the yanked text.
-vim.api.nvim_create_autocmd('BufWritePost', {
-  group = vim.api.nvim_create_augroup('PackerAutoCompile', { clear = true }),
-  pattern = { 'init.lua' },
-  callback = function()
-    vim.cmd('source <afile> | PackerCompile')
-  end
-})
+-- vim.api.nvim_create_autocmd('BufWritePost', {
+--   group = vim.api.nvim_create_augroup('PackerAutoCompile', { clear = true }),
+--   pattern = { 'init.lua' },
+--   callback = function()
+--     vim.cmd('source <afile> | PackerCompile')
+--   end
+-- })
 
 return require('packer').startup(function(use)
   use {
@@ -240,12 +257,7 @@ return require('packer').startup(function(use)
       vim.g.gruvbox_bold = 1
       vim.g.gruvbox_undercul = 1
       vim.g.gruvbox_underline = 1
-
-      if vim.env.THEME == 'light' then
-        vim.o.background = 'light'
-      else
-        vim.o.background = 'dark'
-      end
+      vim.g.gruvbox_invert_selection = 0
 
       vim.cmd('colorscheme gruvbox')
     end
@@ -365,10 +377,26 @@ return require('packer').startup(function(use)
       }
     },
     config = function()
-      vim.api.nvim_set_keymap('n', '<Leader>g', ':Git<CR>', { noremap = true, silent = true })
-      vim.api.nvim_set_keymap('n', '<Leader>gl', ':GV<CR>', { noremap = true, silent = true })
-      vim.api.nvim_set_keymap('n', '<Leader>gla', ':GV --all<CR>', { noremap = true, silent = true })
-      vim.api.nvim_set_keymap('n', '<Leader>gb', ':GBrowse', { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('n', '<Leader>g', ':Git<CR>', { noremap = true, silent = true, desc = "Git" })
+      vim.api.nvim_set_keymap('n', '<Leader>gl', ':GV<CR>', { noremap = true, silent = true, desc = "Logs tree" })
+      vim.api.nvim_set_keymap('n', '<Leader>gla', ':GV --all<CR>', { noremap = true, silent = true, desc = "Logs tree all" })
+      vim.api.nvim_set_keymap('n', '<Leader>gb', ':GBrowse<CR>', { noremap = true, silent = true, desc = "Open line in hosting provider" })
+    end
+  }
+
+  -- Lua
+  use {
+    "folke/which-key.nvim",
+    config = function()
+      require("which-key").setup({
+        window = {
+          border = 'single',
+          margin = { 1, 1, 1, 1 },
+          spelling = {
+            enabled = true
+          }
+        }
+      })
     end
   }
 
