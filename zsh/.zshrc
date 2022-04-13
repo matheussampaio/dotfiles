@@ -116,16 +116,18 @@ fi
 
 # Set theme
 set-theme () {
+  echo "Setting theme to $1"
+
   echo -e "\033]50;SetColors=preset=$1\a"
 
   echo $1 > $XDG_CONFIG_HOME/theme
 
   if tmux has &> /dev/null; then
-    tmux source-file $XDG_CONFIG_HOME/tmux/set-theme.conf
+    tmux source-file $XDG_CONFIG_HOME/tmux/tmux-set-theme.conf
   fi
 
   for pipe in $(find $XDG_DATA_HOME/nvim -type s -name 'nvim-*.pipe'); do
-    \nvim --clean --server $pipe --remote-send "<ESC>:set background=$1<CR>"
+    \nvim --clean --server $pipe --remote-send "<ESC>:set background=$1<CR>" >/dev/null 2>&1
   done
 }
 
