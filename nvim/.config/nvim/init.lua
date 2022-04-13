@@ -338,7 +338,7 @@ return require('packer').startup(function(use)
   use {
     'justinmk/vim-dirvish',
     -- The file manipulation commands for vim-dirvish
-    requires = 'roginfarrer/vim-dirvish-dovish'
+    requires = { 'roginfarrer/vim-dirvish-dovish', after = 'vim-dirvish' }
   }
 
   -- Make it easier to swap between vim and tmux.
@@ -369,31 +369,44 @@ return require('packer').startup(function(use)
     end
   }
 
-  -- Git wrapper.
+  -- Git
   use {
-    'tpope/vim-fugitive',
-    requires = {
-      -- Git commit browser.
-      { 'junegunn/gv.vim', cmd = 'GV' },
-      -- Enables :GBrowse from fugitive.vim to open GitHub URLs.
-      { 'tpope/vim-rhubarb', cmd = 'GBrowse' },
-      -- Show git changes in the sign column.
-      {
-        'mhinz/vim-signify',
-        config = function()
-          vim.g.signify_sign_delete = '-'
-        end
-      }
+    -- Show git changes in the sign column.
+    {
+      'mhinz/vim-signify',
+      config = function()
+        vim.g.signify_sign_delete = '-'
+      end
     },
-    config = function()
-      vim.api.nvim_set_keymap('n', '<Leader>gs', ':Git<CR>', { noremap = true, silent = true, desc = 'Git status' })
-      vim.api.nvim_set_keymap('n', '<Leader>gl', ':GV<CR>', { noremap = true, silent = true, desc = 'Git log tree' })
-      vim.api.nvim_set_keymap('n', '<Leader>ga', ':GV --all<CR>', { noremap = true, silent = true, desc = 'Git log tree --all' })
-      vim.api.nvim_set_keymap('n', '<Leader>gb', ':GBrowse<CR>', { noremap = true, silent = true, desc = 'Git browse' })
-    end
+    {
+      'tpope/vim-fugitive',
+      config = function()
+        vim.api.nvim_set_keymap('n', '<Leader>gs', ':Git<CR>', { noremap = true, silent = true, desc = 'Git status' })
+        vim.api.nvim_set_keymap('n', '<Leader>gb', ':GBrowse<CR>', { noremap = true, silent = true, desc = 'Git browse' })
+      end
+    },
+    {
+      -- Git commit browser.
+      'junegunn/gv.vim',
+      after = 'vim-fugitive',
+      keys = {
+        { 'n', '<Leader>gl', 'Git log tree' },
+        { 'n', '<Leader>ga', 'Git log tree --all' }
+      },
+      config = function()
+        vim.api.nvim_set_keymap('n', '<Leader>gl', ':GV<CR>', { noremap = true, silent = true, desc = 'Git log tree' })
+        vim.api.nvim_set_keymap('n', '<Leader>ga', ':GV --all<CR>', { noremap = true, silent = true, desc = 'Git log tree --all' })
+      end
+    },
+    {
+      -- Enables :GBrowse from fugitive.vim to open GitHub URLs.
+      'tpope/vim-rhubarb',
+      after = 'vim-fugitive',
+      cmd = 'GBrowse',
+    }
   }
 
-  -- Lua
+  -- Keybinding catalog
   use {
     -- 'folke/which-key.nvim',
     -- tracking PR https://github.com/folke/which-key.nvim/pull/253
@@ -519,10 +532,7 @@ return require('packer').startup(function(use)
       { 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
       { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
       { 'hrsh7th/cmp-cmdline', after = 'nvim-cmp' },
-      {
-        'zbirenbaum/copilot-cmp',
-        after = {'copilot.lua', 'nvim-cmp'},
-      },
+      { 'zbirenbaum/copilot-cmp', after = {'copilot.lua', 'nvim-cmp'}, },
       { 'hrsh7th/cmp-vsnip', after = 'nvim-cmp' },
       'hrsh7th/vim-vsnip',
       'onsails/lspkind-nvim',
