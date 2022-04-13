@@ -4,9 +4,9 @@ UNAME_S := $(shell uname -s)
 
 
 SYSTEM_PACKAGES        := git stow tmux ripgrep wget jq zsh
-MACOS_SYSTEM_PACKAGES  := fd
+MACOS_SYSTEM_PACKAGES  := fd lua-language-server
 LINUX_SYSTEM_PACKAGES  := fd-find
-NODE_PACKAGES          := n tldr neovim typescript typescript-language-server trash-cli
+NODE_PACKAGES          := n tldr neovim typescript typescript-language-server trash-cli eslint prettier
 
 
 all: install-system-packages install-node setup-node install-neovim setup-neovim install-fzf install-zplug link

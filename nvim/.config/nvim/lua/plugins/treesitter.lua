@@ -30,6 +30,11 @@ require('nvim-treesitter.configs').setup {
 
   indent = {
     enable = true
+  },
+
+  -- this works?! not sure.
+  autopairs = {
+    enable = true
   }
 }
 

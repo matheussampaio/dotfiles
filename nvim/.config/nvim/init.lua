@@ -51,6 +51,9 @@ vim.o.autoread = true
 -- Disable swap files.
 vim.o.swapfile = false
 
+-- enable true colors
+vim.g.termcolors = 1
+
 -- Enable persistent undo.
 vim.o.undofile = true
 vim.o.undolevels = 3000
@@ -133,7 +136,7 @@ vim.api.nvim_set_keymap('n', '<Leader>ot', ':tabnew $MYVIMRC<CR>', { noremap = t
 vim.api.nvim_set_keymap('n', '<Leader>h', ':nohlsearch<CR>', { noremap = true, silent = true })
 
 -- Ctrl + S to save the buffer
-vim.api.nvim_set_keymap('n', '<C-s>', ':wa<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-s>', ':w<CR>', { noremap = true })
 
 -- Move visual lines
 vim.api.nvim_set_keymap('n', 'j', 'gj', { noremap = true })
@@ -157,10 +160,8 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   callback = vim.highlight.on_yank
 })
 
--- Add custom highlights in method that is executed every time a
--- colorscheme is sourced
--- See https://gist.github.com/romainl/379904f91fa40533175dfaec4c833f2f for
--- details
+-- Add custom highlights in method that is executed every time a colorscheme is sourced.
+-- See https://gist.github.com/romainl/379904f91fa40533175dfaec4c833f2f for details
 local override_highlights = function()
   -- Make background signcolumn background transparent
   vim.api.nvim_set_hl(0, 'SignColumn', { bg='NONE', fg='NONE' })
@@ -208,9 +209,11 @@ vim.api.nvim_create_autocmd('ColorScheme', {
 
 local install_path = vim.fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
 
+local packer_bootstrap = false
+
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-  -- packer_bootstrap = vim.fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
   packer_bootstrap = vim.fn.system('git clone --depth 1 https://github.com/wbthomason/packer.nvim ' .. install_path)
+
   vim.cmd('packadd packer.nvim')
 end
 
@@ -218,8 +221,8 @@ end
 vim.api.nvim_create_autocmd('BufWritePost', {
   group = vim.api.nvim_create_augroup('PackerAutoCompile', { clear = true }),
   pattern = { 'init.lua' },
-  callback = function() 
-    vim.cmd('source <afile> | PackerCompile') 
+  callback = function()
+    vim.cmd('source <afile> | PackerCompile')
 
   end
 })
@@ -232,27 +235,16 @@ return require('packer').startup(function(use)
     end
   }
 
-  -- Monokai Colorschema.
-  use {
-    disable = true,
-    'tanvirtin/monokai.nvim',
-    config = function()
-      vim.cmd('colorscheme monokai')
-    end
-  }
-  
   -- Gruvbox Colorschema.
   use {
-    disable = false,
     'morhetz/gruvbox',
     config = function()
       vim.g.gruvbox_italic = 1
       vim.g.gruvbox_bold = 1
       vim.g.gruvbox_undercul = 1
       vim.g.gruvbox_underline = 1
-      vim.g.termcolors = 1
-      vim.g.gruvbox_invert_selection = 0
-      vim.g.gruvbox_improved_warnings = 1
+      -- vim.g.gruvbox_invert_selection = 0
+      -- vim.g.gruvbox_improved_warnings = 1
 
       if vim.env.THEME == 'light' then
         vim.o.background = 'light'
@@ -343,7 +335,7 @@ return require('packer').startup(function(use)
 
   -- OSC 52 is a terminal sequence used to copy printed text into clipboard.
   -- (copy from SSH session)
-  use { 
+  use {
     'ojroques/vim-oscyank',
     cmd = 'OSCYank',
     keys = '<Leader>co',
@@ -367,7 +359,7 @@ return require('packer').startup(function(use)
     'tpope/vim-fugitive',
     requires = {
       -- Git commit browser.
-      { 'junegunn/gv.vim', keys = { '<Leader>gl', '<Leader>gla' } },
+      { 'junegunn/gv.vim', cmd = 'GV' },
       -- Enables :GBrowse from fugitive.vim to open GitHub URLs.
       { 'tpope/vim-rhubarb', cmd = 'GBrowse' },
       -- Show git changes in the sign column.
@@ -420,7 +412,7 @@ return require('packer').startup(function(use)
   }
 
   -- Vim motions on speed!
-  use { 
+  use {
     'phaazon/hop.nvim',
     cmd = { 'HopChar2', 'HopLine' },
     keys = { 's', '<Leader>l' },
@@ -444,10 +436,13 @@ return require('packer').startup(function(use)
     config = function() require('plugins/telescope') end
   }
 
-  -- copilot
-  -- zbirenbaum/copilot.lua does not support authentication yet. for new machines, we need to uso tpope's and run :Copilot enable
-  -- use { 'github/copilot.vim' }
-  use { 
+  use {
+    'github/copilot.vim',
+    -- zbirenbaum/copilot.lua does not support authentication yet. for new machines, we need to uso tpope's and run :Copilot enable
+    disable = true
+  }
+
+  use {
     'zbirenbaum/copilot.lua',
     event = "InsertEnter",
     config = function ()
@@ -455,12 +450,27 @@ return require('packer').startup(function(use)
     end
   }
 
-  use 'neovim/nvim-lspconfig'
+  use {
+    'neovim/nvim-lspconfig',
+    config = function()
+      require('plugins/lsp')
+      require('plugins/diagnostics')
+    end
+  }
+
+  use {
+    'jose-elias-alvarez/null-ls.nvim',
+    requires = 'nvim-lua/plenary.nvim',
+    config = function()
+      require('plugins/null-ls')
+    end
+  }
 
   -- Completion
   use {
     'hrsh7th/nvim-cmp',
     branch = 'dev',
+    after = 'nvim-lspconfig',
     requires = {
       'hrsh7th/cmp-nvim-lsp',
       { 'hrsh7th/cmp-nvim-lsp-signature-help', after = 'nvim-cmp' },
@@ -477,9 +487,6 @@ return require('packer').startup(function(use)
     },
     config = function() require('plugins/cmp') end
   }
-
-  -- use 'tpope/vim-obsession'
-  -- use 'milkypostman/vim-togglelist'
 
   if packer_bootstrap then
     require('packer').sync()
