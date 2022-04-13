@@ -40,3 +40,6 @@ vim.api.nvim_set_keymap('', '<Leader>s', ':Telescope live_grep<CR>', { noremap =
 -- Browse list of files in current directory
 vim.api.nvim_set_keymap('', '<Leader>p', ':Telescope find_files<CR>', { noremap = true, silent = true })
 
+-- Search help tags
+vim.api.nvim_set_keymap('', '<Leader>th', ':Telescope help_tags<CR>', { noremap = true, silent = true })
+

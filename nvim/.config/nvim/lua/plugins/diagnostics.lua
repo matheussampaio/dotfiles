@@ -1,5 +1,11 @@
 vim.diagnostic.config({
-  update_in_insert = false
+  update_in_insert = false,
+  virtual_text = {
+    source = true
+  },
+  float = {
+    source = true
+  }
 })
 
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
