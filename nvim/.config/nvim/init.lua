@@ -469,6 +469,7 @@ return require('packer').startup(function(use)
 
   use {
     'zbirenbaum/copilot.lua',
+    commit = '04a618dd678e7dc9c9d9680a4cce62d5aefa917a',
     event = "InsertEnter",
     config = function ()
       vim.schedule(function() require("copilot").setup() end)
