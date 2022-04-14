@@ -12,10 +12,10 @@ vim.o.hidden = true
 vim.o.expandtab = true
 
 -- Change number of spaces that a <Tab> counts for during editing ops.
-vim.o.softtabstop = 2
+vim.o.softtabstop = 4
 
 -- Indentation amount for < and > commands.
-vim.o.shiftwidth = 2
+vim.o.shiftwidth = 4
 
 -- Wrap long lines by default.
 vim.o.wrap = true
