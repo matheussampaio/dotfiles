@@ -316,7 +316,10 @@ return require('packer').startup(function(use)
     use 'tpope/vim-abolish'
 
     -- Enable repeating supported plugin maps with '.'.
-    use 'tpope/vim-repeat'
+    -- use 'tpope/vim-repeat'
+
+    -- Provides additional text objects
+    use 'wellle/targets.vim'
 
     -- Make Vim persist editing state without fuss.
     use 'zhimsel/vim-stay'
@@ -446,6 +449,7 @@ return require('packer').startup(function(use)
     use {
         'mattn/emmet-vim',
         ft = { 'html', 'vue', 'jsx', 'riot' },
+        event = 'InsertEnter',
         setup = function()
             vim.g.user_emmet_leader_key = '<C-e>'
         end
@@ -527,6 +531,22 @@ return require('packer').startup(function(use)
         end
     }
 
+    use {
+        'windwp/nvim-autopairs',
+        event = 'InsertEnter',
+        -- after = 'nvim-cmp',
+        config = function()
+            require('nvim-autopairs').setup({
+                disable_filetype = { "TelescopePrompt" , "vim" }
+            })
+
+            -- local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+            -- local cmp = require('cmp')
+            --
+            -- cmp.event:on( 'confirm_done', cmp_autopairs.on_confirm_done({  map_char = { tex = '' } }))
+        end
+    }
+
     -- Completion
     use {
         'hrsh7th/nvim-cmp',
@@ -550,6 +570,13 @@ return require('packer').startup(function(use)
         'lukas-reineke/indent-blankline.nvim',
         config = function()
             require('indent_blankline').setup({ char = '▏' })
+        end
+    }
+
+    use {
+        'abecodes/tabout.nvim',
+        config = function ()
+            require('tabout').setup()
         end
     }
 
