@@ -248,7 +248,9 @@ return require('packer').startup(function(use)
     'matheussampaio/packer.nvim',
     branch = 'keys-desc',
     config = function()
-      vim.api.nvim_set_keymap('n', '<Leader>oi', ':PackerSync<CR>', { noremap = true, desc = 'Run :PackerSync' })
+      vim.api.nvim_set_keymap('n', '<Leader>ps', ':PackerSync<CR>', { noremap = true, desc = 'Run packer sync' })
+      vim.api.nvim_set_keymap('n', '<Leader>pi', ':PackerInstall<CR>', { noremap = true, desc = 'Run packer install' })
+      vim.api.nvim_set_keymap('n', '<Leader>pc', ':PackerCompile<CR>', { noremap = true, desc = 'Run packer compile' })
     end
   }
 
@@ -433,10 +435,10 @@ return require('packer').startup(function(use)
   use {
     'FooSoft/vim-argwrap',
     keys = {
-      { 'n', '<Leader>aw', 'Arg Wrap' }
+      { 'n', '<Leader>ua', 'Arg Wrap' }
     },
     config = function()
-      vim.api.nvim_set_keymap('n', '<Leader>aw', ':ArgWrap<CR>', { noremap = true, silent = true, desc = 'Arg Wrap' })
+      vim.api.nvim_set_keymap('n', '<Leader>ua', ':ArgWrap<CR>', { noremap = true, silent = true, desc = 'Arg Wrap' })
     end
   }
 
@@ -541,6 +543,13 @@ return require('packer').startup(function(use)
     },
     config = function() require('plugins/cmp') end
   }
+
+    use {
+        'lukas-reineke/indent-blankline.nvim',
+        config = function()
+            require('indent_blankline').setup({ char = '▏' })
+        end
+    }
 
   if packer_bootstrap then
     require('packer').sync()
