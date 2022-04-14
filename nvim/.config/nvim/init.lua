@@ -363,7 +363,7 @@ return require('packer').startup(function(use)
   use {
     'vimwiki/vimwiki',
     keys = {
-      { 'n', '<Leader>ww', 'Open wiki' }
+      { 'n', '<Leader>ww', 'Open vimwiki' }
     },
     setup = function()
       vim.g.vimwiki_list = {{ path = '~/wiki' }}

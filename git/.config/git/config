@@ -20,7 +20,9 @@
 
 [checkout]
   defaultRemote = origin
+
 [init]
-	defaultBranch = main
+  defaultBranch = main
+
 [pull]
-	rebase = false
+  rebase = false
