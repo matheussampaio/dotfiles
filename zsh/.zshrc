@@ -107,18 +107,14 @@ if [ $(ps ax | grep "[s]sh-agent" | wc -l) -eq 0 ] ; then
   eval $(ssh-agent -s) > /dev/null
 fi
 
-mkdir -p $XDG_CONFIG_HOME/zsh
-
-# set iterm color scheme
-if [ -f $XDG_CONFIG_HOME/theme ]; then
-  echo -e "\033]50;SetColors=preset=$(cat $XDG_CONFIG_HOME/theme)\a"
+# set default theme
+if [ ! -f $XDG_CONFIG_HOME/theme ]; then
+  echo 'dark' > $XDG_CONFIG_HOME/theme
 fi
 
 # Set theme
 set-theme () {
-  echo "Setting theme to $1"
-
-  echo -e "\033]50;SetColors=preset=$1\a"
+  python3 $XDG_CONFIG_HOME/iterm2/set-theme.py &
 
   echo $1 > $XDG_CONFIG_HOME/theme
 
@@ -130,6 +126,9 @@ set-theme () {
     \nvim --clean --server $pipe --remote-send "<ESC>:set background=$1<CR>" >/dev/null 2>&1
   done
 }
+
+# set iterm color scheme
+set-theme $(cat $XDG_CONFIG_HOME/theme)
 
 # Toggle between dark and light theme
 toggle-theme () {

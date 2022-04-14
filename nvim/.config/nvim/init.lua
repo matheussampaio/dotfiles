@@ -383,6 +383,7 @@ return require('packer').startup(function(use)
       'tpope/vim-fugitive',
       config = function()
         vim.api.nvim_set_keymap('n', '<Leader>gs', ':Git<CR>', { noremap = true, silent = true, desc = 'Git status' })
+        vim.api.nvim_set_keymap('n', '<Leader>gp', ':Git push<CR>', { noremap = true, silent = true, desc = 'Git push' })
         vim.api.nvim_set_keymap('n', '<Leader>gb', ':GBrowse<CR>', { noremap = true, silent = true, desc = 'Git browse' })
       end
     },

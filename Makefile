@@ -7,13 +7,14 @@ SYSTEM_PACKAGES        := git stow tmux ripgrep wget jq zsh
 MACOS_SYSTEM_PACKAGES  := fd lua-language-server
 LINUX_SYSTEM_PACKAGES  := fd-find
 NODE_PACKAGES          := n tldr neovim typescript typescript-language-server trash-cli eslint prettier
+PYTHON_PAGES           := watchdog
 
 
 all: install-system-packages install-node setup-node install-neovim setup-neovim install-fzf install-zplug link
 
 
 link:
-	stow --verbose --target=$$HOME --dir=$(DIR) --restow zsh nvim git tmux npm
+	stow --verbose --target=$$HOME --dir=$(DIR) --restow zsh nvim git tmux npm iterm2
 
 
 install-system-packages:
