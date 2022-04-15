@@ -489,7 +489,7 @@ return require('packer').startup(function(use)
         'nvim-telescope/telescope.nvim',
         cmd = 'Telescope',
         keys = {
-            { 'n', '<Leader>si', 'Search text' },
+            { 'n', '<Leader>sl', 'Search text' },
             { 'n', '<Leader>sf', 'Search files' },
             { 'n', '<Leader>sh', 'Search help tags' },
             { 'n', '<Leader>sw', 'Search current word' },
@@ -569,7 +569,11 @@ return require('packer').startup(function(use)
     use {
         'lukas-reineke/indent-blankline.nvim',
         config = function()
-            require('indent_blankline').setup({ char = '▏' })
+            require('indent_blankline').setup({
+                char = '▏',
+                show_first_indent_level = false,
+                treesitter = true,
+            })
         end
     }
 

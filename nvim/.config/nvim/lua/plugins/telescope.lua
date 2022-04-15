@@ -1,46 +1,46 @@
 require('telescope').setup {
-  defaults = {
-    -- file_sorter = require "telescope.sorters".get_fzy_sorter,
-    -- generic_sorter = require "telescope.sorters".get_fzy_sorter,
-    preview = {
-      hide_on_startup = true
+    defaults = {
+        -- file_sorter = require "telescope.sorters".get_fzy_sorter,
+        -- generic_sorter = require "telescope.sorters".get_fzy_sorter,
+        preview = {
+            hide_on_startup = true
+        },
+        vimgrep_arguments = {
+            "rg",
+            "--color=never",
+            "--no-heading",
+            "--with-filename",
+            "--line-number",
+            "--column",
+            "--smart-case",
+            "--hidden",
+            "--iglob",
+            "!package-lock.json",
+        },
+        file_ignore_patterns = { "node_modules", ".git" },
+        mappings = {
+            i = {
+                ["<Esc>"] = require('telescope.actions').close,
+            }
+        }
     },
-    vimgrep_arguments = {
-      "rg",
-      "--color=never",
-      "--no-heading",
-      "--with-filename",
-      "--line-number",
-      "--column",
-      "--smart-case",
-      "--hidden",
-      "--iglob",
-      "!package-lock.json",
+
+    pickers = {
+        find_files = {
+            hidden = true,
+            follow = true
+        }
     },
-    file_ignore_patterns = { "node_modules", ".git" },
-    mappings = {
-      i = {
-        ["<Esc>"] = require('telescope.actions').close,
-      }
-    }
-  },
 
-  pickers = {
-    find_files = {
-      hidden = true,
-      follow = true
+    extensions = {
+        fzf = {
+            fuzzy = true,                    -- false will only do exact matching
+            override_generic_sorter = true,  -- override the generic sorter
+            override_file_sorter = true,     -- override the file sorter
+            case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
+            -- the default case_mode is "smart_case"
+        }
     }
-  },
-
-  extensions = {
-    fzf = {
-      fuzzy = true,                    -- false will only do exact matching
-      override_generic_sorter = true,  -- override the generic sorter
-      override_file_sorter = true,     -- override the file sorter
-      case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
-      -- the default case_mode is "smart_case"
-    }
-  }
 }
 
 require('telescope').load_extension('fzf')
