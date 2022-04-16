@@ -238,6 +238,8 @@ end
 -- })
 
 return require('packer').startup(function(use)
+    use 'nvim-lua/plenary.nvim'
+
     use {
         'matheussampaio/packer.nvim',
         branch = 'keys-desc',
@@ -247,8 +249,6 @@ return require('packer').startup(function(use)
             vim.keymap.set('n', '<Leader>uc', ':PackerCompile<CR>', { desc = 'Run packer compile' })
         end
     }
-
-    use 'nvim-lua/plenary.nvim'
 
     -- Gruvbox Colorschema.
     use {
@@ -297,12 +297,6 @@ return require('packer').startup(function(use)
     --  handy brackets mappings.
     use 'tpope/vim-unimpaired'
 
-    -- Comment stuff out.
-    use {
-        'numToStr/Comment.nvim',
-        config = function() require('Comment').setup() end
-    }
-
     -- Provides mappings to easily delete, change and add surroundings (parantheses, brackets, quotes, etc).
     use 'tpope/vim-surround'
 
@@ -310,7 +304,7 @@ return require('packer').startup(function(use)
     use 'tpope/vim-abolish'
 
     -- Enable repeating supported plugin maps with '.'.
-    -- use 'tpope/vim-repeat'
+    use 'tpope/vim-repeat'
 
     -- Provides additional text objects
     use 'wellle/targets.vim'
@@ -329,6 +323,12 @@ return require('packer').startup(function(use)
         'nvim-treesitter/nvim-treesitter',
         run = ':TSUpdate',
         config = function() require('plugins/treesitter') end
+    }
+
+    -- Comment stuff out.
+    use {
+        'numToStr/Comment.nvim',
+        config = function() require('Comment').setup() end
     }
 
     use { 'ryym/vim-riot', ft = { 'riot' } }
@@ -579,7 +579,7 @@ return require('packer').startup(function(use)
             require('indent_blankline').setup({
                 char = '▏',
                 show_first_indent_level = false,
-                treesitter = true,
+                use_treesitter = true,
             })
         end
     }
