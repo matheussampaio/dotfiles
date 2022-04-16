@@ -145,8 +145,8 @@ vim.api.nvim_set_keymap('n', '<Leader>uh', ':nohlsearch<CR>', { noremap = true, 
 vim.api.nvim_set_keymap('n', '<C-s>', ':w<CR>', { noremap = true, desc = 'Save current file' })
 
 -- Move visual lines
-vim.api.nvim_set_keymap('n', 'j', 'gj', { noremap = true })
-vim.api.nvim_set_keymap('n', 'k', 'gk', { noremap = true })
+vim.api.nvim_set_keymap('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true })
+vim.api.nvim_set_keymap('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true })
 
 -- Paste from clipboard
 vim.api.nvim_set_keymap('n', '<Leader>v', 'o<ESC>"+p', { noremap = true, desc = 'Paste from clipboard' })
