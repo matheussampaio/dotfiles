@@ -69,8 +69,8 @@ cmp.setup({
         { name = 'path' },
         { name = 'vsnip' },
     }, {
-            { name = 'buffer' },
-        }),
+        { name = 'buffer' },
+    }),
 
     formatting = {
         format = require('lspkind').cmp_format({

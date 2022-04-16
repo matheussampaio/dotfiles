@@ -352,7 +352,7 @@ return require('packer').startup(function(use)
             { 'x', '<Leader>co', 'OSC yank' }
         },
         config = function()
-            vim.keymap.set({ 'v', 'x' } , '<Leader>co', ':OSCYank<CR>', { desc = 'OSC yank' })
+            vim.keymap.set({ 'v', 'x' }, '<Leader>co', ':OSCYank<CR>', { desc = 'OSC yank' })
         end
     }
 
@@ -544,7 +544,7 @@ return require('packer').startup(function(use)
         -- after = 'nvim-cmp',
         config = function()
             require('nvim-autopairs').setup({
-                disable_filetype = { "TelescopePrompt" , "vim" }
+                disable_filetype = { "TelescopePrompt", "vim" }
             })
 
             -- local cmp_autopairs = require('nvim-autopairs.completion.cmp')
@@ -587,7 +587,7 @@ return require('packer').startup(function(use)
     use {
         'abecodes/tabout.nvim',
         after = 'nvim-cmp',
-        config = function ()
+        config = function()
             require('tabout').setup()
         end
     }

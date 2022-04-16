@@ -1,4 +1,4 @@
-require('nvim-treesitter.configs').setup {
+require('nvim-treesitter.configs').setup({
     ensure_installed = {
         "bash",
         "html",
@@ -32,7 +32,7 @@ require('nvim-treesitter.configs').setup {
     context_commentstring = {
         enable = true
     }
-}
+})
 
 vim.o.foldmethod = "expr"
 vim.cmd("set foldexpr=nvim_treesitter#foldexpr()")

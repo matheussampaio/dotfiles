@@ -1,4 +1,4 @@
-require('telescope').setup {
+require('telescope').setup({
     defaults = {
         preview = {
             hide_on_startup = true
@@ -36,7 +36,7 @@ require('telescope').setup {
             override_file_sorter = true,
         }
     }
-}
+})
 
 require('telescope').load_extension('fzf')
 
@@ -54,4 +54,3 @@ vim.keymap.set('', '<Leader>sw', ':Telescope grep_string<CR>', { silent = true, 
 
 -- Resume telescope
 vim.keymap.set('', '<Leader>sr', ':Telescope resume<CR>', { silent = true, desc = "Resume search" })
-
