@@ -10,18 +10,18 @@ end
 
 -- Mappings.
 -- See `:help vim.lsp.*` for documentation on any of the below functions
-vim.api.nvim_set_keymap('n', '<Leader>la', '<cmd>lua vim.lsp.buf.code_action()<CR>', { noremap = true, silent = true, desc = 'Open code action' })
-vim.api.nvim_set_keymap('n', '<Leader>ld', '<cmd>lua vim.lsp.buf.definition()<CR>', { noremap = true, silent = true, desc = 'Go to definition' })
-vim.api.nvim_set_keymap('n', '<Leader>lD', '<cmd>lua vim.lsp.buf.declaration()<CR>', { noremap = true, silent = true, desc = 'Go to declaration' })
-vim.api.nvim_set_keymap('n', '<Leader>lf', '<cmd>lua vim.lsp.buf.formatting()<CR>', { noremap = true, silent = true, desc = 'Format' })
-vim.api.nvim_set_keymap('n', '<Leader>li', '<cmd>lua vim.lsp.buf.implementation()<CR>', { noremap = true, silent = true, desc = 'Go to implementation' })
-vim.api.nvim_set_keymap('n', '<Leader>ln', '<cmd>lua vim.lsp.buf.rename()<CR>', { noremap = true, silent = true, desc = 'Rename' })
-vim.api.nvim_set_keymap('n', '<Leader>lr', '<cmd>lua vim.lsp.buf.references()<CR>', { noremap = true, silent = true, desc = 'Open references' })
-vim.api.nvim_set_keymap('n', '<Leader>lt', '<cmd>lua vim.lsp.buf.type_definition()<CR>', { noremap = true, silent = true, desc = 'Go to type definition' })
-vim.api.nvim_set_keymap('n', '<Leader>lwa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', { noremap = true, silent = true, desc = 'Add workspace folder' })
-vim.api.nvim_set_keymap('n', '<Leader>lwl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', { noremap = true, silent = true, desc = 'List workspaces folders' })
-vim.api.nvim_set_keymap('n', '<Leader>lwr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', { noremap = true, silent = true, desc = 'Remove workspace folder' })
-vim.api.nvim_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true, silent = true, desc = 'See documentation' })
+vim.keymap.set('n', '<Leader>la', vim.lsp.buf.code_action, { desc = 'Open code action' })
+vim.keymap.set('n', '<Leader>ld', vim.lsp.buf.definition, { desc = 'Go to definition' })
+vim.keymap.set('n', '<Leader>lD', vim.lsp.buf.declaration, { desc = 'Go to declaration' })
+vim.keymap.set('n', '<Leader>lf', vim.lsp.buf.formatting, { desc = 'Format' })
+vim.keymap.set('n', '<Leader>li', vim.lsp.buf.implementation, { desc = 'Go to implementation' })
+vim.keymap.set('n', '<Leader>ln', vim.lsp.buf.rename, { desc = 'Rename' })
+vim.keymap.set('n', '<Leader>lr', vim.lsp.buf.references, { desc = 'Open references' })
+vim.keymap.set('n', '<Leader>lt', vim.lsp.buf.type_definition, { desc = 'Go to type definition' })
+vim.keymap.set('n', '<Leader>lwa', vim.lsp.buf.add_workspace_folder, { desc = 'Add workspace folder' })
+vim.keymap.set('n', '<Leader>lwl', function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, { desc = 'List workspaces folders' })
+vim.keymap.set('n', '<Leader>lwr', vim.lsp.buf.remove_workspace_folder, { desc = 'Remove workspace folder' })
+vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'See documentation' })
 
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 

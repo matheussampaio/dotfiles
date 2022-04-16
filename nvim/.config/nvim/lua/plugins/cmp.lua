@@ -78,27 +78,27 @@ cmp.setup({
 
             menu = {
                 nvim_lsp = "[LSP]",
-nvim_lsp_signature_help = "[LSP Sig]",
-path = "[path]",
+                nvim_lsp_signature_help = "[LSP Sig]",
+                path = "[path]",
                 vsnip = "[snip]",
                 buffer = "[buf]",
-copilot = "[copilot]",
+                copilot = "[copilot]",
             }
         })
     },
 
     experimental = {
-    ghost_text = true,
-},
+        ghost_text = true,
+    },
 
     sorting = {
         comparators = {
             cmp.config.compare.recently_used,
             cmp.config.compare.offset,
             cmp.config.compare.score,
-cmp.config.compare.sort_text,
-cmp.config.compare.length,
-cmp.config.compare.order,
+            cmp.config.compare.sort_text,
+            cmp.config.compare.length,
+            cmp.config.compare.order,
         },
     },
 
