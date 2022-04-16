@@ -334,7 +334,6 @@ return require('packer').startup(function(use)
     use {
         'nvim-treesitter/nvim-treesitter',
         run = ':TSUpdate',
-        requires = 'JoosepAlviste/nvim-ts-context-commentstring',
         config = function() require('plugins/treesitter') end
     }
 
@@ -579,6 +578,7 @@ return require('packer').startup(function(use)
 
     use {
         'abecodes/tabout.nvim',
+        after = 'nvim-cmp',
         config = function ()
             require('tabout').setup()
         end
