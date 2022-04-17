@@ -75,7 +75,7 @@ vim.o.termguicolors = true
 vim.o.paste = false
 
 -- Save fold and cursor positions to viewfile.
-vim.o.viewoptions = 'cursor,folds,slash,unix'
+vim.o.viewoptions = 'cursor,folds'
 
 -- Remove ~ from the left side of the window
 vim.o.fillchars = 'eob: '
@@ -93,7 +93,7 @@ vim.o.listchars = 'nbsp:·,tab:▶-,trail:·'
 vim.o.regexpengine = 1
 
 -- Set default to unfold
-vim.o.foldlevel = 1000
+vim.o.foldlevel = 1
 
 -- Display signs in the number column
 vim.o.signcolumn = 'yes'
@@ -107,6 +107,9 @@ vim.o.smartindent = true
 vim.o.cursorline = true
 
 vim.o.completeopt = 'menu,menuone,noinsert,preview'
+
+-- fold using indentation
+vim.o.foldmethod = 'indent'
 
 if vim.fn.filereadable(vim.fn.expand("$XDG_CONFIG_HOME/theme")) > 0 then
     vim.cmd('let &background = readfile(glob("$XDG_CONFIG_HOME/theme"))[0]')
@@ -457,9 +460,17 @@ return require('packer').startup(function(use)
     use {
         'mattn/emmet-vim',
         ft = { 'html', 'vue', 'jsx', 'riot' },
-        event = 'InsertEnter',
         setup = function()
             vim.g.user_emmet_leader_key = '<C-e>'
+            vim.g.user_emmet_install_global = false
+        end,
+        config = function()
+            vim.api.nvim_create_autocmd('FileType', {
+                desc = 'Install emmet',
+                group = vim.api.nvim_create_augroup('EmmetInstall', { clear = true }),
+                pattern = { '*.html', '*.vue', '*.jsx', '*.riot' },
+                callback = 'EmmetInstall'
+            })
         end
     }
 
@@ -497,8 +508,8 @@ return require('packer').startup(function(use)
         'nvim-telescope/telescope.nvim',
         cmd = 'Telescope',
         keys = {
-            { 'n', '<Leader>st', 'Search text' },
-            { 'n', '<Leader>sf', 'Search files' },
+            { 'n', '<Leader>f', 'Search text' },
+            { 'n', '<Leader>p', 'Search files' },
             { 'n', '<Leader>sh', 'Search help tags' },
             { 'n', '<Leader>sw', 'Search current word' },
             { 'n', '<Leader>sr', 'Resume search' }
@@ -541,25 +552,23 @@ return require('packer').startup(function(use)
 
     use {
         'windwp/nvim-autopairs',
-        event = 'InsertEnter',
+        -- event = 'InsertEnter',
         -- after = 'nvim-cmp',
         config = function()
             require('nvim-autopairs').setup({
+                check_ts = true,
                 disable_filetype = { "TelescopePrompt", "vim" }
             })
         end
     }
 
-    use {
-        'L3MON4D3/LuaSnip',
-
-    }
+    use 'L3MON4D3/LuaSnip'
 
     -- Completion
     use {
         'hrsh7th/nvim-cmp',
-        event = 'InsertEnter',
-        after = 'nvim-lspconfig',
+        -- event = 'InsertEnter',
+        after = { 'nvim-lspconfig', 'nvim-autopairs' },
         requires = {
             'hrsh7th/cmp-nvim-lsp',
             { 'hrsh7th/cmp-nvim-lsp-signature-help', after = 'nvim-cmp' },
@@ -579,7 +588,6 @@ return require('packer').startup(function(use)
         config = function()
             require('indent_blankline').setup({
                 char = '▏',
-                show_first_indent_level = false,
                 use_treesitter = true,
             })
         end

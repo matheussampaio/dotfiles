@@ -1,3 +1,3 @@
 " Ctrl+S to save the buffer
-nnoremap <C-s> :w<CR>
+nnoremap <buffer> <C-s> :w<CR>
 nmap <buffer> - <Plug>(dirvish_up)

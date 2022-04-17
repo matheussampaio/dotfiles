@@ -24,8 +24,8 @@ cmp.setup({
     },
 
     mapping = cmp.mapping.preset.insert({
-        ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
-        ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+        ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+        ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
         ["<C-d>"] = cmp.mapping.scroll_docs(-4),
         ["<C-f>"] = cmp.mapping.scroll_docs(4),
         ['<C-e>'] = cmp.mapping({
@@ -41,18 +41,14 @@ cmp.setup({
             select = false,
         }),
         ["<Tab>"] = function(fallback)
-            if cmp.visible() then
-                cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-            elseif luasnip.expand_or_jumpable() then
+            if luasnip.expand_or_jumpable() then
                 luasnip.expand_or_jump()
             else
                 fallback()
             end
         end,
         ["<S-Tab>"] = function(fallback)
-            if cmp.visible() then
-                cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
-            elseif luasnip.expand_or_jumpable(-1) then
+            if luasnip.expand_or_jumpable(-1) then
                 luasnip.expand_or_jump(-1)
             else
                 fallback()

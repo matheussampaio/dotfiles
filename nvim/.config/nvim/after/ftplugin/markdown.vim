@@ -1,5 +1,5 @@
 setlocal spelllang=en_us
 
-set shiftwidth=3
+setlocal shiftwidth=3
 
-set softtabstop=3
+setlocal softtabstop=3

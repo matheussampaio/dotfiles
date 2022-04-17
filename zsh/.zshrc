@@ -127,9 +127,6 @@ set-theme () {
   done
 }
 
-# set iterm color scheme
-set-theme $(cat $XDG_CONFIG_HOME/theme)
-
 # Toggle between dark and light theme
 toggle-theme () {
   if [ -f $XDG_CONFIG_HOME/theme ] && [ "$(cat $XDG_CONFIG_HOME/theme)" = 'light' ]; then
