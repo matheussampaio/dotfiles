@@ -41,16 +41,16 @@ require('telescope').setup({
 require('telescope').load_extension('fzf')
 
 -- Search for a term in the current directory
-vim.keymap.set('', '<Leader>st', ':Telescope live_grep<CR>', { silent = true, desc = "Search text" })
+vim.keymap.set('', '<Leader>st', require('telescope.builtin').live_grep, { desc = "Search text" })
 
 -- Browse list of files in current directory
-vim.keymap.set('', '<Leader>sf', ':Telescope find_files<CR>', { silent = true, desc = "Search files" })
+vim.keymap.set('', '<Leader>sf', require('telescope.builtin').find_files, { desc = "Search files" })
 
 -- Search help tags
-vim.keymap.set('', '<Leader>sh', ':Telescope help_tags<CR>', { silent = true, desc = "Search help tags" })
+vim.keymap.set('', '<Leader>sh', require('telescope.builtin').help_tags, { desc = "Search help tags" })
 
 -- Search for word under cursor
-vim.keymap.set('', '<Leader>sw', ':Telescope grep_string<CR>', { silent = true, desc = "Search current word" })
+vim.keymap.set('', '<Leader>sw', require('telescope.builtin').grep_string, { desc = "Search current word" })
 
 -- Resume telescope
-vim.keymap.set('', '<Leader>sr', ':Telescope resume<CR>', { silent = true, desc = "Resume search" })
+vim.keymap.set('', '<Leader>sr', require('telescope.builtin').resume, { desc = "Resume search" })

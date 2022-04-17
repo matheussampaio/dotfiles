@@ -123,10 +123,11 @@ vim.g.python3_host_prog = '/usr/local/bin/python3'
 
 -- Change leader to SPACE.
 vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
 
 -- Normally space move the cursor to the right in normal mode. Since LEADER is
 -- SPACE, disabling that behavior works better for me.
-vim.keymap.set('', '<Space>', '<NOP>')
+vim.keymap.set({ 'n', 'v' }, '<Space>', '<NOP>', { silent = true })
 
 -- Quick ways to get to MYVIMRC
 vim.keymap.set('n', '<Leader>uv', ':edit $MYVIMRC<CR>', { silent = true, desc = 'Edit $MYVIMRC' })
@@ -546,12 +547,12 @@ return require('packer').startup(function(use)
             require('nvim-autopairs').setup({
                 disable_filetype = { "TelescopePrompt", "vim" }
             })
-
-            -- local cmp_autopairs = require('nvim-autopairs.completion.cmp')
-            -- local cmp = require('cmp')
-            --
-            -- cmp.event:on( 'confirm_done', cmp_autopairs.on_confirm_done({  map_char = { tex = '' } }))
         end
+    }
+
+    use {
+        'L3MON4D3/LuaSnip',
+
     }
 
     -- Completion
@@ -566,8 +567,8 @@ return require('packer').startup(function(use)
             { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
             { 'hrsh7th/cmp-cmdline', after = 'nvim-cmp' },
             { 'zbirenbaum/copilot-cmp', after = { 'copilot.lua', 'nvim-cmp' }, },
-            { 'hrsh7th/cmp-vsnip', after = 'nvim-cmp' },
-            'hrsh7th/vim-vsnip',
+            -- { 'hrsh7th/cmp-vsnip', after = 'nvim-cmp' },
+            -- 'hrsh7th/vim-vsnip',
             'onsails/lspkind-nvim',
         },
         config = function() require('plugins/cmp') end
@@ -590,6 +591,11 @@ return require('packer').startup(function(use)
         config = function()
             require('tabout').setup()
         end
+    }
+
+    use {
+        'mfussenegger/nvim-dap',
+        disable = true
     }
 
     if packer_bootstrap then

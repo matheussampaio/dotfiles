@@ -1,9 +1,10 @@
+local luasnip = require('luasnip')
 local cmp = require('cmp')
 
 cmp.setup({
     snippet = {
         expand = function(args)
-            vim.fn["vsnip#anonymous"](args.body)
+            luasnip.lsp_expand(args.body)
         end,
     },
 
@@ -22,7 +23,7 @@ cmp.setup({
         },
     },
 
-    mapping = {
+    mapping = cmp.mapping.preset.insert({
         ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
         ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
         ["<C-d>"] = cmp.mapping.scroll_docs(-4),
@@ -30,13 +31,6 @@ cmp.setup({
         ['<C-e>'] = cmp.mapping({
             i = cmp.mapping.abort(),
             c = cmp.mapping.close(),
-        }),
-        ["<C-h>"] = cmp.mapping.complete({
-            config = {
-                sources = {
-                    { name = 'copilot' }
-                }
-            }
         }),
         ["<C-Space>"] = cmp.mapping.confirm({
             behavior = cmp.ConfirmBehavior.Replace,
@@ -49,6 +43,8 @@ cmp.setup({
         ["<Tab>"] = function(fallback)
             if cmp.visible() then
                 cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+            elseif luasnip.expand_or_jumpable() then
+                luasnip.expand_or_jump()
             else
                 fallback()
             end
@@ -56,18 +52,20 @@ cmp.setup({
         ["<S-Tab>"] = function(fallback)
             if cmp.visible() then
                 cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+            elseif luasnip.expand_or_jumpable(-1) then
+                luasnip.expand_or_jump(-1)
             else
                 fallback()
             end
         end
-    },
+    }),
 
     sources = cmp.config.sources({
         { name = 'copilot' },
         { name = 'nvim_lsp' },
         { name = 'nvim_lsp_signature_help' },
         { name = 'path' },
-        { name = 'vsnip' },
+        { name = 'luasnip' },
     }, {
         { name = 'buffer' },
     }),
@@ -78,9 +76,9 @@ cmp.setup({
 
             menu = {
                 nvim_lsp = "[LSP]",
-                nvim_lsp_signature_help = "[LSP Sig]",
+                nvim_lsp_signature_help = "[LSP]",
                 path = "[path]",
-                vsnip = "[snip]",
+                luasnip = "[snip]",
                 buffer = "[buf]",
                 copilot = "[copilot]",
             }
