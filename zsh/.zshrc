@@ -14,11 +14,11 @@ unsetopt BEEP
 setopt AUTO_CD
 
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 if [ ! -d "$HOME/.zplug" ]; then
-  curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+    curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
 fi
 
 source $HOME/.zplug/init.zsh
@@ -54,7 +54,7 @@ zplug "zsh-users/zsh-autosuggestions"
 
 # Install plugins if there are plugins that have not been installed
 if ! zplug check; then
-  zplug install
+    zplug install
 fi
 
 # Then, source plugins and add commands to $PATH
@@ -62,115 +62,113 @@ zplug load
 
 # Setting rg as the default source for fzf
 if command -v fd > /dev/null 2>&1; then
-  export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
-  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+    export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 fi
 
 function my_zvm_init() {
-  [ -f $XDG_CONFIG_HOME/fzf/fzf.zsh ] && source $XDG_CONFIG_HOME/fzf/fzf.zsh
+    [ -f $XDG_CONFIG_HOME/fzf/fzf.zsh ] && source $XDG_CONFIG_HOME/fzf/fzf.zsh
 
-  bindkey '^P' history-beginning-search-backward
-  bindkey '^N' history-beginning-search-forward
+    bindkey '^P' history-beginning-search-backward
+    bindkey '^N' history-beginning-search-forward
 }
 
 zvm_after_init_commands+=(my_zvm_init)
 
 if command -v nvim > /dev/null 2>&1; then
-  export EDITOR='nvim'
-  export MANPAGER='nvim +Man!'
+    export EDITOR='nvim'
+    export MANPAGER='nvim +Man!'
 
-  _nvim() {
-    nvim --listen $XDG_DATA_HOME/nvim/nvim-$(date +%s).pipe "$@"
-  }
+    _nvim() {
+        nvim --listen $XDG_DATA_HOME/nvim/nvim-$(date +%s).pipe "$@"
+    }
 
-  alias vim=_nvim
-  alias nvim=_nvim
+    alias vim=_nvim
+    alias nvim=_nvim
 fi
 
 if command -v rbenv > /dev/null 2>&1; then
-  eval "$(rbenv init - zsh)"
+    eval "$(rbenv init - zsh)"
 fi
 
 if command -v pyenv > /dev/null 2>&1; then
-  eval "$(pyenv init -)";
+    eval "$(pyenv init -)";
 fi
 
 if command -v pyenv-virtualenv-init > /dev/null 2>&1; then
-  eval "$(pyenv virtualenv-init -)";
+    eval "$(pyenv virtualenv-init -)";
 fi
 
 if command -v plenv > /dev/null 2>&1; then
-  eval "$(plenv init -)"
+    eval "$(plenv init -)"
 fi
 
 if [ $(ps ax | grep "[s]sh-agent" | wc -l) -eq 0 ] ; then
-  eval $(ssh-agent -s) > /dev/null
+    eval $(ssh-agent -s) > /dev/null
 fi
 
 # set default theme
 if [ ! -f $XDG_CONFIG_HOME/theme ]; then
-  echo 'dark' > $XDG_CONFIG_HOME/theme
+    echo 'dark' > $XDG_CONFIG_HOME/theme
 fi
 
 # Set theme
-set-theme () {
-  python3 $XDG_CONFIG_HOME/iterm2/set-theme.py &
+set-theme() {
+    echo $1 > $XDG_CONFIG_HOME/theme
 
-  echo $1 > $XDG_CONFIG_HOME/theme
+    if tmux has &> /dev/null; then
+        tmux source-file $XDG_CONFIG_HOME/tmux/tmux-set-theme.conf
+    fi
 
-  if tmux has &> /dev/null; then
-    tmux source-file $XDG_CONFIG_HOME/tmux/tmux-set-theme.conf
-  fi
+    for pipe in $(find $XDG_DATA_HOME/nvim -type s -name 'nvim-*.pipe'); do
+        \nvim --clean --server $pipe --remote-send "<ESC>:set background=$1<CR>" >/dev/null 2>&1
+    done
 
-  for pipe in $(find $XDG_DATA_HOME/nvim -type s -name 'nvim-*.pipe'); do
-    \nvim --clean --server $pipe --remote-send "<ESC>:set background=$1<CR>" >/dev/null 2>&1
-  done
+    if [[ -n $SSH_CONNECTION ]]; then
+        python3 $XDG_CONFIG_HOME/iterm2/set-theme.py &
+    fi
 }
 
 # Toggle between dark and light theme
 toggle-theme () {
-  if [ -f $XDG_CONFIG_HOME/theme ] && [ "$(cat $XDG_CONFIG_HOME/theme)" = 'light' ]; then
-    set-theme dark
-  else
-    set-theme light
-  fi
+    if [ -f $XDG_CONFIG_HOME/theme ] && [ "$(cat $XDG_CONFIG_HOME/theme)" = 'light' ]; then
+        set-theme dark
+    else
+        set-theme light
+    fi
 }
 
 gbf() {
-  TEMP_BRANCH_NAME=gbf-$(date +%F)
-  CURRENT_BRANCH="$(git_current_branch)"
+    TEMP_BRANCH_NAME=gbf-$(date +%F)
+    CURRENT_BRANCH="$(git_current_branch)"
 
-  git checkout --quiet -b $TEMP_BRANCH_NAME && \
-    git branch -f $CURRENT_BRANCH origin/$CURRENT_BRANCH && \
-    git checkout --quiet $CURRENT_BRANCH && \
-    git branch --quiet -D $TEMP_BRANCH_NAME
-}
+    git checkout --quiet -b $TEMP_BRANCH_NAME && \
+        git branch -f $CURRENT_BRANCH origin/$CURRENT_BRANCH && \
+        git checkout --quiet $CURRENT_BRANCH && \
+        git branch --quiet -D $TEMP_BRANCH_NAME
+    }
 
-ssh-copy-terminfo() {
-  infocmp | ssh $1 "cat > /tmp/terminfo && tic -x /tmp/terminfo; rm /tmp/terminfo"
-}
-
-download-alacritty-terminfo() {
-  wget https://raw.githubusercontent.com/alacritty/alacritty/master/extra/alacritty.info && tic -xe alacritty,alacritty-direct alacritty.info && rm alacritty.info
+    ssh-copy-terminfo() {
+    infocmp | ssh $1 "cat > /tmp/terminfo && tic -x /tmp/terminfo; rm /tmp/terminfo"
 }
 
 table-colors() {
-  for i in {0..255}; do
-    printf "\x1b[38;5;${i}mcolour${i}\x1b[0m\n"
-  done
+    for i in {0..255}; do
+        printf "\x1b[38;5;${i}mcolour${i}\x1b[0m\n"
+    done
 }
 
 # colored ls
 if [ "$(uname -s)" = Darwin ]; then
-  alias ls='ls -G'
+    alias ls='ls -G'
 else
-  alias ls='ls --color=auto'
+    alias ls='ls --color=auto'
 fi
 
 if [ -f "$HOME/.p10k.zsh" ]; then
-  source "$HOME/.p10k.zsh"
+    source "$HOME/.p10k.zsh"
 fi
 
 if [ -f "$HOME/.zshrc.local" ]; then
-  source "$HOME/.zshrc.local"
+    source "$HOME/.zshrc.local"
 fi
