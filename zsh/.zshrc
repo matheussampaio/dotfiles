@@ -172,3 +172,5 @@ fi
 if [ -f "$HOME/.zshrc.local" ]; then
     source "$HOME/.zshrc.local"
 fi
+
+alias tn='tmux new -As'
