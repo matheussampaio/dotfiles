@@ -3,10 +3,10 @@ vim.o.number = true
 vim.o.relativenumber = true
 
 -- Don't show last command.
-vim.o.showcmd = false
+-- vim.o.showcmd = false
 
 -- Leave buffer without saving.
-vim.o.hidden = true
+-- vim.o.hidden = true
 
 -- Insert spaces when TAB is pressed.
 vim.o.expandtab = true
@@ -18,7 +18,7 @@ vim.o.softtabstop = 4
 vim.o.shiftwidth = 4
 
 -- Wrap long lines by default.
-vim.o.wrap = true
+-- vim.o.wrap = true
 
 -- Disable line/column number in status line.
 -- Shows up in preview window when airline is disabled if not.
@@ -39,17 +39,17 @@ vim.o.ignorecase = true
 -- if the search string has an upper case letter in it, the search will be case sensitive.
 vim.o.smartcase = true
 
--- Show the effects of a command incrementally, as you type
-vim.o.inccommand = 'nosplit'
+-- -- Show the effects of a command incrementally, as you type
+-- vim.o.inccommand = 'nosplit'
 
--- Automatically re-read file if a change was detected outside of vim.
-vim.o.autoread = true
+-- -- Automatically re-read file if a change was detected outside of vim.
+-- vim.o.autoread = true
 
 -- Disable swap files.
 vim.o.swapfile = false
 
--- enable true colors
-vim.g.termcolors = 1
+-- -- enable true colors
+-- vim.g.termcolors = 1
 
 -- Enable persistent undo.
 vim.o.undofile = true
@@ -70,9 +70,6 @@ vim.o.showmode = false
 
 -- Enable true colors support.
 vim.o.termguicolors = true
-
--- Start in nopaste mode.
-vim.o.paste = false
 
 -- Save fold and cursor positions to viewfile.
 vim.o.viewoptions = 'cursor,folds'
@@ -101,7 +98,7 @@ vim.o.signcolumn = 'yes'
 -- pop up menu height
 vim.o.pumheight = 10
 
-vim.o.smartindent = true
+-- vim.o.smartindent = true
 
 -- Highlight cursor line
 vim.o.cursorline = true
@@ -117,9 +114,13 @@ else
     vim.o.background = 'dark'
 end
 
--- disable ruby and perl providers
+-- disable ruby and perl providers, see :checkhealth
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
+
+-- use filetype.lua, see :h g:do_filetype_lua
+vim.g.do_filetype_lua = 1
+vim.g.did_load_filetypes = 0
 
 -- set python3 path
 vim.g.python3_host_prog = '/usr/local/bin/python3'
