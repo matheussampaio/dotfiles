@@ -87,6 +87,10 @@ if command -v nvim > /dev/null 2>&1; then
     alias nvim=_nvim
 fi
 
+if [ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+
 if command -v rbenv > /dev/null 2>&1; then
     eval "$(rbenv init - zsh)"
 fi
