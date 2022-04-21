@@ -92,7 +92,7 @@ if [ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]; then
 fi
 
 if command -v rbenv > /dev/null 2>&1; then
-    eval "$(rbenv init - zsh)"
+    eval "$(rbenv init - zsh)";
 fi
 
 if command -v pyenv > /dev/null 2>&1; then
@@ -125,10 +125,10 @@ set-theme() {
     fi
 
     for pipe in $(find $XDG_DATA_HOME/nvim -type s -name 'nvim-*.pipe'); do
-        \nvim --clean --server $pipe --remote-send "<ESC>:set background=$1<CR>" >/dev/null 2>&1
+        (\nvim --clean --server $pipe --remote-send "<ESC>:set background=$1<CR>" >/dev/null 2>&1 || true)
     done
 
-    if [[ -n $SSH_CONNECTION ]]; then
+    if [[ -n "${SSH_CONNECTION:-1}" ]]; then
         python3 $XDG_CONFIG_HOME/iterm2/set-theme.py &
     fi
 }
