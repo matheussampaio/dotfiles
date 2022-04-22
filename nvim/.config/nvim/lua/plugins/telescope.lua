@@ -19,6 +19,11 @@ require('telescope').setup({
         mappings = {
             i = {
                 ["<Esc>"] = require('telescope.actions').close,
+                ["<C-l>"] = require('telescope.actions.layout').toggle_preview,
+                ["<C-d>"] = require('telescope.actions').results_scrolling_down,
+                ["<C-u>"] = require('telescope.actions').results_scrolling_up,
+                ["<C-k>"] = require('telescope.actions').move_selection_previous,
+                ["<C-j>"] = require('telescope.actions').move_selection_next
             }
         }
     },
