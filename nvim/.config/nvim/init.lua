@@ -84,7 +84,7 @@ vim.o.visualbell = true
 vim.o.list = true
 
 -- Display tab characters
-vim.o.listchars = 'nbsp:·,tab:▶-,trail:·'
+vim.o.listchars = 'nbsp:·,tab:▶ ,trail:·'
 
 -- set default regexp engine
 vim.o.regexpengine = 1
