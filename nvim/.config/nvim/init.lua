@@ -93,7 +93,7 @@ vim.o.regexpengine = 1
 vim.o.foldlevel = 1
 
 -- Display signs in the number column
-vim.o.signcolumn = 'yes'
+vim.o.signcolumn = 'number'
 
 -- pop up menu height
 vim.o.pumheight = 10
@@ -575,7 +575,14 @@ return require('packer').startup(function(use)
         end
     }
 
-    use 'L3MON4D3/LuaSnip'
+    use { 'rafamadriz/friendly-snippets' }
+    use {
+        'L3MON4D3/LuaSnip',
+        after = 'friendly-snippets',
+        config = function ()
+            require('luasnip.loaders.from_vscode').lazy_load()
+        end
+    }
 
     -- Completion
     use {
@@ -589,8 +596,7 @@ return require('packer').startup(function(use)
             { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
             { 'hrsh7th/cmp-cmdline', after = 'nvim-cmp' },
             { 'zbirenbaum/copilot-cmp', after = { 'copilot.lua', 'nvim-cmp' }, },
-            -- { 'hrsh7th/cmp-vsnip', after = 'nvim-cmp' },
-            -- 'hrsh7th/vim-vsnip',
+            'saadparwaiz1/cmp_luasnip',
             'onsails/lspkind-nvim',
         },
         config = function() require('plugins/cmp') end
