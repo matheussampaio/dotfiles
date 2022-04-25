@@ -212,7 +212,7 @@ local override_highlights = function()
     hi! default link DiagnosticWarn GruvboxYellow
     hi! default link DiagnosticInfo GruvboxBlue
     hi! default link DiagnosticHint GruvboxAqua
-  ]] )
+    ]])
 end
 
 -- Call override_highlights after colorschem is set.
@@ -275,9 +275,9 @@ return require('packer').startup(function(use)
         config = function()
             require('lualine').setup({
                 options = {
-                    theme = 'auto',
-                    component_separators = { left = nil, right = nil },
-                    section_separators = { left = nil, right = nil },
+                    theme = 'gruvbox',
+                    component_separators = { left = '', right = '' },
+                    section_separators = { left = '', right = '' },
                 },
                 sections = {
                     lualine_a = { 'mode' },
@@ -295,6 +295,18 @@ return require('packer').startup(function(use)
                     lualine_y = {},
                     lualine_z = {}
                 },
+                tabline = {
+                    lualine_a = { {
+                        'tabs',
+                        max_length = vim.o.columns,
+                        mode = 2
+                    } },
+                    lualine_b = {},
+                    lualine_c = {},
+                    lualine_x = {},
+                    lualine_y = {},
+                    lualine_z = {}
+                }
             })
         end
     }
