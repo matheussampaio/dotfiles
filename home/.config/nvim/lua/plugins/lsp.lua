@@ -78,3 +78,9 @@ lspconfig.sumneko_lua.setup({
         },
     },
 })
+
+-- java
+-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#jdtls
+lspconfig.jdtls.setup({
+
+})

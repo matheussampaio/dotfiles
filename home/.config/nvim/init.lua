@@ -380,7 +380,7 @@ return require('packer').startup(function(use)
             { 'n', '<Leader>ww', 'Open vimwiki' }
         },
         setup = function()
-            vim.g.vimwiki_list = { { path = '~/wiki' } }
+            vim.g.vimwiki_list = { { path = '~/notes' } }
         end
     }
 
@@ -542,11 +542,13 @@ return require('packer').startup(function(use)
     use {
         'zbirenbaum/copilot.lua',
         commit = '04a618dd678e7dc9c9d9680a4cce62d5aefa917a',
-        event = 'InsertEnter',
+        -- event = 'InsertEnter',
         config = function()
             vim.schedule(function() require('copilot').setup() end)
         end
     }
+
+    -- use 'mfussenegger/nvim-jdtls'
 
     use {
         'neovim/nvim-lspconfig',
@@ -565,8 +567,6 @@ return require('packer').startup(function(use)
 
     use {
         'windwp/nvim-autopairs',
-        -- event = 'InsertEnter',
-        -- after = 'nvim-cmp',
         config = function()
             require('nvim-autopairs').setup({
                 check_ts = true,
@@ -575,11 +575,10 @@ return require('packer').startup(function(use)
         end
     }
 
-    use { 'rafamadriz/friendly-snippets' }
     use {
         'L3MON4D3/LuaSnip',
-        after = 'friendly-snippets',
-        config = function ()
+        requires = 'rafamadriz/friendly-snippets',
+        config = function()
             require('luasnip.loaders.from_vscode').lazy_load()
         end
     }
@@ -588,14 +587,14 @@ return require('packer').startup(function(use)
     use {
         'hrsh7th/nvim-cmp',
         -- event = 'InsertEnter',
-        after = { 'nvim-lspconfig', 'nvim-autopairs' },
+        -- after = { 'nvim-lspconfig', 'nvim-autopairs', 'LuaSnip' },
         requires = {
             'hrsh7th/cmp-nvim-lsp',
-            { 'hrsh7th/cmp-nvim-lsp-signature-help', after = 'nvim-cmp' },
-            { 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
-            { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
-            { 'hrsh7th/cmp-cmdline', after = 'nvim-cmp' },
-            { 'zbirenbaum/copilot-cmp', after = { 'copilot.lua', 'nvim-cmp' }, },
+            'hrsh7th/cmp-nvim-lsp-signature-help',
+            'hrsh7th/cmp-buffer',
+            'hrsh7th/cmp-path',
+            'hrsh7th/cmp-cmdline',
+            'zbirenbaum/copilot-cmp',
             'saadparwaiz1/cmp_luasnip',
             'onsails/lspkind-nvim',
         },
@@ -623,6 +622,10 @@ return require('packer').startup(function(use)
     use {
         'mfussenegger/nvim-dap',
         disable = true
+    }
+
+    use {
+        'lepture/vim-jinja'
     }
 
     if packer_bootstrap then

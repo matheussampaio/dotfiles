@@ -11,7 +11,7 @@ all: install-brew-packages install-node install-neovim install-fzf install-zplug
 
 
 link:
-	stow --verbose --target=$$HOME --dir=$(DIR) --restow zsh nvim git tmux npm iterm2
+	stow --verbose --target=$$HOME --dir=$(DIR) --restow home
 
 
 install-brew-packages:
