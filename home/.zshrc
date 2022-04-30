@@ -128,7 +128,7 @@ set-theme() {
         (\nvim --clean --server $pipe --remote-send "<ESC>:set background=$1<CR>" >/dev/null 2>&1 || true)
     done
 
-    if [[ -n "${SSH_CONNECTION:-1}" ]]; then
+    if [[ -n "${SSH_CONNECTION:-1}" ]] && [[ "$(uname -s)" = Darwin ]]; then
         python3 $XDG_CONFIG_HOME/iterm2/set-theme.py &
     fi
 }
