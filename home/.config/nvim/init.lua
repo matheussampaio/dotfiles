@@ -2,12 +2,6 @@
 vim.o.number = true
 vim.o.relativenumber = true
 
--- Don't show last command.
--- vim.o.showcmd = false
-
--- Leave buffer without saving.
--- vim.o.hidden = true
-
 -- Insert spaces when TAB is pressed.
 vim.o.expandtab = true
 
@@ -16,9 +10,6 @@ vim.o.softtabstop = 4
 
 -- Indentation amount for < and > commands.
 vim.o.shiftwidth = 4
-
--- Wrap long lines by default.
--- vim.o.wrap = true
 
 -- Disable line/column number in status line.
 -- Shows up in preview window when airline is disabled if not.
@@ -39,17 +30,8 @@ vim.o.ignorecase = true
 -- if the search string has an upper case letter in it, the search will be case sensitive.
 vim.o.smartcase = true
 
--- -- Show the effects of a command incrementally, as you type
--- vim.o.inccommand = 'nosplit'
-
--- -- Automatically re-read file if a change was detected outside of vim.
--- vim.o.autoread = true
-
 -- Disable swap files.
 vim.o.swapfile = false
-
--- -- enable true colors
--- vim.g.termcolors = 1
 
 -- Enable persistent undo.
 vim.o.undofile = true
@@ -71,9 +53,6 @@ vim.o.showmode = false
 -- Enable true colors support.
 vim.o.termguicolors = true
 
--- Save fold and cursor positions to viewfile.
-vim.o.viewoptions = 'cursor,folds'
-
 -- Remove ~ from the left side of the window
 vim.o.fillchars = 'eob: '
 
@@ -86,9 +65,6 @@ vim.o.list = true
 -- Display tab characters
 vim.o.listchars = 'nbsp:·,tab:▶ ,trail:·'
 
--- set default regexp engine
-vim.o.regexpengine = 1
-
 -- Set default to unfold
 vim.o.foldlevel = 1
 
@@ -97,8 +73,6 @@ vim.o.signcolumn = 'number'
 
 -- pop up menu height
 vim.o.pumheight = 10
-
--- vim.o.smartindent = true
 
 -- Highlight cursor line
 vim.o.cursorline = true

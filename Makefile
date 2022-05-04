@@ -4,7 +4,7 @@ UNAME_S := $(shell uname -s)
 
 
 BREW_PACKAGES := git stow tmux ripgrep wget jq zsh fd lua-language-server man
-NODE_PACKAGES := n tldr neovim typescript typescript-language-server trash-cli eslint prettier
+NODE_PACKAGES := n tldr neovim typescript typescript-language-server trash-cli eslint prettier js-beautify
 
 
 all: install-brew-packages install-node install-neovim install-fzf install-zplug link setup-zsh
