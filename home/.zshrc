@@ -13,6 +13,11 @@ unsetopt BEEP
 # useful to call `..` and `...` to go up folders.
 setopt AUTO_CD
 
+if command -v nvim > /dev/null 2>&1; then
+    export EDITOR='nvim'
+    export MANPAGER='nvim +Man!'
+fi
+
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
     source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
