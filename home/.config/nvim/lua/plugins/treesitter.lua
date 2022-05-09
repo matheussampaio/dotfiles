@@ -9,6 +9,7 @@ require('nvim-treesitter.configs').setup({
         "markdown",
         "python",
         "ruby",
+        "rust",
         "typescript",
         "vim",
         "vue"
