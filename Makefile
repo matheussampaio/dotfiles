@@ -3,11 +3,11 @@ DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 UNAME_S := $(shell uname -s)
 
 
-BREW_PACKAGES := git stow tmux ripgrep wget jq zsh fd lua-language-server man
+BREW_PACKAGES := stow tmux ripgrep wget jq fd lua-language-server
 NODE_PACKAGES := n tldr neovim typescript typescript-language-server trash-cli eslint prettier js-beautify
 
 
-all: install-brew-packages install-node install-neovim install-fzf install-zplug link setup-zsh
+all: install-brew-packages install-node install-neovim install-fzf install-zplug link
 
 
 link:
@@ -51,7 +51,3 @@ install-neovim:
 install-terminfo:
 	curl -LO https://invisible-island.net/datafiles/current/terminfo.src.gz && gunzip terminfo.src.gz && \
 	/usr/bin/tic -xe tmux-256color terminfo.src
-
-
-setup-zsh:
-	chsh -s $$(which zsh)
