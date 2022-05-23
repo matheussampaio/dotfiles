@@ -81,6 +81,8 @@ lspconfig.sumneko_lua.setup({
 
 -- java
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#jdtls
-lspconfig.jdtls.setup({
+lspconfig.jdtls.setup({})
 
-})
+-- rust
+-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#rust_analyzer
+lspconfig.rust_analyzer.setup({})
