@@ -207,15 +207,6 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
     vim.cmd('packadd packer.nvim')
 end
 
--- Call packer copmile on init.lua
--- vim.api.nvim_create_autocmd('BufWritePost', {
---   group = vim.api.nvim_create_augroup('PackerAutoCompile', { clear = true }),
---   pattern = { 'init.lua' },
---   callback = function()
---     vim.cmd('source <afile> | PackerCompile')
---   end
--- })
-
 return require('packer').startup(function(use)
     use 'nvim-lua/plenary.nvim'
 
@@ -358,17 +349,6 @@ return require('packer').startup(function(use)
     use {
         'godlygeek/tabular',
         'preservim/vim-markdown',
-    }
-
-    -- Take notes with Wiki.
-    use {
-        'vimwiki/vimwiki',
-        keys = {
-            { 'n', '<Leader>ww', 'Open vimwiki' }
-        },
-        setup = function()
-            vim.g.vimwiki_list = { { path = '~/notes' } }
-        end
     }
 
     -- Git
