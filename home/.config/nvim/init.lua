@@ -355,6 +355,11 @@ return require('packer').startup(function(use)
         end
     }
 
+    use {
+        'godlygeek/tabular',
+        'preservim/vim-markdown',
+    }
+
     -- Take notes with Wiki.
     use {
         'vimwiki/vimwiki',

@@ -182,4 +182,6 @@ if [ -f "$HOME/.zshrc.local" ]; then
     source "$HOME/.zshrc.local"
 fi
 
-alias tn='tmux new -As'
+
+alias t='tmux'
+alias tn='t new-session -As'
