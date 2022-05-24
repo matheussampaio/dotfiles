@@ -297,6 +297,9 @@ return require('packer').startup(function(use)
     -- Enable repeating supported plugin maps with '.'.
     use 'tpope/vim-repeat'
 
+    -- Continuously updated session files
+    use 'tpope/vim-obsession'
+
     -- Provides additional text objects
     use 'wellle/targets.vim'
 
@@ -308,6 +311,11 @@ return require('packer').startup(function(use)
 
     -- Add support to .editorconfig files.
     use 'gpanders/editorconfig.nvim'
+
+    use {
+        'nvim-orgmode/orgmode',
+        config = function() require('plugins/orgmode') end
+    }
 
     -- Treesitter configurations and abstraction layer for Neovim.
     use {
