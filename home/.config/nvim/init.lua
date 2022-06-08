@@ -15,6 +15,9 @@ vim.o.shiftwidth = 4
 -- Shows up in preview window when airline is disabled if not.
 vim.o.ruler = false
 
+-- enable conceal
+vim.o.conceallevel = 1
+
 -- Don't give completion messages like 'match 1 of 2' or 'The only match'.
 vim.o.shortmess = vim.o.shortmess .. 'c'
 

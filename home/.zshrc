@@ -167,6 +167,14 @@ table-colors() {
     done
 }
 
+theme() {
+    if [ ! -f "$XDG_CONFIG_HOME/theme" ]; then
+        echo 'light' > "$XDG_CONFIG_HOME/theme"
+    fi
+
+    cat "$XDG_CONFIG_HOME/theme"
+}
+
 # colored ls
 if [ "$(uname -s)" = Darwin ]; then
     alias ls='ls -G'
@@ -180,6 +188,10 @@ fi
 
 if [ -f "$HOME/.zshrc.local" ]; then
     source "$HOME/.zshrc.local"
+fi
+
+if command -v bat > /dev/null 2>&1; then
+    alias bat='bat --theme=gruvbox-$(theme)'
 fi
 
 
