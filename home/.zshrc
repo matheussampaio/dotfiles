@@ -194,6 +194,14 @@ if command -v bat > /dev/null 2>&1; then
     alias bat='bat --theme=gruvbox-$(theme)'
 fi
 
+delete_cfn_stacks() {
+    if [ ! "$#" -eq 1 ]; then
+        echo "missing param: delete_cfn_stacks containsthis";
+    else
+        aws cloudformation describe-stacks | jq -r ".Stacks[] | .StackName | select(contains(\"$1\"))" | xargs -I % -n 1 -r sh -c 'echo "Deleting CFN Stack: %"; aws cloudformation delete-stack --stack-name %';
+        aws cloudformation list-stacks --stack-status-filter DELETE_IN_PROGRESS | jq -r '.StackSummaries[] | .StackName' | xargs -I % -n 1 -r sh -c 'echo "Waiting for %"; aws cloudformation wait stack-delete-complete --stack-name %';
+    fi
+}
 
 alias t='tmux'
 alias tn='t new-session -As'

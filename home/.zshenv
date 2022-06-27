@@ -23,7 +23,7 @@ export FZF_CTRL_R_OPTS="--reverse --info hidden"
 export N_PREFIX=$HOME/.n
 
 if [ -d "$HOME/go/bin" ]; then
-    path+=$HOME/go/bin/
+    path+=$HOME/go/bin
 fi
 
 if [ -d "/usr/local/go/bin" ]; then
