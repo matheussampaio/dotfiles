@@ -506,21 +506,6 @@ return require('packer').startup(function(use)
         config = function() require('plugins/telescope') end
     }
 
-    use {
-        'github/copilot.vim',
-        -- zbirenbaum/copilot.lua does not support authentication yet. for new machines, we need to uso tpope's and run :Copilot enable
-        disable = true
-    }
-
-    use {
-        'zbirenbaum/copilot.lua',
-        commit = '04a618dd678e7dc9c9d9680a4cce62d5aefa917a',
-        -- event = 'InsertEnter',
-        config = function()
-            vim.schedule(function() require('copilot').setup() end)
-        end
-    }
-
     -- use 'mfussenegger/nvim-jdtls'
 
     use {
@@ -567,7 +552,6 @@ return require('packer').startup(function(use)
             'hrsh7th/cmp-buffer',
             'hrsh7th/cmp-path',
             'hrsh7th/cmp-cmdline',
-            'zbirenbaum/copilot-cmp',
             'saadparwaiz1/cmp_luasnip',
             'onsails/lspkind-nvim',
         },
