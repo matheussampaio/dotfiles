@@ -203,5 +203,22 @@ delete_cfn_stacks() {
     fi
 }
 
+connect_ec2_at_cfn_stack() {
+    STACK_ID=$(aws cloudformation describe-stacks --stack-name $2 | jq -r '.Stacks[] | .StackId')
+    echo "STACK_ID=$STACK_ID"
+
+    INSTANCE_ID=$(aws ec2 describe-instances --filters Name=tag:aws:cloudformation:stack-id,Values=$STACK_ID | jq -r '.Reservations[] | .Instances[] | .InstanceId')
+    echo "INSTANCE_ID=$INSTANCE_ID"
+
+    echo "Waiting instance initialization..."
+    aws ec2 wait instance-running --instance-ids $INSTANCE_ID
+
+    PUBLIC_DNS_NAME=$(aws ec2 describe-instances --filters Name=instance-state-code,Values=16 Name=instance-id,Values=$INSTANCE_ID | jq -r '.Reservations[] | .Instances[] | .PublicDnsName')
+    echo "PUBLIC_DNS_NAME=$PUBLIC_DNS_NAME"
+
+    echo "connecting..."
+    TERM=screen ssh -i $1 ec2-user@$PUBLIC_DNS_NAME
+}
+
 alias t='tmux'
 alias tn='t new-session -As'
