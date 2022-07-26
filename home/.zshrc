@@ -196,7 +196,8 @@ fi
 
 delete_cfn_stacks() {
     if [ ! "$#" -eq 1 ]; then
-        echo "missing param: delete_cfn_stacks containsthis";
+        echo "delete_cfn_stacks should have one (and only one) param.";
+        echo "Example: delete_cfn_stacks my-stack";
     else
         aws cloudformation describe-stacks | jq -r ".Stacks[] | .StackName | select(contains(\"$1\"))" | xargs -I % -n 1 -r sh -c 'echo "Deleting CFN Stack: %"; aws cloudformation delete-stack --stack-name %';
         aws cloudformation list-stacks --stack-status-filter DELETE_IN_PROGRESS | jq -r '.StackSummaries[] | .StackName' | xargs -I % -n 1 -r sh -c 'echo "Waiting for %"; aws cloudformation wait stack-delete-complete --stack-name %';
