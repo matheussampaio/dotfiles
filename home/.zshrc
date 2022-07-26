@@ -96,25 +96,25 @@ if [ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]; then
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
-if command -v rbenv > /dev/null 2>&1; then
-    eval "$(rbenv init - zsh)";
-fi
-
-if command -v pyenv > /dev/null 2>&1; then
-    eval "$(pyenv init -)";
-fi
-
-if command -v pyenv-virtualenv-init > /dev/null 2>&1; then
-    eval "$(pyenv virtualenv-init -)";
-fi
-
-if command -v plenv > /dev/null 2>&1; then
-    eval "$(plenv init -)"
-fi
-
-if [ $(ps ax | grep "[s]sh-agent" | wc -l) -eq 0 ] ; then
-    eval $(ssh-agent -s) > /dev/null
-fi
+# if command -v rbenv > /dev/null 2>&1; then
+#     eval "$(rbenv init - zsh)";
+# fi
+#
+# if command -v pyenv > /dev/null 2>&1; then
+#     eval "$(pyenv init -)";
+# fi
+#
+# if command -v pyenv-virtualenv-init > /dev/null 2>&1; then
+#     eval "$(pyenv virtualenv-init -)";
+# fi
+#
+# if command -v plenv > /dev/null 2>&1; then
+#     eval "$(plenv init -)"
+# fi
+#
+# if [ $(ps ax | grep "[s]sh-agent" | wc -l) -eq 0 ] ; then
+#     eval $(ssh-agent -s) > /dev/null
+# fi
 
 # set default theme
 if [ ! -f $XDG_CONFIG_HOME/theme ]; then
