@@ -1,4 +1,5 @@
 setlocal shiftwidth=2
+setlocal conceallevel=0
 
 if executable('python')
   setlocal formatprg=python\ -m\ json.tool
