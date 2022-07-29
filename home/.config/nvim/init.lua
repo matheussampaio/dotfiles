@@ -146,6 +146,20 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     callback = function() vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 500 }) end
 })
 
+vim.api.nvim_create_autocmd({ 'WinEnter', 'FocusGained' }, {
+    desc = 'Show the cursorline whenever the window gain focus',
+    group = vim.api.nvim_create_augroup('ShowCursorLineWhenLoseFocus', { clear = true }),
+    pattern = { '*' },
+    callback = function () vim.o.cursorline = true end
+})
+
+vim.api.nvim_create_autocmd({ 'WinLeave', 'FocusLost' }, {
+    desc = 'Hide the cursorline whenever the window loses focus',
+    group = vim.api.nvim_create_augroup('HideCursorLineWhenLoseFocus', { clear = true }),
+    pattern = { '*' },
+    callback = function () vim.o.cursorline = false end
+})
+
 -- Add custom highlights in method that is executed every time a colorscheme is sourced.
 -- See https://gist.github.com/romainl/379904f91fa40533175dfaec4c833f2f for details
 local override_highlights = function()
