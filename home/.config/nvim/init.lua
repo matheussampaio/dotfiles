@@ -323,11 +323,6 @@ return require('packer').startup(function(use)
     -- Add support to .editorconfig files.
     use 'gpanders/editorconfig.nvim'
 
-    use {
-        'nvim-orgmode/orgmode',
-        config = function() require('plugins/orgmode') end
-    }
-
     -- Treesitter configurations and abstraction layer for Neovim.
     use {
         'nvim-treesitter/nvim-treesitter',
