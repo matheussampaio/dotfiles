@@ -258,10 +258,11 @@ return require('packer').startup(function(use)
         'nvim-lualine/lualine.nvim',
         config = function()
             require('lualine').setup({
+                extensions = { 'fugitive', 'quickfix' },
                 options = {
                     theme = 'gruvbox',
                     component_separators = { left = '', right = '' },
-                    section_separators = { left = '', right = '' },
+                    section_separators = { left = '', right = '' }
                 },
                 sections = {
                     lualine_a = { 'mode' },
@@ -283,7 +284,7 @@ return require('packer').startup(function(use)
                     lualine_a = { {
                         'tabs',
                         max_length = vim.o.columns,
-                        mode = 2
+                        mode = 1
                     } },
                     lualine_b = {},
                     lualine_c = {},
