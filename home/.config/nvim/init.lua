@@ -559,8 +559,6 @@ return require('packer').startup(function(use)
     -- Completion
     use {
         'hrsh7th/nvim-cmp',
-        -- event = 'InsertEnter',
-        -- after = { 'nvim-lspconfig', 'nvim-autopairs', 'LuaSnip' },
         requires = {
             'hrsh7th/cmp-nvim-lsp',
             'hrsh7th/cmp-nvim-lsp-signature-help',
