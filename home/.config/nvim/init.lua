@@ -357,12 +357,20 @@ return require('packer').startup(function(use)
     -- (copy from SSH session)
     use {
         'ojroques/vim-oscyank',
-        keys = {
-            { 'v', '<Leader>co', 'OSC yank' },
-            { 'x', '<Leader>co', 'OSC yank' }
-        },
         config = function()
             vim.keymap.set({ 'v', 'x' }, '<Leader>co', ':OSCYank<CR>', { desc = 'OSC yank' })
+
+            local function copy(lines, _)
+                vim.fn.OSCYankString(table.concat(lines, "\n"))
+            end
+
+            vim.g.clipboard = {
+                name = "osc52",
+                copy = {
+                    ["+"] = copy,
+                    ["*"] = copy
+                }
+            }
         end
     }
 
