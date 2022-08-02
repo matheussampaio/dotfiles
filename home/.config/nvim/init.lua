@@ -222,7 +222,7 @@ local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.n
 local packer_bootstrap = false
 
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-    packer_bootstrap = vim.fn.system('git clone --branch keys-desc --depth 1 https://github.com/matheussampaio/packer.nvim ' .. install_path)
+    packer_bootstrap = vim.fn.system('git clone --branch keys-desc --depth 1 https://github.com/wbthomason/packer.nvim ' .. install_path)
 
     vim.cmd('packadd packer.nvim')
 end
@@ -231,8 +231,7 @@ return require('packer').startup(function(use)
     use 'nvim-lua/plenary.nvim'
 
     use {
-        'matheussampaio/packer.nvim',
-        branch = 'keys-desc',
+        'wbthomason/packer.nvim',
         config = function()
             vim.keymap.set('n', '<Leader>us', ':PackerSync<CR>', { desc = 'Run packer sync' })
             vim.keymap.set('n', '<Leader>ui', ':PackerInstall<CR>', { desc = 'Run packer install' })
@@ -411,9 +410,7 @@ return require('packer').startup(function(use)
 
     -- Keybinding catalog
     use {
-        -- 'folke/which-key.nvim',
-        -- tracking PR https://github.com/folke/which-key.nvim/pull/253
-        'xiyaowong/which-key.nvim',
+        'folke/which-key.nvim',
         config = function()
             local wk = require('which-key')
 
