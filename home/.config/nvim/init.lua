@@ -400,10 +400,6 @@ return require('packer').startup(function(use)
             -- Git commit browser.
             'junegunn/gv.vim',
             after = 'vim-fugitive',
-            keys = {
-                { 'n', '<Leader>gl', 'Git log tree' },
-                { 'n', '<Leader>ga', 'Git log tree --all' }
-            },
             config = function()
                 vim.keymap.set('n', '<Leader>gl', ':GV<CR>', { silent = true, desc = 'Git log tree' })
                 vim.keymap.set('n', '<Leader>ga', ':GV --all<CR>', { silent = true, desc = 'Git log tree --all' })
@@ -412,8 +408,7 @@ return require('packer').startup(function(use)
         {
             -- Enables :GBrowse from fugitive.vim to open GitHub URLs.
             'tpope/vim-rhubarb',
-            after = 'vim-fugitive',
-            cmd = 'GBrowse',
+            after = 'vim-fugitive'
         }
     }
 
