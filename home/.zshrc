@@ -49,9 +49,6 @@ zplug "plugins/aliases", from:oh-my-zsh
 # (warp directory) lets you jump to custom directories in zsh
 zplug "mfaerevaag/wd"
 
-# Tracks your most used directories, based on 'frecency'.
-zplug "rupa/z", use:"z.sh"
-
 # Powerlevel10k is a theme for Zsh.
 zplug "romkatv/powerlevel10k", as:theme, depth:1
 
@@ -94,6 +91,10 @@ fi
 
 if [ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]; then
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+
+if command -v zoxide > /dev/null 2>&1; then
+    eval "$(zoxide init zsh)"
 fi
 
 # if command -v rbenv > /dev/null 2>&1; then

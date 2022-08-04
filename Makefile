@@ -5,6 +5,7 @@ UNAME_S := $(shell uname -s)
 
 BREW_PACKAGES := stow tmux ripgrep wget jq fd lua-language-server rust-analyzer
 NODE_PACKAGES := n tldr neovim typescript typescript-language-server trash-cli eslint prettier js-beautify
+CARGO_PACKAGES := zoxide
 
 
 all: install-brew-packages install-node install-neovim install-fzf install-zplug link
