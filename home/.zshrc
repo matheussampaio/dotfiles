@@ -40,7 +40,10 @@ zplug "lib/clipboard", from:oh-my-zsh
 # improves history command
 zplug "lib/history", from:oh-my-zsh
 
-# improves history command
+export HISTSIZE=1000000000
+export SAVEHIST=1000000000
+
+# improves cd commands
 zplug "lib/directories", from:oh-my-zsh
 
 # provides many aliases and a few useful functions
