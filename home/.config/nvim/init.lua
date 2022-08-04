@@ -1,6 +1,3 @@
--- enable mouse support
-vim.o.mouse = 'a'
-
 -- Enable number columns.
 vim.o.number = true
 vim.o.relativenumber = true
