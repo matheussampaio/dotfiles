@@ -106,6 +106,9 @@ vim.g.python3_host_prog = '/usr/local/bin/python3'
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+-- Save stuff to OS clipboard
+-- vim.g.clipboard = 'unnamedplus'
+
 -- Normally space move the cursor to the right in normal mode. Since LEADER is
 -- SPACE, disabling that behavior works better for me.
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<NOP>', { silent = true })
@@ -352,17 +355,17 @@ return require('packer').startup(function(use)
         config = function()
             vim.keymap.set({ 'v', 'x' }, '<Leader>co', ':OSCYank<CR>', { desc = 'OSC yank' })
 
-            local function copy(lines, _)
-                vim.fn.OSCYankString(table.concat(lines, "\n"))
-            end
-
-            vim.g.clipboard = {
-                name = "osc52",
-                copy = {
-                    ["+"] = copy,
-                    ["*"] = copy
-                }
-            }
+            -- local function copy(lines, _)
+            --     vim.fn.OSCYankString(table.concat(lines, "\n"))
+            -- end
+            --
+            -- vim.g.clipboard = {
+            --     name = "osc52",
+            --     copy = {
+            --         ["+"] = copy,
+            --         ["*"] = copy
+            --     }
+            -- }
         end
     }
 
