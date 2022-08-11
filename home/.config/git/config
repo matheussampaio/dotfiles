@@ -1,28 +1,38 @@
 [core]
-  editor = nvim
-  pager = less
+    editor = nvim
+    pager = less
+    eol = lf
 
 [user]
-  name = Matheus Sampaio
-  email = matheus@sampaio.us
+    name = Matheus Sampaio
+    email = matheus@sampaio.us
 
 [commit]
-  verbose = true
+    verbose = true
 
 [diff]
-  algorithm = patience
+    algorithm = patience
 
 [rebase]
-  instructionFormat = %s [%an - %ar]
+    instructionFormat = %s [%an - %ar]
 
 [github]
-  user = matheussampaio
+    user = matheussampaio
 
 [checkout]
-  defaultRemote = origin
+    defaultRemote = origin
 
 [init]
-  defaultBranch = main
+    defaultBranch = main
 
 [pull]
-  rebase = true
+    rebase = true
+
+[color]
+    ui = auto
+
+[alias]
+    dag = log --graph --format='format:%C(yellow)%h%C(reset) %C(blue)%an <%ae>%C(reset) %C(magenta)%cr%C(reset)%C(auto)%d%C(reset)%n%s' --date-order
+
+[includeIf "hasconfig:remote.*.url:ssh://git.amazon.com*/**"]
+    path = ~/.gitconfig-amazon

@@ -76,6 +76,7 @@ function my_zvm_init() {
 
     bindkey '^P' history-beginning-search-backward
     bindkey '^N' history-beginning-search-forward
+    bindkey '^ ' autosuggest-accept
 }
 
 zvm_after_init_commands+=(my_zvm_init)
@@ -227,3 +228,16 @@ connect_ec2_at_cfn_stack() {
 
 alias t='tmux'
 alias tn='t new-session -As'
+
+# The following lines were added by compinstall
+
+zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
+zstyle ':completion:*' expand prefix suffix
+zstyle ':completion:*' file-sort access
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' 'r:|[._-]=** r:|=**'
+zstyle :compinstall filename '~/.zshrc'
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
