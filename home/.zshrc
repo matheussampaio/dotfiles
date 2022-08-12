@@ -13,6 +13,32 @@ unsetopt BEEP
 # useful to call `..` and `...` to go up folders.
 setopt AUTO_CD
 
+# The following lines were added by compinstall
+zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
+zstyle ':completion:*' expand prefix suffix
+zstyle ':completion:*' file-sort access
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' 'r:|[._-]=** r:|=**'
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/.zcompcache"
+
+# disable sort when completing `git checkout`
+zstyle ':completion:*:git-checkout:*' sort false
+# set descriptions format to enable group support
+zstyle ':completion:*:descriptions' format '[%d]'
+# set list-colors to enable filename colorizing
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# preview directory's content with exa when completing cd
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+# switch group using `,` and `.`
+zstyle ':fzf-tab:*' switch-group ',' '.'
+
+zstyle :compinstall filename "$HOME/.zshrc"
+
+autoload -Uz compinit && compinit
+autoload -Uz bashcompinit && bashcompinit
+
+# End of lines added by compinstall
 if command -v nvim > /dev/null 2>&1; then
     export EDITOR='nvim'
     export MANPAGER='nvim +Man!'
@@ -30,6 +56,9 @@ source $HOME/.zplug/init.zsh
 
 # better and friendly vi(vim) mode plugin for ZSH
 zplug "jeffreytse/zsh-vi-mode"
+
+# help remembering those shell aliases and Git aliases you once defined
+zplug "djui/alias-tips"
 
 # provides many aliases and a few useful functions
 zplug "plugins/git", from:oh-my-zsh
@@ -55,7 +84,15 @@ zplug "mfaerevaag/wd"
 # Powerlevel10k is a theme for Zsh.
 zplug "romkatv/powerlevel10k", as:theme, depth:1
 
+# Suggests commands as you type based on history and completions.
 zplug "zsh-users/zsh-autosuggestions"
+
+# Provides completion support for awscli and a few utilities to manage AWS
+# profiles and display them in the prompt.
+zplug "apachler/zsh-aws"
+
+# Replace zsh's default completion selection menu with fzf!
+zplug "Aloxaf/fzf-tab"
 
 # Install plugins if there are plugins that have not been installed
 if ! zplug check; then
@@ -228,16 +265,3 @@ connect_ec2_at_cfn_stack() {
 
 alias t='tmux'
 alias tn='t new-session -As'
-
-# The following lines were added by compinstall
-
-zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
-zstyle ':completion:*' expand prefix suffix
-zstyle ':completion:*' file-sort access
-zstyle ':completion:*' list-colors ''
-zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' 'r:|[._-]=** r:|=**'
-zstyle :compinstall filename '~/.zshrc'
-
-autoload -Uz compinit
-compinit
-# End of lines added by compinstall

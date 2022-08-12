@@ -17,7 +17,7 @@ export XDG_CACHE_HOME="$HOME/.cache"
 
 export WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>'
 
-export FZF_DEFAULT_OPTS="--tiebreak end,length,index"
+export FZF_DEFAULT_OPTS="--tiebreak end,length,index --color=$(cat $XDG_CONFIG_HOME/theme)"
 export FZF_CTRL_R_OPTS="--reverse --info hidden"
 
 export N_PREFIX=$HOME/.n

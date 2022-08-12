@@ -3,12 +3,12 @@ DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 UNAME_S := $(shell uname -s)
 
 
-BREW_PACKAGES := stow tmux ripgrep wget jq fd lua-language-server rust-analyzer
-NODE_PACKAGES := n tldr neovim typescript typescript-language-server trash-cli eslint prettier js-beautify
-CARGO_PACKAGES := zoxide
+BREW_PACKAGES  := stow tmux ripgrep wget jq fd lua-language-server rust-analyzer
+NODE_PACKAGES  := n tldr neovim typescript typescript-language-server trash-cli eslint prettier js-beautify
+CARGO_PACKAGES := zoxide exa
 
 
-all: install-brew-packages install-node install-neovim install-fzf install-zplug link
+all: install-brew-packages install-cargo-packages install-node-packages install-neovim install-fzf install-zplug link install-terminfo
 
 
 link:
@@ -28,19 +28,27 @@ install-zplug:
 	fi;
 
 
+install-cargo-packages:
+	if ! type "cargo" > /dev/null 2>&1; then \
+		curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh; \
+	fi; \
+	cargo install $(CARGO_PACKAGES)
+
+
 install-fzf:
 	if [ ! -d $$HOME/.fzf ]; then git clone --depth 1 https://github.com/junegunn/fzf.git $$HOME/.fzf; fi; \
 	$$HOME/.fzf/install --xdg --no-bash --no-fish --key-bindings --no-update-rc --completion
 
 
-install-node:
-	brew install node
-
-
-setup-node:
-	mkdir -p $$HOME/.npm $$HOME/.n && \
-	npm install --prefix $$HOME/.npm -g n && \
-	N_PREFIX=$$HOME/.n $$HOME/.npm/bin/n lts && \
+install-node-packages:
+	if ! type "node" > /dev/null 2>&1; then \
+		brew install node; \
+	fi; \
+	if ! type "n" > /dev/null 2>&1; then \
+		mkdir -p $$HOME/.npm $$HOME/.n && \
+		npm install --prefix $$HOME/.npm -g n && \
+		N_PREFIX=$$HOME/.n $$HOME/.npm/bin/n lts; \
+	fi; \
 	$$HOME/.n/bin/npm install --prefix $$HOME/.npm -g $(NODE_PACKAGES)
 
 
