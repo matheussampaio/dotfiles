@@ -3,9 +3,9 @@ DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 UNAME_S := $(shell uname -s)
 
 
-BREW_PACKAGES  := stow tmux ripgrep wget jq fd lua-language-server rust-analyzer
+BREW_PACKAGES  := stow tmux ripgrep wget jq fd lua-language-server rust-analyzer exa
 NODE_PACKAGES  := n tldr neovim typescript typescript-language-server trash-cli eslint prettier js-beautify
-CARGO_PACKAGES := zoxide exa
+CARGO_PACKAGES := zoxide
 
 
 all: install-brew-packages install-cargo-packages install-node-packages install-neovim install-fzf install-zplug link install-terminfo

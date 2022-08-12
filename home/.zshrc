@@ -13,11 +13,14 @@ unsetopt BEEP
 # useful to call `..` and `...` to go up folders.
 setopt AUTO_CD
 
+if [ -d "/home/linuxbrew/.linuxbrew/share/zsh/site-functions" ]; then
+    fpath=(/home/linuxbrew/.linuxbrew/share/zsh/site-functions $fpath)
+fi
+
 # The following lines were added by compinstall
 zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
 zstyle ':completion:*' expand prefix suffix
 zstyle ':completion:*' file-sort access
-zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' 'r:|[._-]=** r:|=**'
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/.zcompcache"
@@ -35,7 +38,7 @@ zstyle ':fzf-tab:*' switch-group ',' '.'
 
 zstyle :compinstall filename "$HOME/.zshrc"
 
-autoload -Uz compinit && compinit
+autoload -Uz compinit && compinit -u
 autoload -Uz bashcompinit && bashcompinit
 
 # End of lines added by compinstall
