@@ -12,7 +12,7 @@ all: install-brew-packages install-cargo-packages install-node-packages install-
 
 
 link:
-	stow --verbose --target=$$HOME --dir=$(DIR) --restow home
+	stow --verbose --no-folding --target=$$HOME --dir=$(DIR) --restow home
 
 
 install-brew-packages:
