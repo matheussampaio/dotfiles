@@ -17,6 +17,12 @@ if [ -d "/home/linuxbrew/.linuxbrew/share/zsh/site-functions" ]; then
     fpath=(/home/linuxbrew/.linuxbrew/share/zsh/site-functions $fpath)
 fi
 
+# export WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>'
+export WORDCHARS='~!#$%^&*(){}[]<>?.+;-'
+
+export FZF_DEFAULT_OPTS="--tiebreak end,length,index --color=$(cat $XDG_CONFIG_HOME/theme || echo 'light')"
+export FZF_CTRL_R_OPTS="--reverse --info hidden"
+
 # The following lines were added by compinstall
 zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
 zstyle ':completion:*' expand prefix suffix
