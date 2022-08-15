@@ -135,7 +135,7 @@ if command -v nvim > /dev/null 2>&1; then
         nvim --listen $XDG_DATA_HOME/nvim/nvim-$(date +%s).pipe "$@"
     }
 
-    alias vim=_nvim
+    # alias vim=_nvim
     alias nvim=_nvim
 fi
 
