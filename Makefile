@@ -55,7 +55,7 @@ install-node-packages:
 
 install-neovim:
 	brew install --HEAD luajit
-	brew install --HEAD neovim
+	brew install neovim
 
 
 install-terminfo:
