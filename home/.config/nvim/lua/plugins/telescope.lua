@@ -1,8 +1,5 @@
 require('telescope').setup({
     defaults = {
-        preview = {
-            hide_on_startup = true
-        },
         vimgrep_arguments = {
             "rg",
             "--color=never",
@@ -44,6 +41,7 @@ require('telescope').setup({
 })
 
 require('telescope').load_extension('fzf')
+require('telescope').load_extension('ui-select')
 
 -- Search for a term in the current directory
 vim.keymap.set('', '<Leader>f', require('telescope.builtin').live_grep, { desc = "Search text" })

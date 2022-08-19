@@ -511,7 +511,8 @@ return require('packer').startup(function(use)
             { 'n', '<Leader>sr', 'Resume search' }
         },
         requires = {
-            { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+            { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
+            { 'nvim-telescope/telescope-ui-select.nvim' }
         },
         config = function() require('plugins/telescope') end
     }
