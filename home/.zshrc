@@ -163,9 +163,9 @@ fi
 #     eval "$(plenv init -)"
 # fi
 #
-# if [ $(ps ax | grep "[s]sh-agent" | wc -l) -eq 0 ] ; then
-#     eval $(ssh-agent -s) > /dev/null
-# fi
+if [ $(ps ax | grep "[s]sh-agent" | wc -l) -eq 0 ] ; then
+    eval $(ssh-agent -s) > /dev/null
+fi
 
 # set default theme
 if [ ! -f $XDG_CONFIG_HOME/theme ]; then
