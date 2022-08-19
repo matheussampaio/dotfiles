@@ -517,7 +517,7 @@ return require('packer').startup(function(use)
         config = function() require('plugins/telescope') end
     }
 
-    -- use 'mfussenegger/nvim-jdtls'
+    use 'mfussenegger/nvim-jdtls'
 
     use {
         'neovim/nvim-lspconfig',

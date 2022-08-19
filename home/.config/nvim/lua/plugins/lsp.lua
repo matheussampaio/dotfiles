@@ -79,15 +79,6 @@ lspconfig.sumneko_lua.setup({
     },
 })
 
--- java
--- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#jdtls
-lspconfig.jdtls.setup({
-    cmd = { 'jdtls' },
-    on_attach = function(_, bufnr)
-        vim.keymap.set('n', '<Leader>lo', require('jdtls').organize_imports, { desc = 'Organize imports', buffer = bufnr })
-    end
-})
-
 -- rust
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#rust_analyzer
 lspconfig.rust_analyzer.setup({})
