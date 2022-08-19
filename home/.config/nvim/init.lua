@@ -100,7 +100,7 @@ vim.g.do_filetype_lua = 1
 vim.g.did_load_filetypes = 0
 
 -- set python3 path
-vim.g.python3_host_prog = '/usr/local/bin/python3'
+-- vim.g.python3_host_prog = '/usr/local/bin/python3'
 
 -- Change leader to SPACE.
 vim.g.mapleader = ' '
