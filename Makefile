@@ -3,7 +3,7 @@ DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 UNAME_S := $(shell uname -s)
 
 
-BREW_PACKAGES  := stow tmux ripgrep wget jq fd lua-language-server rust-analyzer exa
+BREW_PACKAGES  := stow tmux ripgrep wget jq fd lua-language-server rust-analyzer exa bat tree
 NODE_PACKAGES  := n tldr neovim typescript typescript-language-server trash-cli eslint prettier js-beautify
 CARGO_PACKAGES := zoxide
 
