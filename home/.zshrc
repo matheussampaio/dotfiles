@@ -176,7 +176,7 @@ fi
 set-theme() {
     echo $1 > $XDG_CONFIG_HOME/theme
 
-    if tmux has &> /dev/null; then
+    if tmux has-session &> /dev/null; then
         tmux source-file $XDG_CONFIG_HOME/tmux/tmux-set-theme.conf
     fi
 
@@ -185,7 +185,7 @@ set-theme() {
     done
 
     if [[ -n "${SSH_CONNECTION:-1}" ]] && [[ "$(uname -s)" = Darwin ]]; then
-        python3 $XDG_CONFIG_HOME/iterm2/set-theme.py &
+        python3 $XDG_CONFIG_HOME/iterm2/set-theme.py
     fi
 }
 
