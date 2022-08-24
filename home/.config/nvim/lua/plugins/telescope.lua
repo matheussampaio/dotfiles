@@ -36,12 +36,16 @@ require('telescope').setup({
         fzf = {
             override_generic_sorter = true,
             override_file_sorter = true,
+        },
+        ["ui-select"] = {
+            require("telescope.themes").get_dropdown({})
         }
     }
 })
 
 require('telescope').load_extension('fzf')
 require('telescope').load_extension('ui-select')
+require('telescope').load_extension('dap')
 
 -- Search for a term in the current directory
 vim.keymap.set('', '<Leader>f', require('telescope.builtin').live_grep, { desc = "Search text" })

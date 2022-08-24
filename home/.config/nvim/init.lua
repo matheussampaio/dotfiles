@@ -512,12 +512,14 @@ return require('packer').startup(function(use)
         },
         requires = {
             { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
-            { 'nvim-telescope/telescope-ui-select.nvim' }
+            { 'nvim-telescope/telescope-ui-select.nvim' },
+            { 'nvim-telescope/telescope-dap.nvim' }
         },
         config = function() require('plugins/telescope') end
     }
 
-    use 'mfussenegger/nvim-jdtls'
+    -- java lsp
+    use { 'mfussenegger/nvim-jdtls' }
 
     use {
         'neovim/nvim-lspconfig',

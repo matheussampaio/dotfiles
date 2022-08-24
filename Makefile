@@ -8,7 +8,7 @@ NODE_PACKAGES  := n tldr neovim typescript typescript-language-server trash-cli 
 CARGO_PACKAGES := zoxide
 
 
-all:: install-brew-packages install-cargo-packages install-node-packages install-neovim install-fzf install-zplug link install-terminfo
+all:: install-brew-packages install-cargo-packages install-node-packages setup-java install-neovim install-fzf install-zplug link install-terminfo
 
 
 link::
@@ -61,3 +61,40 @@ install-neovim:
 install-terminfo:
 	curl -LO https://invisible-island.net/datafiles/current/terminfo.src.gz && gunzip terminfo.src.gz && \
 	/usr/bin/tic -xe tmux-256color terminfo.src
+
+
+setup-java:: download-lombok download-google-java-format setup-java-debug setup-vscode-java-test setup-vscode-java-decompiler
+
+
+download-lombok:
+	mkdir -p ~/.java && wget https://projectlombok.org/downloads/lombok.jar -O ~/.java/lombok.jar
+
+
+download-google-java-format:
+	mkdir -p ~/.java && wget https://github.com/google/google-java-format/releases/download/v1.15.0/google-java-format-1.15.0-all-deps.jar -O ~/.java/google-java-format.jar
+
+
+setup-java-debug:
+	mkdir -p ~/.java && \
+	cd ~/.java && \
+	rm -rf ~/.java/java-debug && \
+	git clone --depth 1 git@github.com:microsoft/java-debug.git
+	cd ~/.java/java-debug && \
+	./mvnw clean install
+
+
+setup-vscode-java-test:
+	mkdir -p ~/.java && \
+	cd ~/.java && \
+	rm -rf ~/.java/vscode-java-test && \
+	git clone --depth 1 git@github.com:microsoft/vscode-java-test.git
+	cd ~/.java/vscode-java-test && \
+	npm install && \
+	npm run build-plugin
+
+
+setup-vscode-java-decompiler:
+	mkdir -p ~/.java && \
+	cd ~/.java && \
+	rm -rf ~/.java/vscode-java-decompiler && \
+	git clone --depth 1 git@github.com:dgileadi/vscode-java-decompiler.git
