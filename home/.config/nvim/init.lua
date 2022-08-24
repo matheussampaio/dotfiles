@@ -342,7 +342,7 @@ return require('packer').startup(function(use)
     use {
         'justinmk/vim-dirvish',
         -- The file manipulation commands for vim-dirvish
-        requires = { 'roginfarrer/vim-dirvish-dovish', after = 'vim-dirvish' }
+        requires = { 'roginfarrer/vim-dirvish-dovish' }
     }
 
 
@@ -369,6 +369,7 @@ return require('packer').startup(function(use)
         end
     }
 
+    -- Markdown
     use {
         'godlygeek/tabular',
         'preservim/vim-markdown',
@@ -428,7 +429,7 @@ return require('packer').startup(function(use)
 
             wk.register({
                 s = { name = 'Search' },
-                d = { name = 'Diagnostics' },
+                d = { name = 'Debug' },
                 u = { name = 'Utils' },
                 g = { name = 'Git' },
                 w = { name = 'Wiki' },
@@ -444,9 +445,6 @@ return require('packer').startup(function(use)
     -- Wrap and unwrap function arguments, lists, and dictionaires.
     use {
         'FooSoft/vim-argwrap',
-        keys = {
-            { 'n', '<Leader>ua', 'Arg Wrap' }
-        },
         config = function()
             vim.keymap.set('n', '<Leader>ua', ':ArgWrap<CR>', { silent = true, desc = 'Arg Wrap' })
         end
@@ -487,10 +485,6 @@ return require('packer').startup(function(use)
     -- Vim motions on speed!
     use {
         'phaazon/hop.nvim',
-        keys = {
-            { 'n', 's', 'Jump to word' },
-            { 'n', '<Leader>hl', 'Jump to line' },
-        },
         config = function()
             require('hop').setup()
 
@@ -502,14 +496,6 @@ return require('packer').startup(function(use)
     -- Fuzzy finder over lists.
     use {
         'nvim-telescope/telescope.nvim',
-        cmd = 'Telescope',
-        keys = {
-            { 'n', '<Leader>f', 'Search text' },
-            { 'n', '<Leader>p', 'Search files' },
-            { 'n', '<Leader>sh', 'Search help tags' },
-            { 'n', '<Leader>sw', 'Search current word' },
-            { 'n', '<Leader>sr', 'Resume search' }
-        },
         requires = {
             { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
             { 'nvim-telescope/telescope-ui-select.nvim' },
@@ -548,7 +534,7 @@ return require('packer').startup(function(use)
 
     use {
         'L3MON4D3/LuaSnip',
-        requires = 'rafamadriz/friendly-snippets',
+        requires = { 'rafamadriz/friendly-snippets' },
         config = function()
             require('luasnip.loaders.from_vscode').lazy_load()
         end
@@ -583,17 +569,15 @@ return require('packer').startup(function(use)
         'abecodes/tabout.nvim',
         after = 'nvim-cmp',
         config = function()
-            require('tabout').setup()
+            require('tabout').setup({})
         end
     }
 
     use {
         'mfussenegger/nvim-dap',
-        disable = true
-    }
-
-    use {
-        'lepture/vim-jinja'
+        config = function()
+            require('plugins/dap')
+        end
     }
 
     if packer_bootstrap then
