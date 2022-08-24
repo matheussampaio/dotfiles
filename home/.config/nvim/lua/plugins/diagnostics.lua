@@ -1,8 +1,6 @@
 vim.diagnostic.config({
     update_in_insert = false,
-    virtual_text = {
-        source = true
-    },
+    virtual_text = false,
     float = {
         source = true
     }

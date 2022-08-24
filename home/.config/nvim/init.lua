@@ -515,6 +515,22 @@ return require('packer').startup(function(use)
         end
     }
 
+    -- lsp warning displayed below the lines as virtual text
+    use {
+        'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
+        config = function()
+            require('lsp_lines').setup()
+        end
+    }
+
+    -- show lsp initialisation progress
+    use {
+        'j-hui/fidget.nvim',
+        config = function()
+            require('fidget').setup({})
+        end
+    }
+
     use {
         'jose-elias-alvarez/null-ls.nvim',
         config = function()
