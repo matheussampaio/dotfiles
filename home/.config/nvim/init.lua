@@ -268,9 +268,9 @@ return require('packer').startup(function(use)
                     lualine_a = { 'mode' },
                     lualine_b = { 'branch', 'diff', 'diagnostics' },
                     lualine_c = { 'filename' },
-                    lualine_x = { 'filetype' },
-                    lualine_y = {},
-                    lualine_z = {}
+                    lualine_x = {},
+                    lualine_y = { require('plugins/lualine-lsp-name') },
+                    lualine_z = { 'filetype' }
                 },
                 inactive_sections = {
                     lualine_a = {},
