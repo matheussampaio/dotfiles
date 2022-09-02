@@ -150,14 +150,14 @@ vim.api.nvim_create_autocmd({ 'WinEnter', 'FocusGained' }, {
     desc = 'Show the cursorline whenever the window gain focus',
     group = vim.api.nvim_create_augroup('ShowCursorLineWhenLoseFocus', { clear = true }),
     pattern = { '*' },
-    callback = function () vim.o.cursorline = true end
+    callback = function() vim.o.cursorline = true end
 })
 
 vim.api.nvim_create_autocmd({ 'WinLeave', 'FocusLost' }, {
     desc = 'Hide the cursorline whenever the window loses focus',
     group = vim.api.nvim_create_augroup('HideCursorLineWhenLoseFocus', { clear = true }),
     pattern = { '*' },
-    callback = function () vim.o.cursorline = false end
+    callback = function() vim.o.cursorline = false end
 })
 
 -- Add custom highlights in method that is executed every time a colorscheme is sourced.
@@ -354,18 +354,7 @@ return require('packer').startup(function(use)
         'ojroques/vim-oscyank',
         config = function()
             vim.keymap.set({ 'v', 'x' }, '<Leader>co', ':OSCYank<CR>', { desc = 'OSC yank' })
-
-            -- local function copy(lines, _)
-            --     vim.fn.OSCYankString(table.concat(lines, "\n"))
-            -- end
-            --
-            -- vim.g.clipboard = {
-            --     name = "osc52",
-            --     copy = {
-            --         ["+"] = copy,
-            --         ["*"] = copy
-            --     }
-            -- }
+            vim.keymap.set({ 'n' }, '<Leader>co', '<Plug>OSCYank', { desc = 'OSC yank' })
         end
     }
 
@@ -387,9 +376,11 @@ return require('packer').startup(function(use)
         {
             'tpope/vim-fugitive',
             config = function()
+                vim.keymap.set('n', '<Leader>g', ':Git ', { desc = 'Git' })
                 vim.keymap.set('n', '<Leader>gs', ':Git<CR>', { silent = true, desc = 'Git status' })
                 vim.keymap.set('n', '<Leader>gp', ':Git push<CR>', { silent = true, desc = 'Git push' })
-                vim.keymap.set('n', '<Leader>gb', ':GBrowse<CR>', { silent = true, desc = 'Git browse' })
+                vim.keymap.set('n', '<Leader>gr', ':GBrowse<CR>', { silent = true, desc = 'Git browse' })
+                vim.keymap.set('n', '<Leader>gb', ':Git blame<CR>', { silent = true, desc = 'Git blame' })
             end
         },
         {
@@ -405,6 +396,13 @@ return require('packer').startup(function(use)
             -- Enables :GBrowse from fugitive.vim to open GitHub URLs.
             'tpope/vim-rhubarb',
             after = 'vim-fugitive'
+        },
+        {
+            'f-person/git-blame.nvim',
+            setup = function()
+                vim.g.gitblame_date_format = '%r'
+                vim.g.gitblame_ignored_filetypes = { 'gitcommit', 'fugitive', 'help', 'packer' }
+            end
         }
     }
 

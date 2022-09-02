@@ -6,15 +6,15 @@ M.on_attach = function(_, bufnr)
     -- Enable completion triggered by <c-x><c-o>
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-    vim.api.nvim_create_autocmd({ 'BufEnter', 'InsertLeave', 'BufWritePost' }, {
-        desc = 'Refresh CodeLens',
-        buffer = bufnr,
-        callback = function()
-            if vim.lsp.buf.server_ready() then
-                -- vim.lsp.codelens.refresh()
-            end
-        end
-    })
+    -- vim.api.nvim_create_autocmd({ 'BufEnter', 'InsertLeave', 'BufWritePost' }, {
+    --     desc = 'Refresh CodeLens',
+    --     buffer = bufnr,
+    --     callback = function()
+    --         if vim.lsp.buf.server_ready() then
+    --             -- vim.lsp.codelens.refresh()
+    --         end
+    --     end
+    -- })
 end
 
 M.capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
