@@ -32,9 +32,9 @@ if root_dir then
 end
 
 local jar_patterns = {
-    "~/.java/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar",
-    "~/.java/vscode-java-decompiler/server/*.jar",
-    "~/.java/vscode-java-test/server/*.jar",
+    "/.java/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar",
+    "/.java/vscode-java-decompiler/server/*.jar",
+    "/.java/vscode-java-test/server/*.jar",
 }
 local bundles = {}
 
@@ -65,6 +65,8 @@ local config = {
     cmd = {
         "jdtls",
         "--jvm-arg=-javaagent:" .. home .. "/.java/lombok.jar",
+        '-Xms1g',
+        '-Xmx4G',
         "-data", eclipse_workspace,
     },
     root_dir = root_dir,
@@ -76,9 +78,6 @@ local config = {
             java = {
                 signatureHelp = { enabled = true },
                 contentProvider = { preferred = "fernflower" },
-                inlayhints = {
-                    parameterNames = { enabled = true }
-                },
                 referenceCodeLens = { enabled = true },
                 implementationsCodeLens = { enabled = true },
                 completion = {
