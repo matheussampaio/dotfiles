@@ -72,7 +72,7 @@ vim.o.listchars = 'nbsp:·,tab:▶ ,trail:·'
 vim.o.foldlevel = 1
 
 -- Display signs in the number column
-vim.o.signcolumn = 'number'
+vim.o.signcolumn = 'auto'
 
 -- pop up menu height
 vim.o.pumheight = 10
@@ -82,10 +82,13 @@ vim.o.cursorline = true
 
 vim.o.completeopt = 'menu,menuone,noinsert,preview'
 
+-- Enable mouse support
+vim.o.mouse = 'nvh'
+
 -- fold using indentation
 vim.o.foldmethod = 'indent'
 
-if vim.fn.filereadable(vim.fn.expand("$XDG_CONFIG_HOME/theme")) > 0 then
+if vim.fn.filereadable(vim.fn.expand('$XDG_CONFIG_HOME/theme')) > 0 then
     vim.cmd('let &background = readfile(glob("$XDG_CONFIG_HOME/theme"))[0]')
 else
     vim.o.background = 'dark'
@@ -159,6 +162,7 @@ vim.api.nvim_create_autocmd({ 'WinLeave', 'FocusLost' }, {
     pattern = { '*' },
     callback = function() vim.o.cursorline = false end
 })
+
 
 -- Add custom highlights in method that is executed every time a colorscheme is sourced.
 -- See https://gist.github.com/romainl/379904f91fa40533175dfaec4c833f2f for details
@@ -352,9 +356,13 @@ return require('packer').startup(function(use)
     -- (copy from SSH session)
     use {
         'ojroques/vim-oscyank',
+        setup = function ()
+            vim.g.oscyank_term = 'default'
+            vim.g.oscyank_silent = true
+        end,
         config = function()
-            vim.keymap.set({ 'v', 'x' }, '<Leader>co', ':OSCYank<CR>', { desc = 'OSC yank' })
-            vim.keymap.set({ 'n' }, '<Leader>co', '<Plug>OSCYank', { desc = 'OSC yank' })
+            vim.keymap.set({ 'v', 'x' }, '<Leader>c', ':OSCYank<CR>', { silent = true, desc = 'OSC yank' })
+            vim.keymap.set({ 'n' }, '<Leader>c', '<Plug>OSCYank', { silent = true, desc = 'OSC yank' })
         end
     }
 
@@ -379,7 +387,7 @@ return require('packer').startup(function(use)
                 vim.keymap.set('n', '<Leader>g', ':Git ', { desc = 'Git' })
                 vim.keymap.set('n', '<Leader>gs', ':Git<CR>', { silent = true, desc = 'Git status' })
                 vim.keymap.set('n', '<Leader>gp', ':Git push<CR>', { silent = true, desc = 'Git push' })
-                vim.keymap.set('n', '<Leader>gr', ':GBrowse<CR>', { silent = true, desc = 'Git browse' })
+                vim.keymap.set('n', '<Leader>go', ':GBrowse<CR>', { silent = true, desc = 'Git browse' })
                 vim.keymap.set('n', '<Leader>gb', ':Git blame<CR>', { silent = true, desc = 'Git blame' })
             end
         },
@@ -409,6 +417,7 @@ return require('packer').startup(function(use)
     -- Keybinding catalog
     use {
         'folke/which-key.nvim',
+        after = 'nvim-lspconfig',
         config = function()
             local wk = require('which-key')
 
@@ -497,7 +506,10 @@ return require('packer').startup(function(use)
         requires = {
             { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
             { 'nvim-telescope/telescope-ui-select.nvim' },
-            { 'nvim-telescope/telescope-dap.nvim' }
+            { 'nvim-telescope/telescope-dap.nvim' },
+            { 'nvim-telescope/telescope-frecency.nvim',
+                requires = { 'kkharji/sqlite.lua' }
+            }
         },
         config = function() require('plugins/telescope') end
     }
@@ -510,14 +522,6 @@ return require('packer').startup(function(use)
         config = function()
             require('plugins/lsp')
             require('plugins/diagnostics')
-        end
-    }
-
-    -- lsp warning displayed below the lines as virtual text
-    use {
-        'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
-        config = function()
-            require('lsp_lines').setup()
         end
     }
 
@@ -541,7 +545,7 @@ return require('packer').startup(function(use)
         config = function()
             require('nvim-autopairs').setup({
                 check_ts = true,
-                disable_filetype = { "TelescopePrompt", "vim" }
+                disable_filetype = { 'TelescopePrompt', 'vim' }
             })
         end
     }
@@ -581,7 +585,6 @@ return require('packer').startup(function(use)
 
     use {
         'abecodes/tabout.nvim',
-        after = 'nvim-cmp',
         config = function()
             require('tabout').setup({})
         end
@@ -591,6 +594,19 @@ return require('packer').startup(function(use)
         'mfussenegger/nvim-dap',
         config = function()
             require('plugins/dap')
+        end
+    }
+
+    use {
+        'milkypostman/vim-togglelist',
+        setup = function()
+            vim.g.toggle_list_no_mappings = true
+        end,
+        config = function()
+            vim.keymap.set('n', '<Leader>tq', function() vim.cmd([[:call ToggleQuickfixList()]]) end,
+                { desc = 'Toggle Quickfix list' })
+            vim.keymap.set('n', '<Leader>tl', function() vim.cmd([[:call ToggleLocationList()]]) end,
+                { desc = 'Toggle loc list' })
         end
     }
 

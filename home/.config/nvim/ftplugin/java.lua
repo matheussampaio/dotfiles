@@ -56,10 +56,20 @@ local config = {
 
         jdtls_setup.add_commands()
 
-        vim.keymap.set("n", "<Leader>dt", jdtls.test_nearest_method, { buffer = true })
-        vim.keymap.set("n", "<Leader>dc", jdtls.test_class, { buffer = true })
-
         lsp.on_attach(client, bufnr)
+
+        vim.keymap.set("n", "<Leader>dt", jdtls.test_nearest_method, { buffer = true, desc = "Test nearest method" })
+        vim.keymap.set("n", "<Leader>dc", jdtls.test_class, { buffer = true, desc = "Test class" })
+
+        vim.keymap.set("n", "<Leader>lo", require('jdtls').organize_imports, { buffer = true, desc = "Organize imports" })
+
+        vim.keymap.set("n", "<Leader>lc", require('jdtls').extract_constant, { buffer = true, desc = "Extract constant" })
+        vim.keymap.set("x", "<Leader>lc", function() require('jdtls').extract_constant(true) end, { buffer = true, desc = "Extract to constant" })
+
+        vim.keymap.set("n", "<Leader>lv", require('jdtls').extract_variable, { buffer = true, desc = "Extract variable" })
+        vim.keymap.set("x", "<Leader>lv", function() require('jdtls').extract_variable(true) end, { buffer = true, desc = "Extract to variable" })
+
+        vim.keymap.set("x", "<Leader>lm", function() require('jdtls').extract_method(true) end, { buffer = true, desc = "Extract to method" })
     end,
     capabilities = lsp.capabilities,
     cmd = {

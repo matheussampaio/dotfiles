@@ -1,6 +1,11 @@
 local luasnip = require('luasnip')
 local cmp = require('cmp')
 
+local has_words_before = function()
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+end
+
 cmp.setup({
     snippet = {
         expand = function(args)
@@ -33,27 +38,27 @@ cmp.setup({
             c = cmp.mapping.close(),
         }),
         ["<C-Space>"] = cmp.mapping.confirm({
-            behavior = cmp.ConfirmBehavior.Replace,
+            behavior = cmp.ConfirmBehavior.Insert,
             select = true,
         }),
         ["<CR>"] = cmp.mapping.confirm({
-            behavior = cmp.ConfirmBehavior.Replace,
+            behavior = cmp.ConfirmBehavior.Insert,
             select = false,
         }),
-        ["<Tab>"] = function(fallback)
+        ["<Tab>"] = cmp.mapping(function(fallback)
             if luasnip.expand_or_jumpable() then
                 luasnip.expand_or_jump()
             else
                 fallback()
             end
-        end,
-        ["<S-Tab>"] = function(fallback)
-            if luasnip.expand_or_jumpable(-1) then
-                luasnip.expand_or_jump(-1)
+        end, { "i", "s" }),
+        ["<S-Tab>"] = cmp.mapping(function(fallback)
+            if luasnip.jumpable(-1) then
+                luasnip.jump(-1)
             else
                 fallback()
             end
-        end
+        end, { "i", "s" })
     }),
 
     sources = cmp.config.sources({

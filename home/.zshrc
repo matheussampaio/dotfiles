@@ -164,7 +164,7 @@ fi
 # fi
 #
 if [ $(ps ax | grep "[s]sh-agent" | wc -l) -eq 0 ] ; then
-    eval $(ssh-agent -s) > /dev/null
+    eval $(ssh-agent -s)
 fi
 
 # set default theme

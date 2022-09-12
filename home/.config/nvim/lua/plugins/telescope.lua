@@ -46,12 +46,16 @@ require('telescope').setup({
 require('telescope').load_extension('fzf')
 require('telescope').load_extension('ui-select')
 require('telescope').load_extension('dap')
+require('telescope').load_extension('frecency')
 
 -- Search for a term in the current directory
 vim.keymap.set('', '<Leader>f', require('telescope.builtin').live_grep, { desc = "Search text" })
 
 -- Browse list of files in current directory
 vim.keymap.set('', '<Leader>p', require('telescope.builtin').find_files, { desc = "Search files" })
+vim.keymap.set('', '<Leader>o', function()
+    require('telescope').extensions.frecency.frecency({ workspace = 'CWD' })
+end, { desc = "Search frecency files" })
 
 -- Search help tags
 vim.keymap.set('', '<Leader>sh', require('telescope.builtin').help_tags, { desc = "Search help tags" })
