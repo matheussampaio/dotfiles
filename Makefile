@@ -61,8 +61,10 @@ install-neovim: setup-neovim-python2 setup-neovim-python3
 
 
 install-terminfo:
-	curl -LO https://invisible-island.net/datafiles/current/terminfo.src.gz && gunzip terminfo.src.gz && \
-	/usr/bin/tic -xe tmux-256color terminfo.src
+	curl -LO https://invisible-island.net/datafiles/current/terminfo.src.gz && \
+	gunzip terminfo.src.gz && \
+	/usr/bin/tic -xe tmux-256color terminfo.src && \
+	rm terminfo.src
 
 
 setup-java:: download-jdtls download-checkstyle download-lombok download-google-java-format setup-java-debug setup-vscode-java-test setup-vscode-java-decompiler
