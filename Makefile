@@ -8,7 +8,7 @@ NODE_PACKAGES  := n tldr neovim typescript typescript-language-server trash-cli 
 CARGO_PACKAGES := zoxide
 
 
-all:: install-brew-packages install-cargo-packages install-node-packages setup-java install-neovim install-fzf install-zplug link install-terminfo
+all:: install-brew-packages install-cargo-packages install-node-packages install-neovim install-fzf install-zplug link install-terminfo
 
 
 link::
