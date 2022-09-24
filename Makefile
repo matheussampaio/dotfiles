@@ -33,7 +33,7 @@ install-zplug:
 
 install-cargo-packages:
 	if ! type "cargo" > /dev/null 2>&1; then \
-		curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh; \
+		curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --profile default -y; \
 		source "$$HOME/.cargo/env"; \
 	fi; \
 	cargo install $(CARGO_PACKAGES)
