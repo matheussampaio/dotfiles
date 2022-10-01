@@ -2,26 +2,9 @@
 # https://unix.stackexchange.com/a/12108
 stty -ixon
 
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-# turn off all beeps
-unsetopt BEEP
-
-# If a command is issued that can’t be executed as a normal command, and the
-# command is the name of a directory, perform the cd command to that directory.
-# useful to call `..` and `...` to go up folders.
-setopt AUTO_CD
-
 if [ -d "/home/linuxbrew/.linuxbrew/share/zsh/site-functions" ]; then
     fpath=(/home/linuxbrew/.linuxbrew/share/zsh/site-functions $fpath)
 fi
-
-# export WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>'
-export WORDCHARS='~!#$%^&*(){}[]<>?.+;-'
-
-export FZF_DEFAULT_OPTS="--tiebreak end,length,index --color=$(cat $XDG_CONFIG_HOME/theme || echo 'light')"
-export FZF_CTRL_R_OPTS="--reverse --info hidden"
 
 # The following lines were added by compinstall
 zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
@@ -110,6 +93,28 @@ fi
 
 # Then, source plugins and add commands to $PATH
 zplug load
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+# turn off all beeps
+unsetopt BEEP
+
+# If a command is issued that can’t be executed as a normal command, and the
+# command is the name of a directory, perform the cd command to that directory.
+# useful to call `..` and `...` to go up folders.
+setopt AUTO_CD
+
+# https://unix.stackexchange.com/questions/599641/why-do-i-have-duplicates-in-my-zsh-history
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_FIND_NO_DUPS
+setopt HIST_SAVE_NO_DUPS
+
+# export WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>'
+export WORDCHARS='~!#$%^&*(){}[]<>?.+;-'
+
+export FZF_DEFAULT_OPTS="--tiebreak end,length,index --color=$(cat $XDG_CONFIG_HOME/theme || echo 'light')"
+export FZF_CTRL_R_OPTS="--reverse --info hidden"
 
 # Setting rg as the default source for fzf
 if command -v fd > /dev/null 2>&1; then
@@ -226,11 +231,21 @@ theme() {
     cat "$XDG_CONFIG_HOME/theme"
 }
 
-# colored ls
-if [ "$(uname -s)" = Darwin ]; then
+if command -v bat > /dev/null 2>&1; then
+    alias bat='bat --theme=gruvbox-$(theme)'
+fi
+
+if command -v exa > /dev/null 2>&1; then
+    alias ls='exa'
+elif [ "$(uname -s)" = "Darwin" ]; then
     alias ls='ls -G'
 else
     alias ls='ls --color=auto'
+fi
+
+if command -v tmux > /dev/null 2>&1; then
+    alias t='tmux'
+    alias tn='t new-session -As'
 fi
 
 if [ -f "$HOME/.p10k.zsh" ]; then
@@ -240,37 +255,3 @@ fi
 if [ -f "$HOME/.zshrc.local" ]; then
     source "$HOME/.zshrc.local"
 fi
-
-if command -v bat > /dev/null 2>&1; then
-    alias bat='bat --theme=gruvbox-$(theme)'
-fi
-
-delete_cfn_stacks() {
-    if [ ! "$#" -eq 1 ]; then
-        echo "delete_cfn_stacks should have one (and only one) param.";
-        echo "Example: delete_cfn_stacks my-stack";
-    else
-        aws cloudformation describe-stacks | jq -r ".Stacks[] | .StackName | select(contains(\"$1\"))" | xargs -I % -n 1 -r sh -c 'echo "Deleting CFN Stack: %"; aws cloudformation delete-stack --stack-name %';
-        aws cloudformation list-stacks --stack-status-filter DELETE_IN_PROGRESS | jq -r '.StackSummaries[] | .StackName' | xargs -I % -n 1 -r sh -c 'echo "Waiting for %"; aws cloudformation wait stack-delete-complete --stack-name %';
-    fi
-}
-
-connect_ec2_at_cfn_stack() {
-    STACK_ID=$(aws cloudformation describe-stacks --stack-name $2 | jq -r '.Stacks[] | .StackId')
-    echo "STACK_ID=$STACK_ID"
-
-    INSTANCE_ID=$(aws ec2 describe-instances --filters Name=tag:aws:cloudformation:stack-id,Values=$STACK_ID | jq -r '.Reservations[] | .Instances[] | .InstanceId')
-    echo "INSTANCE_ID=$INSTANCE_ID"
-
-    echo "Waiting instance initialization..."
-    aws ec2 wait instance-running --instance-ids $INSTANCE_ID
-
-    PUBLIC_DNS_NAME=$(aws ec2 describe-instances --filters Name=instance-state-code,Values=16 Name=instance-id,Values=$INSTANCE_ID | jq -r '.Reservations[] | .Instances[] | .PublicDnsName')
-    echo "PUBLIC_DNS_NAME=$PUBLIC_DNS_NAME"
-
-    echo "connecting..."
-    TERM=screen ssh -i $1 ec2-user@$PUBLIC_DNS_NAME
-}
-
-alias t='tmux'
-alias tn='t new-session -As'

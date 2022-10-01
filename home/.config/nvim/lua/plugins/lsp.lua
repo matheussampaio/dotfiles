@@ -22,19 +22,31 @@ M.capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.ma
 
 -- Mappings.
 -- See `:help vim.lsp.*` for documentation on any of the below functions
-vim.keymap.set('n', '<Leader>la', vim.lsp.buf.code_action, { desc = 'Open code action' })
+vim.keymap.set('n', '<Leader>a', vim.lsp.buf.code_action, { desc = 'Open code action' })
 vim.keymap.set('n', '<Leader>lf', vim.lsp.buf.formatting, { desc = 'Format' })
-vim.keymap.set('n', '<Leader>lgD', vim.lsp.buf.declaration, { desc = 'Go to declaration' })
-vim.keymap.set('n', '<Leader>lgd', vim.lsp.buf.definition, { desc = 'Go to definition' })
-vim.keymap.set('n', '<Leader>lgi', vim.lsp.buf.implementation, { desc = 'Go to implementation' })
-vim.keymap.set('n', '<Leader>lgt', vim.lsp.buf.type_definition, { desc = 'Go to type definition' })
-vim.keymap.set('n', '<Leader>ln', vim.lsp.buf.rename, { desc = 'Rename' })
-vim.keymap.set('n', '<Leader>lr', vim.lsp.buf.references, { desc = 'Open references' })
-vim.keymap.set('n', '<Leader>lwa', vim.lsp.buf.add_workspace_folder, { desc = 'Add workspace folder' })
-vim.keymap.set('n', '<Leader>lwl', function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,
-    { desc = 'List workspaces folders' })
-vim.keymap.set('n', '<Leader>lwr', vim.lsp.buf.remove_workspace_folder, { desc = 'Remove workspace folder' })
-vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'See documentation' })
+vim.keymap.set('n', 'gD', function ()
+    if not pcall(vim.lsp.buf.declaration) then
+        vim.cmd([[normal! gD]])
+    end
+end, { desc = 'Go to declaration' })
+vim.keymap.set('n', 'gd', function()
+    if not pcall(require('telescope.builtin').lsp_definitions) then
+        vim.cmd([[normal! gd]])
+    end
+end, { desc = 'Go to definition' })
+vim.keymap.set('n', 'gm', require('telescope.builtin').lsp_implementations, { desc = 'Go to implementation' })
+vim.keymap.set('n', 'gp', require('telescope.builtin').lsp_type_definitions, { desc = 'Go to type definition' })
+vim.keymap.set('n', '<Leader>lr', vim.lsp.buf.rename, { desc = 'Rename' })
+vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { desc = 'Open references' })
+-- vim.keymap.set('n', '<Leader>lwa', vim.lsp.buf.add_workspace_folder, { desc = 'Add workspace folder' })
+-- vim.keymap.set('n', '<Leader>lwl', function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,
+--     { desc = 'List workspaces folders' })
+-- vim.keymap.set('n', '<Leader>lwr', vim.lsp.buf.remove_workspace_folder, { desc = 'Remove workspace folder' })
+vim.keymap.set('n', 'K', function()
+    if not pcall(vim.lsp.buf.hover) then
+        vim.cmd([[normal! K]])
+    end
+end, { desc = 'See documentation' })
 
 local lspconfig = require('lspconfig')
 

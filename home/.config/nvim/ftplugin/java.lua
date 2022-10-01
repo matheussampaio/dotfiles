@@ -1,7 +1,7 @@
 -- configure makeprg if gradle is available
 -- @TODO: search for gradlew in the project root folder
 if vim.fn.filereadable("./gradlew") ~= 0 then
-    vim.o.makeprg = "./gradlew build"
+    vim.bo.makeprg = "./gradlew build"
 end
 
 -- configure formatprg if google-java-format is in ~/.java/ folder

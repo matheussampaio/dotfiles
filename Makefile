@@ -3,7 +3,7 @@ DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 UNAME_S := $(shell uname -s)
 
 
-BREW_PACKAGES  := stow tmux ripgrep wget jq fd lua-language-server rust-analyzer exa bat tree jdtls htop
+BREW_PACKAGES  := stow tmux ripgrep wget jq fd lua-language-server rust-analyzer exa bat tree jdtls htop miller glow
 NODE_PACKAGES  := n tldr neovim typescript typescript-language-server trash-cli eslint prettier js-beautify
 CARGO_PACKAGES := zoxide
 
@@ -66,7 +66,11 @@ install-terminfo:
 	/usr/bin/tic -xe tmux-256color terminfo.src
 
 
-setup-java:: download-lombok download-google-java-format setup-java-debug setup-vscode-java-test setup-vscode-java-decompiler
+setup-java:: download-checkstyle download-lombok download-google-java-format setup-java-debug setup-vscode-java-test setup-vscode-java-decompiler
+
+
+download-checkstyle:
+	mkdir -p ~/.java && wget https://github.com/checkstyle/checkstyle/releases/download/checkstyle-8.41/checkstyle-8.41-all.jar -O ~/.java/checkstyle.jar
 
 
 download-lombok:

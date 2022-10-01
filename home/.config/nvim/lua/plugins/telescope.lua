@@ -12,7 +12,7 @@ require('telescope').setup({
             "--iglob",
             "!package-lock.json",
         },
-        file_ignore_patterns = { "node_modules", ".git" },
+        file_ignore_patterns = { "node_modules", ".git", "alfred" },
         mappings = {
             i = {
                 ["<Esc>"] = require('telescope.actions').close,
@@ -33,17 +33,30 @@ require('telescope').setup({
     },
 
     extensions = {
-        fzf = {
-            override_generic_sorter = true,
-            override_file_sorter = true,
+        ["zf-native"] = {
+            file = {
+                enable = true,
+                highlight_results = true,
+                match_filename = true
+            },
+            generic = {
+                enable = true,
+                highlight_results = true,
+                match_filename = false
+            }
         },
+        -- fzf = {
+        --     override_generic_sorter = true,
+        --     override_file_sorter = true
+        -- },
         ["ui-select"] = {
             require("telescope.themes").get_dropdown({})
         }
     }
 })
 
-require('telescope').load_extension('fzf')
+-- require('telescope').load_extension('fzf')
+require('telescope').load_extension('zf-native')
 require('telescope').load_extension('ui-select')
 require('telescope').load_extension('dap')
 require('telescope').load_extension('frecency')

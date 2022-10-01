@@ -261,6 +261,19 @@ return require('packer').startup(function(use)
     use {
         'nvim-lualine/lualine.nvim',
         config = function()
+            local Tab = require('lualine.components.tabs.tab')
+
+            -- store default Tab:label implementation
+            local default_label_impl = Tab.label
+
+            -- override Tab:label to add the tab's CWD in the tab name
+            function Tab:label()
+                local winnr = vim.fn.tabpagewinnr(self.tabnr)
+                local tab_cwd = vim.fn.fnamemodify(vim.fn.getcwd(winnr, self.tabnr), ':p:h:t')
+
+                return tab_cwd .. ':' .. default_label_impl(self)
+            end
+
             require('lualine').setup({
                 extensions = { 'fugitive', 'quickfix' },
                 options = {
@@ -270,9 +283,13 @@ return require('packer').startup(function(use)
                 },
                 sections = {
                     lualine_a = { 'mode' },
-                    lualine_b = { 'branch', 'diff', 'diagnostics' },
-                    lualine_c = { 'filename' },
-                    lualine_x = {},
+                    lualine_b = { 'ObessionStatus', 'branch', 'diff', 'diagnostics' },
+                    lualine_c = { {
+                        'filename',
+                        newfile_status = true,
+                        path = 1,
+                    } },
+                    lualine_x = { },
                     lualine_y = { require('plugins/lualine-lsp-name') },
                     lualine_z = { 'filetype' }
                 },
@@ -368,8 +385,8 @@ return require('packer').startup(function(use)
 
     -- Markdown
     use {
-        'godlygeek/tabular',
         'preservim/vim-markdown',
+        requires ='godlygeek/tabular'
     }
 
     -- Git
@@ -406,11 +423,16 @@ return require('packer').startup(function(use)
             after = 'vim-fugitive'
         },
         {
+            -- shows git author as virtual text on each line of code
             'f-person/git-blame.nvim',
             setup = function()
                 vim.g.gitblame_date_format = '%r'
                 vim.g.gitblame_ignored_filetypes = { 'gitcommit', 'fugitive', 'help', 'packer' }
             end
+        },
+        {
+            'sindrets/diffview.nvim',
+            requires = 'nvim-lua/plenary.nvim'
         }
     }
 
@@ -504,7 +526,8 @@ return require('packer').startup(function(use)
     use {
         'nvim-telescope/telescope.nvim',
         requires = {
-            { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
+            -- { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
+            { 'natecraddock/telescope-zf-native.nvim' },
             { 'nvim-telescope/telescope-ui-select.nvim' },
             { 'nvim-telescope/telescope-dap.nvim' },
             { 'nvim-telescope/telescope-frecency.nvim',
@@ -610,12 +633,12 @@ return require('packer').startup(function(use)
         end
     }
 
+    -- Read a local nvimrc if available
+    -- if vim.fn.filereadable('./init.local.lua') > 0 then
+        require('plugins/amazon').setup(use)
+    -- end
+
     if packer_bootstrap then
         require('packer').sync()
-    end
-
-    -- Read a local nvimrc if available
-    if vim.fn.filereadable(vim.fn.expand('$HOME/.nvimrc')) > 0 then
-        vim.cmd('source $HOME/.nvimrc')
     end
 end)

@@ -38,7 +38,7 @@ end, { desc = "Debug: Set exception breapoints" })
 vim.keymap.set("n", "<leader>dC", dap.run_to_cursor, { desc = "Debug: Run to cursor" })
 vim.keymap.set("n", "<leader>df", telescope.extensions.dap.frames, { desc = "Debug: Open frames" })
 vim.keymap.set("n", "<leader>ds", telescope.extensions.dap.variables, { desc = "Debug: Open variables" })
-vim.keymap.set({ "n", "v" }, "<leader>K", dapWidgets.hover, { desc = "Debug: Hover" })
+vim.keymap.set({ "n", "v" }, "<leader>dK", dapWidgets.hover, { desc = "Debug: Hover" })
 vim.keymap.set("n", "<leader>du", function()
     local widgets = dapWidgets
     widgets.sidebar(widgets.scopes).open()
