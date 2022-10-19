@@ -23,7 +23,7 @@ M.capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.ma
 -- Mappings.
 -- See `:help vim.lsp.*` for documentation on any of the below functions
 vim.keymap.set('n', '<Leader>a', vim.lsp.buf.code_action, { desc = 'Open code action' })
-vim.keymap.set('n', '<Leader>lf', vim.lsp.buf.formatting, { desc = 'Format' })
+vim.keymap.set('n', '<Leader>lf', function() vim.lsp.buf.format() end, { desc = 'Format' })
 vim.keymap.set('n', 'gD', function ()
     if not pcall(vim.lsp.buf.declaration) then
         vim.cmd([[normal! gD]])

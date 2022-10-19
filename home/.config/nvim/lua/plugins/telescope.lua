@@ -45,12 +45,11 @@ require('telescope').setup({
                 match_filename = false
             }
         },
-        -- fzf = {
-        --     override_generic_sorter = true,
-        --     override_file_sorter = true
-        -- },
         ["ui-select"] = {
             require("telescope.themes").get_dropdown({})
+        },
+        frecency = {
+            db_safe_mode = false
         }
     }
 })

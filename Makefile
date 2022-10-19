@@ -3,7 +3,7 @@ DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 UNAME_S := $(shell uname -s)
 
 
-BREW_PACKAGES  := stow tmux ripgrep wget jq fd lua-language-server rust-analyzer exa bat tree jdtls htop miller glow
+BREW_PACKAGES  := stow tmux ripgrep wget jq fd lua-language-server rust-analyzer exa bat tree jdtls htop miller glow pyenv pyenv-virtualenv
 NODE_PACKAGES  := n tldr neovim typescript typescript-language-server trash-cli eslint prettier js-beautify
 CARGO_PACKAGES := zoxide
 
@@ -13,6 +13,10 @@ all:: install-brew-packages install-cargo-packages install-node-packages install
 
 link::
 	stow --verbose --no-folding --target=$$HOME --dir=$(DIR) --restow home
+
+
+unlink::
+	stow --verbose --no-folding --target=$$HOME --dir=$(DIR) --delete home
 
 
 install-brew-packages:
@@ -56,7 +60,7 @@ install-node-packages:
 	$$HOME/.n/bin/npm install --prefix $$HOME/.npm -g $(NODE_PACKAGES)
 
 
-install-neovim:
+install-neovim: setup-neovim-python2 setup-neovim-python3
 	brew install --HEAD luajit
 	brew install neovim
 
@@ -105,3 +109,17 @@ setup-vscode-java-decompiler:
 	cd ~/.java && \
 	rm -rf ~/.java/vscode-java-decompiler && \
 	git clone --depth 1 git@github.com:dgileadi/vscode-java-decompiler.git
+
+
+setup-neovim-python2:
+	pyenv install 2.7.18 && \
+	pyenv virtualenv 2.7.18 neovim2 && \
+	pyenv activate neovim2 && \
+	pip install neovim
+
+
+setup-neovim-python3:
+	pyenv install 3.7.13 && \
+	pyenv virtualenv 3.4.4 neovim3 && \
+	pyenv activate neovim3 && \
+	pip install neovim

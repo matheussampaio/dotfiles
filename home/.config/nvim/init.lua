@@ -2,6 +2,12 @@
 vim.o.number = true
 vim.o.relativenumber = true
 
+-- only save cursor and folds in view sessions 
+vim.opt.viewoptions = { 'cursor', 'folds' }
+
+-- Show tabline is more than one tab exists
+vim.o.showtabline = 1
+
 -- Insert spaces when TAB is pressed.
 vim.o.expandtab = true
 
@@ -50,7 +56,7 @@ vim.o.splitright = true
 -- Create horizontal splits below the current split.
 vim.o.splitbelow = true
 
--- Don't dispay mode in command line (airilne already shows it).
+-- Don't display mode in command line (airline already shows it).
 vim.o.showmode = false
 
 -- Enable true colors support.
@@ -66,7 +72,7 @@ vim.o.visualbell = true
 vim.o.list = true
 
 -- Display tab characters
-vim.o.listchars = 'nbsp:·,tab:▶ ,trail:·'
+vim.opt.listchars = 'lead:·,tab:▶ ,trail:·'
 
 -- Set default to unfold
 vim.o.foldlevel = 1
@@ -85,9 +91,6 @@ vim.o.completeopt = 'menu,menuone,noinsert,preview'
 -- Enable mouse support
 vim.o.mouse = 'nvh'
 
--- fold using indentation
-vim.o.foldmethod = 'indent'
-
 if vim.fn.filereadable(vim.fn.expand('$XDG_CONFIG_HOME/theme')) > 0 then
     vim.cmd('let &background = readfile(glob("$XDG_CONFIG_HOME/theme"))[0]')
 else
@@ -98,19 +101,13 @@ end
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 
--- use filetype.lua, see :h g:do_filetype_lua
-vim.g.do_filetype_lua = 1
-vim.g.did_load_filetypes = 0
-
--- set python3 path
--- vim.g.python3_host_prog = '/usr/local/bin/python3'
+-- set python paths
+vim.g.python2_host_prog = vim.fn.expand('$HOME/.pyenv/versions/neovim2/bin/python')
+vim.g.python3_host_prog = vim.fn.expand('$HOME/.pyenv/versions/neovim3/bin/python')
 
 -- Change leader to SPACE.
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
-
--- Save stuff to OS clipboard
--- vim.g.clipboard = 'unnamedplus'
 
 -- Normally space move the cursor to the right in normal mode. Since LEADER is
 -- SPACE, disabling that behavior works better for me.
@@ -261,42 +258,50 @@ return require('packer').startup(function(use)
     use {
         'nvim-lualine/lualine.nvim',
         config = function()
+            local git_blame = require('gitblame')
             local Tab = require('lualine.components.tabs.tab')
-
-            -- store default Tab:label implementation
-            local default_label_impl = Tab.label
 
             -- override Tab:label to add the tab's CWD in the tab name
             function Tab:label()
                 local winnr = vim.fn.tabpagewinnr(self.tabnr)
                 local tab_cwd = vim.fn.fnamemodify(vim.fn.getcwd(winnr, self.tabnr), ':p:h:t')
 
-                return tab_cwd .. ':' .. default_label_impl(self)
+                return tab_cwd
             end
 
             require('lualine').setup({
                 extensions = { 'fugitive', 'quickfix' },
                 options = {
                     theme = 'gruvbox',
+                    globalstatus = true,
                     component_separators = { left = '', right = '' },
                     section_separators = { left = '', right = '' }
                 },
                 sections = {
                     lualine_a = { 'mode' },
-                    lualine_b = { 'ObessionStatus', 'branch', 'diff', 'diagnostics' },
-                    lualine_c = { {
+                    lualine_b = { 'ObessionStatus', 'branch', 'diff', 'diagnostics'},
+                    lualine_c = {{
                         'filename',
                         newfile_status = true,
-                        path = 1,
-                    } },
-                    lualine_x = { },
+                        path = 1
+                    }},
+                    lualine_x = {
+                        {
+                            git_blame.get_current_blame_text,
+                            cond = git_blame.is_blame_text_available
+                        }
+                    },
                     lualine_y = { require('plugins/lualine-lsp-name') },
                     lualine_z = { 'filetype' }
                 },
                 inactive_sections = {
                     lualine_a = {},
                     lualine_b = {},
-                    lualine_c = { 'filename' },
+                    lualine_c = {{
+                        'filename',
+                        newfile_status = true,
+                        path = 1
+                    }},
                     lualine_x = {},
                     lualine_y = {},
                     lualine_z = {}
@@ -312,8 +317,19 @@ return require('packer').startup(function(use)
                     lualine_x = {},
                     lualine_y = {},
                     lualine_z = {}
-                }
+                },
             })
+
+            -- lualine sets showtabline to 2 (alwasy show) if 'tabs'
+            -- is enabled, so we override back to 1.
+            vim.o.showtabline = 1
+        end
+    }
+
+    use {
+        'b0o/incline.nvim',
+        config = function ()
+            require('incline').setup()
         end
     }
 
@@ -404,7 +420,7 @@ return require('packer').startup(function(use)
                 vim.keymap.set('n', '<Leader>g', ':Git ', { desc = 'Git' })
                 vim.keymap.set('n', '<Leader>gs', ':Git<CR>', { silent = true, desc = 'Git status' })
                 vim.keymap.set('n', '<Leader>gp', ':Git push<CR>', { silent = true, desc = 'Git push' })
-                vim.keymap.set('n', '<Leader>go', ':GBrowse<CR>', { silent = true, desc = 'Git browse' })
+                vim.keymap.set({ 'n', 'v' }, '<Leader>go', ':GBrowse<CR>', { silent = true, desc = 'Git browse' })
                 vim.keymap.set('n', '<Leader>gb', ':Git blame<CR>', { silent = true, desc = 'Git blame' })
             end
         },
@@ -426,8 +442,10 @@ return require('packer').startup(function(use)
             -- shows git author as virtual text on each line of code
             'f-person/git-blame.nvim',
             setup = function()
+                vim.g.gitblame_display_virtual_text = 0 
                 vim.g.gitblame_date_format = '%r'
                 vim.g.gitblame_ignored_filetypes = { 'gitcommit', 'fugitive', 'help', 'packer' }
+                -- vim.g.gitblame_highlight_group = 'CursorLine'
             end
         },
         {
@@ -548,14 +566,6 @@ return require('packer').startup(function(use)
         end
     }
 
-    -- show lsp initialisation progress
-    use {
-        'j-hui/fidget.nvim',
-        config = function()
-            require('fidget').setup({})
-        end
-    }
-
     use {
         'jose-elias-alvarez/null-ls.nvim',
         config = function()
@@ -596,15 +606,15 @@ return require('packer').startup(function(use)
         config = function() require('plugins/cmp') end
     }
 
-    use {
-        'lukas-reineke/indent-blankline.nvim',
-        config = function()
-            require('indent_blankline').setup({
-                char = '▏',
-                use_treesitter = true,
-            })
-        end
-    }
+    -- use {
+    --     'lukas-reineke/indent-blankline.nvim',
+    --     config = function()
+    --         require('indent_blankline').setup({
+    --             char = '▏',
+    --             use_treesitter = true,
+    --         })
+    --     end
+    -- }
 
     use {
         'abecodes/tabout.nvim',

@@ -2,8 +2,8 @@ local luasnip = require('luasnip')
 local cmp = require('cmp')
 
 local has_words_before = function()
-  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+    local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+    return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
 cmp.setup({
@@ -62,13 +62,10 @@ cmp.setup({
     }),
 
     sources = cmp.config.sources({
-        { name = 'copilot' },
         { name = 'luasnip' },
         { name = 'nvim_lsp' },
         { name = 'nvim_lsp_signature_help' },
         { name = 'path' },
-        { name = 'orgmode' },
-    }, {
         { name = 'buffer' },
     }),
 
@@ -93,14 +90,37 @@ cmp.setup({
 
     sorting = {
         comparators = {
-            cmp.config.compare.recently_used,
-            cmp.config.compare.offset,
+            -- cmp.config.compare.recently_used,
+            -- cmp.config.compare.offset,
             cmp.config.compare.score,
-            cmp.config.compare.sort_text,
-            cmp.config.compare.length,
-            cmp.config.compare.order,
+            -- cmp.config.compare.sort_text,
+            -- cmp.config.compare.length,
+            -- cmp.config.compare.order,
         },
     },
 
     preselect = cmp.PreselectMode.Item,
+})
+
+cmp.setup.filetype('gitcommit', {
+    sources = cmp.config.sources({
+        { name = 'buffer' },
+    })
+})
+
+cmp.setup.cmdline({ '/', '?' }, {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = {
+        { name = 'buffer' }
+    }
+})
+
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(':', {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = cmp.config.sources({
+        { name = 'path' }
+    }, {
+        { name = 'cmdline' }
+    })
 })

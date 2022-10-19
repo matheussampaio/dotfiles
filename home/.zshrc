@@ -156,13 +156,13 @@ fi
 #     eval "$(rbenv init - zsh)";
 # fi
 #
-# if command -v pyenv > /dev/null 2>&1; then
-#     eval "$(pyenv init -)";
-# fi
-#
-# if command -v pyenv-virtualenv-init > /dev/null 2>&1; then
-#     eval "$(pyenv virtualenv-init -)";
-# fi
+if command -v pyenv > /dev/null 2>&1; then
+    eval "$(pyenv init -)";
+fi
+
+if command -v pyenv-virtualenv-init > /dev/null 2>&1; then
+    eval "$(pyenv virtualenv-init -)";
+fi
 #
 # if command -v plenv > /dev/null 2>&1; then
 #     eval "$(plenv init -)"
@@ -229,6 +229,14 @@ theme() {
     fi
 
     cat "$XDG_CONFIG_HOME/theme"
+}
+
+sync() {
+    rsync --verbose --archive --relative $1 $2:$3
+
+    while inotifywait --quiet --event modify,create,delete,move --recursive $1; do
+        rsync --verbose --archive --relative $1 $2:$3
+    done
 }
 
 if command -v bat > /dev/null 2>&1; then
