@@ -1,5 +1,6 @@
 local luasnip = require('luasnip')
 local cmp = require('cmp')
+local cmp_dap = require("cmp_dap")
 
 local has_words_before = function()
     local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -7,6 +8,11 @@ local has_words_before = function()
 end
 
 cmp.setup({
+    enabled = function()
+        return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
+            or cmp_dap.is_dap_buffer()
+    end,
+
     snippet = {
         expand = function(args)
             luasnip.lsp_expand(args.body)
@@ -123,4 +129,11 @@ cmp.setup.cmdline(':', {
     }, {
         { name = 'cmdline' }
     })
+})
+
+-- https://github.com/rcarriga/cmp-dap
+cmp.setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
+  sources = {
+    { name = "dap" },
+  },
 })

@@ -2,7 +2,7 @@
 vim.o.number = true
 vim.o.relativenumber = true
 
--- only save cursor and folds in view sessions 
+-- only save cursor and folds in view sessions
 vim.opt.viewoptions = { 'cursor', 'folds' }
 
 -- Show tabline is more than one tab exists
@@ -260,6 +260,7 @@ return require('packer').startup(function(use)
         config = function()
             local git_blame = require('gitblame')
             local Tab = require('lualine.components.tabs.tab')
+            local dap = require("dap")
 
             -- override Tab:label to add the tab's CWD in the tab name
             function Tab:label()
@@ -273,35 +274,33 @@ return require('packer').startup(function(use)
                 extensions = { 'fugitive', 'quickfix' },
                 options = {
                     theme = 'gruvbox',
-                    globalstatus = true,
-                    component_separators = { left = '', right = '' },
-                    section_separators = { left = '', right = '' }
+                    globalstatus = true
                 },
                 sections = {
                     lualine_a = { 'mode' },
-                    lualine_b = { 'ObessionStatus', 'branch', 'diff', 'diagnostics'},
-                    lualine_c = {{
+                    lualine_b = { 'ObessionStatus', 'branch', 'diff', 'diagnostics' },
+                    lualine_c = { {
                         'filename',
                         newfile_status = true,
                         path = 1
-                    }},
+                    } },
                     lualine_x = {
                         {
                             git_blame.get_current_blame_text,
                             cond = git_blame.is_blame_text_available
                         }
                     },
-                    lualine_y = { require('plugins/lualine-lsp-name') },
+                    lualine_y = { dap.status, require('plugins/lualine-lsp-name') },
                     lualine_z = { 'filetype' }
                 },
                 inactive_sections = {
                     lualine_a = {},
                     lualine_b = {},
-                    lualine_c = {{
+                    lualine_c = { {
                         'filename',
                         newfile_status = true,
                         path = 1
-                    }},
+                    } },
                     lualine_x = {},
                     lualine_y = {},
                     lualine_z = {}
@@ -326,9 +325,10 @@ return require('packer').startup(function(use)
         end
     }
 
+    -- adds a floating status line to show the filename
     use {
         'b0o/incline.nvim',
-        config = function ()
+        config = function()
             require('incline').setup()
         end
     }
@@ -389,7 +389,7 @@ return require('packer').startup(function(use)
     -- (copy from SSH session)
     use {
         'ojroques/vim-oscyank',
-        setup = function ()
+        setup = function()
             vim.g.oscyank_term = 'default'
             vim.g.oscyank_silent = true
         end,
@@ -402,7 +402,7 @@ return require('packer').startup(function(use)
     -- Markdown
     use {
         'preservim/vim-markdown',
-        requires ='godlygeek/tabular'
+        requires = 'godlygeek/tabular'
     }
 
     -- Git
@@ -442,7 +442,7 @@ return require('packer').startup(function(use)
             -- shows git author as virtual text on each line of code
             'f-person/git-blame.nvim',
             setup = function()
-                vim.g.gitblame_display_virtual_text = 0 
+                vim.g.gitblame_display_virtual_text = 0
                 vim.g.gitblame_date_format = '%r'
                 vim.g.gitblame_ignored_filetypes = { 'gitcommit', 'fugitive', 'help', 'packer' }
                 -- vim.g.gitblame_highlight_group = 'CursorLine'
@@ -602,6 +602,7 @@ return require('packer').startup(function(use)
             'hrsh7th/cmp-cmdline',
             'saadparwaiz1/cmp_luasnip',
             'onsails/lspkind-nvim',
+            'rcarriga/cmp-dap'
         },
         config = function() require('plugins/cmp') end
     }
@@ -624,10 +625,26 @@ return require('packer').startup(function(use)
     }
 
     use {
-        'mfussenegger/nvim-dap',
-        config = function()
-            require('plugins/dap')
-        end
+        {
+            'mfussenegger/nvim-dap',
+            config = function()
+                require('plugins/dap')
+            end
+        },
+        {
+            "rcarriga/nvim-dap-ui",
+            requires = "mfussenegger/nvim-dap",
+            config = function()
+                require("dapui").setup()
+            end
+        },
+        {
+            'theHamsta/nvim-dap-virtual-text',
+            requires = "mfussenegger/nvim-dap",
+            config = function()
+                require("nvim-dap-virtual-text").setup()
+            end
+        }
     }
 
     use {
