@@ -660,10 +660,16 @@ return require('packer').startup(function(use)
         end
     }
 
+    -- show lsp initialisation progress
+    use {
+        'j-hui/fidget.nvim',
+        config = function()
+            require('fidget').setup({})
+        end
+    }
+
     -- Read a local nvimrc if available
-    -- if vim.fn.filereadable('./init.local.lua') > 0 then
-        require('plugins/amazon').setup(use)
-    -- end
+    require('plugins/amazon').setup(use)
 
     if packer_bootstrap then
         require('packer').sync()

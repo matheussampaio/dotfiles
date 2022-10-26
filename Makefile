@@ -3,12 +3,13 @@ DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 UNAME_S := $(shell uname -s)
 
 
-BREW_PACKAGES  := stow tmux ripgrep wget jq fd lua-language-server rust-analyzer exa bat tree jdtls htop miller glow pyenv pyenv-virtualenv
-NODE_PACKAGES  := n tldr neovim typescript typescript-language-server trash-cli eslint prettier js-beautify
-CARGO_PACKAGES := zoxide
+BREW_PACKAGES        := stow tmux ripgrep wget jq fd lua-language-server rust-analyzer exa bat tree jdtls htop miller glow pyenv pyenv-virtualenv
+CARGO_PACKAGES       := zoxide nvim-ctrl
+NODE_PACKAGES        := n tldr neovim typescript typescript-language-server trash-cli eslint prettier js-beautify
+ZSH_PLUGINS_PACKAGES := romkatv/powerlevel10k ohmyzsh/ohmyzsh zsh-users/zsh-autosuggestions jeffreytse/zsh-vi-mode djui/alias-tips apachler/zsh-aws Aloxaf/fzf-tab mroth/evalcache
 
 
-all:: install-brew-packages install-cargo-packages install-node-packages install-neovim install-fzf install-zplug link install-terminfo
+all:: install-brew-packages install-cargo-packages install-node-packages install-neovim install-fzf download-zsh-plugins link install-terminfo
 
 
 link::
@@ -27,12 +28,6 @@ install-brew-packages:
 		curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | bash; \
 	fi; \
 	brew install $(BREW_PACKAGES)
-
-
-install-zplug:
-	if [ ! -d "$$HOME/.zplug" ]; then \
-		curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh; \
-	fi;
 
 
 install-cargo-packages:
@@ -123,3 +118,12 @@ setup-neovim-python3:
 	pyenv virtualenv 3.4.4 neovim3 && \
 	pyenv activate neovim3 && \
 	pip install neovim
+
+
+download-zsh-plugins:
+	rm -rf ~/.zsh && \
+	mkdir -p ~/.zsh && \
+	cd ~/.zsh && \
+	for repo in $(ZSH_PLUGINS_PACKAGES); do \
+		git clone --depth=1 https://github.com/$$repo.git; \
+	done

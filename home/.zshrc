@@ -2,6 +2,10 @@
 # https://unix.stackexchange.com/a/12108
 stty -ixon
 
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 if [ -d "/home/linuxbrew/.linuxbrew/share/zsh/site-functions" ]; then
     fpath=(/home/linuxbrew/.linuxbrew/share/zsh/site-functions $fpath)
 fi
@@ -27,72 +31,46 @@ zstyle ':fzf-tab:*' switch-group ',' '.'
 
 zstyle :compinstall filename "$HOME/.zshrc"
 
-autoload -Uz compinit && compinit -u
+autoload -Uz compinit && compinit -C
 autoload -Uz bashcompinit && bashcompinit
 
-# End of lines added by compinstall
-if command -v nvim > /dev/null 2>&1; then
-    export EDITOR='nvim'
-    export MANPAGER='nvim +Man!'
-fi
-
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
-if [ ! -d "$HOME/.zplug" ]; then
-    curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
-fi
-
-source $HOME/.zplug/init.zsh
-
 # better and friendly vi(vim) mode plugin for ZSH
-zplug "jeffreytse/zsh-vi-mode"
+source $HOME/.zsh/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 
 # help remembering those shell aliases and Git aliases you once defined
-zplug "djui/alias-tips"
+source $HOME/.zsh/alias-tips/alias-tips.plugin.zsh
 
 # provides many aliases and a few useful functions
-zplug "plugins/git", from:oh-my-zsh
-
-# adds support for doing system clipboard copy and paste operations
-zplug "lib/clipboard", from:oh-my-zsh
+source $HOME/.zsh/ohmyzsh/plugins/git/git.plugin.zsh
 
 # improves history command
-zplug "lib/history", from:oh-my-zsh
-
-export HISTSIZE=1000000000
-export SAVEHIST=1000000000
+source $HOME/.zsh/ohmyzsh/lib/history.zsh
 
 # improves cd commands
-zplug "lib/directories", from:oh-my-zsh
+source $HOME/.zsh/ohmyzsh/lib/directories.zsh
 
 # provides many aliases and a few useful functions
-zplug "plugins/aliases", from:oh-my-zsh
+source $HOME/.zsh/ohmyzsh/plugins/aliases/aliases.plugin.zsh
 
 # (warp directory) lets you jump to custom directories in zsh
-zplug "mfaerevaag/wd"
+source $HOME/.zsh/ohmyzsh/plugins/wd/wd.plugin.zsh
 
 # Powerlevel10k is a theme for Zsh.
-zplug "romkatv/powerlevel10k", as:theme, depth:1
+source $HOME/.zsh/powerlevel10k/powerlevel10k.zsh-theme
 
 # Suggests commands as you type based on history and completions.
-zplug "zsh-users/zsh-autosuggestions"
+source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
 
 # Provides completion support for awscli and a few utilities to manage AWS
 # profiles and display them in the prompt.
-zplug "apachler/zsh-aws"
+source $HOME/.zsh/zsh-aws/zsh-aws.plugin.zsh
 
 # Replace zsh's default completion selection menu with fzf!
-zplug "Aloxaf/fzf-tab"
+source $HOME/.zsh/fzf-tab/fzf-tab.plugin.zsh
 
-# Install plugins if there are plugins that have not been installed
-if ! zplug check; then
-    zplug install
-fi
-
-# Then, source plugins and add commands to $PATH
-zplug load
+# cache the output of a binary initialization command, intended to help lower
+# shell startup time.
+source $HOME/.zsh/evalcache/evalcache.plugin.zsh
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -110,17 +88,19 @@ setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_FIND_NO_DUPS
 setopt HIST_SAVE_NO_DUPS
 
+export HISTSIZE=1000000000
+export SAVEHIST=1000000000
+
 # export WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>'
 export WORDCHARS='~!#$%^&*(){}[]<>?.+;-'
 
 export FZF_DEFAULT_OPTS="--tiebreak end,length,index --color=$(cat $XDG_CONFIG_HOME/theme || echo 'light')"
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 export FZF_CTRL_R_OPTS="--reverse --info hidden"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-# Setting rg as the default source for fzf
-if command -v fd > /dev/null 2>&1; then
-    export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
-    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-fi
+export EDITOR='nvim'
+export MANPAGER='nvim +Man!'
 
 function my_zvm_init() {
     [ -f $XDG_CONFIG_HOME/fzf/fzf.zsh ] && source $XDG_CONFIG_HOME/fzf/fzf.zsh
@@ -132,45 +112,37 @@ function my_zvm_init() {
 
 zvm_after_init_commands+=(my_zvm_init)
 
-if command -v nvim > /dev/null 2>&1; then
-    export EDITOR='nvim'
-    export MANPAGER='nvim +Man!'
+_nvim() {
+    nvim --listen $XDG_DATA_HOME/nvim/nvim-$(date +%s).pipe "$@"
+}
 
-    _nvim() {
-        nvim --listen $XDG_DATA_HOME/nvim/nvim-$(date +%s).pipe "$@"
-    }
-
-    # alias vim=_nvim
-    alias nvim=_nvim
-fi
+alias nvim=_nvim
 
 if [ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]; then
-    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    _evalcache /home/linuxbrew/.linuxbrew/bin/brew shellenv
 fi
 
-if command -v zoxide > /dev/null 2>&1; then
-    eval "$(zoxide init zsh)"
-fi
+_evalcache zoxide init zsh
 
 # if command -v rbenv > /dev/null 2>&1; then
 #     eval "$(rbenv init - zsh)";
 # fi
 #
-if command -v pyenv > /dev/null 2>&1; then
-    eval "$(pyenv init -)";
-fi
-
-if command -v pyenv-virtualenv-init > /dev/null 2>&1; then
-    eval "$(pyenv virtualenv-init -)";
-fi
+# if command -v pyenv > /dev/null 2>&1; then
+#     eval "$(pyenv init -)";
+# fi
+#
+# if command -v pyenv-virtualenv-init > /dev/null 2>&1; then
+#     eval "$(pyenv virtualenv-init -)";
+# fi
 #
 # if command -v plenv > /dev/null 2>&1; then
 #     eval "$(plenv init -)"
 # fi
-#
-if [ $(ps ax | grep "[s]sh-agent" | wc -l) -eq 0 ] ; then
-    eval $(ssh-agent -s)
-fi
+
+# if [ $(ps ax | grep "[s]sh-agent" | wc -l) -eq 0 ] ; then
+#     eval $(ssh-agent -s)
+# fi
 
 # set default theme
 if [ ! -f $XDG_CONFIG_HOME/theme ]; then
@@ -190,7 +162,7 @@ set-theme() {
     done
 
     if [[ -n "${SSH_CONNECTION:-1}" ]] && [[ "$(uname -s)" = Darwin ]]; then
-        python3 $XDG_CONFIG_HOME/iterm2/set-theme.py
+        python3 $XDG_CONFIG_HOME/iterm2/set-theme.py &
     fi
 }
 
@@ -211,9 +183,9 @@ gbf() {
         git branch -f $CURRENT_BRANCH origin/$CURRENT_BRANCH && \
         git checkout --quiet $CURRENT_BRANCH && \
         git branch --quiet -D $TEMP_BRANCH_NAME
-    }
+}
 
-    ssh-copy-terminfo() {
+ssh-copy-terminfo() {
     infocmp | ssh $1 "cat > /tmp/terminfo && tic -x /tmp/terminfo; rm /tmp/terminfo"
 }
 
@@ -239,22 +211,16 @@ sync() {
     done
 }
 
-if command -v bat > /dev/null 2>&1; then
-    alias bat='bat --theme=gruvbox-$(theme)'
-fi
+timezsh() {
+  shell=${1-$SHELL}
+  for i in $(seq 1 10); do /usr/bin/time $shell -i -c exit; done
+}
 
-if command -v exa > /dev/null 2>&1; then
-    alias ls='exa'
-elif [ "$(uname -s)" = "Darwin" ]; then
-    alias ls='ls -G'
-else
-    alias ls='ls --color=auto'
-fi
-
-if command -v tmux > /dev/null 2>&1; then
-    alias t='tmux'
-    alias tn='t new-session -As'
-fi
+alias bat='bat --theme=gruvbox-$(theme)'
+alias ls='exa'
+alias l='ls -lah'
+alias t='tmux'
+alias tn='t new-session -As'
 
 if [ -f "$HOME/.p10k.zsh" ]; then
     source "$HOME/.p10k.zsh"
