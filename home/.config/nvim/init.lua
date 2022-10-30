@@ -668,8 +668,14 @@ return require('packer').startup(function(use)
         end
     }
 
-    -- Read a local nvimrc if available
-    require('plugins/amazon').setup(use)
+    -- require plugins that start with "extra" in plugins/ folder
+    local extra_file_glob = vim.fn.stdpath('config') .. '/lua/plugins/extra*'
+    local extra_files = vim.fn.glob(extra_file_glob, true, true)
+
+    for _, file in ipairs(extra_files) do
+        file = file:match('.+/lua/(plugins/.+)%..+')
+        require(file).setup(use)
+    end
 
     if packer_bootstrap then
         require('packer').sync()

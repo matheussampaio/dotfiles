@@ -4,7 +4,7 @@ UNAME_S := $(shell uname -s)
 
 
 BREW_PACKAGES        := stow tmux ripgrep wget jq fd lua-language-server rust-analyzer exa bat tree jdtls htop miller glow pyenv pyenv-virtualenv
-CARGO_PACKAGES       := zoxide nvim-ctrl
+CARGO_PACKAGES       := zoxide
 NODE_PACKAGES        := n tldr neovim typescript typescript-language-server trash-cli eslint prettier js-beautify
 ZSH_PLUGINS_PACKAGES := romkatv/powerlevel10k ohmyzsh/ohmyzsh zsh-users/zsh-autosuggestions jeffreytse/zsh-vi-mode djui/alias-tips apachler/zsh-aws Aloxaf/fzf-tab mroth/evalcache
 
