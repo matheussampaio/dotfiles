@@ -41,6 +41,7 @@ source $HOME/.zsh/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 source $HOME/.zsh/alias-tips/alias-tips.plugin.zsh
 
 # provides many aliases and a few useful functions
+source $HOME/.zsh/ohmyzsh/lib/git.zsh
 source $HOME/.zsh/ohmyzsh/plugins/git/git.plugin.zsh
 
 # improves history command
