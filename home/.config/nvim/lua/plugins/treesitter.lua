@@ -23,6 +23,17 @@ require('nvim-treesitter.configs').setup({
         additional_vim_regex_highlighting = { 'org' },
     },
 
+    select = {
+        enable = true,
+
+        lookahead = true,
+
+        keymaps = {
+            ["af"] = "@function.outer",
+            ["if"] = "@function.inner"
+        }
+    },
+
     incremental_selection = {
         enable = true,
 
@@ -30,7 +41,7 @@ require('nvim-treesitter.configs').setup({
             init_selection = "gnn",
             node_incremental = "grn",
             scope_incremental = "grc",
-            node_decremental = "grm",
+            node_decremental = "grm"
         }
     },
 

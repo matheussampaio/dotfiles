@@ -336,8 +336,8 @@ return require('packer').startup(function(use)
     --  handy brackets mappings.
     use 'tpope/vim-unimpaired'
 
-    -- Provides mappings to easily delete, change and add surroundings (parantheses, brackets, quotes, etc).
-    use 'tpope/vim-surround'
+    -- Provides mappings to easily delete, change and add surroundings (parentheses, brackets, quotes, etc).
+    use 'kylechui/nvim-surround'
 
     -- Change word case, add abbreviations, and search/replace.
     use 'tpope/vim-abolish'
@@ -363,6 +363,7 @@ return require('packer').startup(function(use)
     -- Treesitter configurations and abstraction layer for Neovim.
     use {
         'nvim-treesitter/nvim-treesitter',
+        requires = 'nvim-treesitter/nvim-treesitter-textobjects',
         run = ':TSUpdate',
         config = function() require('plugins/treesitter') end
     }
@@ -607,22 +608,22 @@ return require('packer').startup(function(use)
         config = function() require('plugins/cmp') end
     }
 
-    -- use {
-    --     'lukas-reineke/indent-blankline.nvim',
-    --     config = function()
-    --         require('indent_blankline').setup({
-    --             char = '▏',
-    --             use_treesitter = true,
-    --         })
-    --     end
-    -- }
-
     use {
-        'abecodes/tabout.nvim',
+        'lukas-reineke/indent-blankline.nvim',
         config = function()
-            require('tabout').setup({})
+            require('indent_blankline').setup({
+                char = '▏',
+                -- use_treesitter = true,
+            })
         end
     }
+
+    -- use {
+    --     'abecodes/tabout.nvim',
+    --     config = function()
+    --         require('tabout').setup({})
+    --     end
+    -- }
 
     use {
         {
