@@ -337,7 +337,12 @@ return require('packer').startup(function(use)
     use 'tpope/vim-unimpaired'
 
     -- Provides mappings to easily delete, change and add surroundings (parentheses, brackets, quotes, etc).
-    use 'kylechui/nvim-surround'
+    use {
+        'kylechui/nvim-surround',
+        config = function ()
+            require("nvim-surround").setup({})
+        end
+    }
 
     -- Change word case, add abbreviations, and search/replace.
     use 'tpope/vim-abolish'
