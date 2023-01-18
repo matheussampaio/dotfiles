@@ -79,7 +79,7 @@ source $HOME/.zsh/evalcache/evalcache.plugin.zsh
 # turn off all beeps
 unsetopt BEEP
 
-# If a command is issued that can’t be executed as a normal command, and the
+# If a command is issued that canât be executed as a normal command, and the
 # command is the name of a directory, perform the cd command to that directory.
 # useful to call `..` and `...` to go up folders.
 setopt AUTO_CD
@@ -139,10 +139,6 @@ _evalcache zoxide init zsh
 #
 # if command -v plenv > /dev/null 2>&1; then
 #     eval "$(plenv init -)"
-# fi
-
-# if [ $(ps ax | grep "[s]sh-agent" | wc -l) -eq 0 ] ; then
-#     eval $(ssh-agent -s)
 # fi
 
 # set default theme
@@ -217,6 +213,7 @@ timezsh() {
   for i in $(seq 1 10); do /usr/bin/time $shell -i -c exit; done
 }
 
+alias lg='lazygit'
 alias bat='bat --theme=gruvbox-$(theme)'
 alias ls='exa'
 alias l='ls -lah'

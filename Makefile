@@ -3,7 +3,7 @@ DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 UNAME_S := $(shell uname -s)
 
 
-BREW_PACKAGES        := stow tmux ripgrep wget jq fd lua-language-server rust-analyzer exa bat tree jdtls htop miller glow pyenv pyenv-virtualenv
+BREW_PACKAGES        := stow tmux ripgrep wget jq fd lua-language-server rust-analyzer exa bat tree jdtls htop miller glow pyenv pyenv-virtualenv lazygit
 CARGO_PACKAGES       := zoxide
 NODE_PACKAGES        := n tldr neovim typescript typescript-language-server trash-cli eslint prettier js-beautify
 ZSH_PLUGINS_PACKAGES := romkatv/powerlevel10k ohmyzsh/ohmyzsh zsh-users/zsh-autosuggestions jeffreytse/zsh-vi-mode djui/alias-tips apachler/zsh-aws Aloxaf/fzf-tab mroth/evalcache

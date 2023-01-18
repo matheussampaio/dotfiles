@@ -72,7 +72,7 @@ vim.o.visualbell = true
 vim.o.list = true
 
 -- Display tab characters
-vim.opt.listchars = 'lead:·,tab:▶ ,trail:·'
+vim.opt.listchars = 'tab:▶ ,trail:·'
 
 -- Set default to unfold
 vim.o.foldlevel = 1
@@ -88,8 +88,11 @@ vim.o.cursorline = true
 
 vim.o.completeopt = 'menu,menuone,noinsert,preview'
 
+-- only show command line if needed
+vim.o.cmdheight = 1
+
 -- Enable mouse support
-vim.o.mouse = 'nvh'
+-- vim.o.mouse = 'nvh'
 
 if vim.fn.filereadable(vim.fn.expand('$XDG_CONFIG_HOME/theme')) > 0 then
     vim.cmd('let &background = readfile(glob("$XDG_CONFIG_HOME/theme"))[0]')
@@ -321,7 +324,7 @@ return require('packer').startup(function(use)
 
             -- lualine sets showtabline to 2 (alwasy show) if 'tabs'
             -- is enabled, so we override back to 1.
-            vim.o.showtabline = 1
+            vim.cmd("set showtabline=1")
         end
     }
 
@@ -368,7 +371,10 @@ return require('packer').startup(function(use)
     -- Treesitter configurations and abstraction layer for Neovim.
     use {
         'nvim-treesitter/nvim-treesitter',
-        requires = 'nvim-treesitter/nvim-treesitter-textobjects',
+        requires = {
+            'nvim-treesitter/nvim-treesitter-textobjects',
+            'nvim-treesitter/nvim-treesitter-context'
+        },
         run = ':TSUpdate',
         config = function() require('plugins/treesitter') end
     }
@@ -669,6 +675,7 @@ return require('packer').startup(function(use)
     -- show lsp initialisation progress
     use {
         'j-hui/fidget.nvim',
+        disable = true,
         config = function()
             require('fidget').setup({})
         end
