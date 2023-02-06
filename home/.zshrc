@@ -173,7 +173,7 @@ toggle-theme () {
 }
 
 gbf() {
-    TEMP_BRANCH_NAME=gbf-$(date +%F)
+    TEMP_BRANCH_NAME=gbf-$(date +%s)
     CURRENT_BRANCH="$(git_current_branch)"
 
     git checkout --quiet -b $TEMP_BRANCH_NAME && \
