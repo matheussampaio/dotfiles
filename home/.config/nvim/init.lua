@@ -14,9 +14,6 @@ vim.o.expandtab = true
 -- Change number of spaces that a <Tab> counts for during editing ops.
 vim.o.softtabstop = 4
 
--- Indentation amount for < and > commands.
-vim.o.shiftwidth = 4
-
 -- Disable line/column number in status line.
 -- Shows up in preview window when airline is disabled if not.
 vim.o.ruler = false
@@ -90,6 +87,9 @@ vim.o.completeopt = 'menu,menuone,noinsert,preview'
 
 -- only show command line if needed
 vim.o.cmdheight = 1
+
+-- wraps line at last word
+vim.o.linebreak = true
 
 -- Enable mouse support
 -- vim.o.mouse = 'nvh'
@@ -213,12 +213,27 @@ local override_highlights = function()
     ]])
 end
 
+-- set custom browserx viewer to open links inside ssh connection in the host
+if vim.fn.getenv("SSH_CONNECTION") ~= vim.NIL then
+    vim.g.netrw_browsex_viewer = "ssh-open-firefox"
+end
+
 -- Call override_highlights after colorschem is set.
 vim.api.nvim_create_autocmd('ColorScheme', {
     desc = 'Reload custom highlight overrides',
     group = vim.api.nvim_create_augroup('ColorSchemeOverrides', { clear = true }),
     pattern = { '*' },
     callback = override_highlights
+})
+
+-- Auto save files
+vim.api.nvim_create_autocmd({ 'BufLeave', 'FocusLost' }, {
+    desc = 'Auto save files',
+    callback = function ()
+        if vim.bo.modified and not vim.bo.readonly and vim.fn.expand('%') ~= '' and vim.bo.buftype == '' then
+            vim.api.nvim_command('silent update')
+        end
+    end
 })
 
 local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
@@ -365,6 +380,9 @@ return require('packer').startup(function(use)
     -- Place, toggle and display marks.
     use 'kshenoy/vim-signature'
 
+    -- Heuristically set buffer options.
+    use 'tpope/vim-sleuth'
+
     -- Add support to .editorconfig files.
     use 'gpanders/editorconfig.nvim'
 
@@ -416,6 +434,32 @@ return require('packer').startup(function(use)
         'preservim/vim-markdown',
         requires = 'godlygeek/tabular'
     }
+
+    -- Focus reading/writing mode
+    use {
+        'junegunn/goyo.vim',
+        requires = 'nvim-lualine/lualine.nvim',
+        config = function ()
+            vim.api.nvim_create_autocmd('User', {
+                desc = 'Hide Lualine when entering Goyo',
+                pattern = "GoyoEnter",
+                callback = function ()
+                    require('lualine').hide()
+                end
+            })
+
+            vim.api.nvim_create_autocmd('User', {
+                desc = 'Show Lualine when entering Goyo',
+                pattern = 'GoyoLeave',
+                callback = function ()
+                    require('lualine').hide({ unhide = true })
+                end
+            })
+        end
+    }
+
+    -- Highlight current block and dimns the others, useful with Goyo
+    use { 'junegunn/limelight.vim' }
 
     -- Git
     use {
@@ -541,14 +585,12 @@ return require('packer').startup(function(use)
         end
     }
 
-    -- Vim motions on speed!
+    -- general-purpose motion plugin
     use {
-        'phaazon/hop.nvim',
+        'ggandor/leap.nvim',
         config = function()
-            require('hop').setup()
-
-            vim.keymap.set('n', 's', ':HopChar2<CR>', { silent = true, desc = 'Jump to word' })
-            vim.keymap.set('n', '<Leader>hl', ':HopLine<CR>', { silent = true, desc = 'Jump to line' })
+            vim.keymap.set('n', 's', '<Plug>(leap-forward-to)', { desc = 'Leap forward-to' })
+            vim.keymap.set('n', 'S', '<Plug>(leap-backward-to)', { desc = 'Leap backward-to' })
         end
     }
 

@@ -77,3 +77,6 @@ vim.keymap.set('', '<Leader>sw', require('telescope.builtin').grep_string, { des
 
 -- Resume telescope
 vim.keymap.set('', '<Leader>sr', require('telescope.builtin').resume, { desc = "Resume search" })
+
+-- Use telescope for spell suggestion
+vim.keymap.set('n', 'z=', require('telescope.builtin').spell_suggest, { desc = "Spell suggestions" })

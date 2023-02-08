@@ -13,6 +13,10 @@ cmp.setup({
             or cmp_dap.is_dap_buffer()
     end,
 
+    -- completion = {
+    --     keyword_pattern = 2
+    -- },
+
     snippet = {
         expand = function(args)
             luasnip.lsp_expand(args.body)
@@ -96,7 +100,7 @@ cmp.setup({
 
     sorting = {
         comparators = {
-            -- cmp.config.compare.recently_used,
+            cmp.config.compare.recently_used,
             -- cmp.config.compare.offset,
             cmp.config.compare.score,
             -- cmp.config.compare.sort_text,
