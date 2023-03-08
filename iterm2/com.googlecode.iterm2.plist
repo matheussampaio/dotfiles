@@ -695,6 +695,8 @@
 	</dict>
 	<key>Default Bookmark Guid</key>
 	<string>DF289ACA-9BDC-4FAA-A015-A4F03E249A7F</string>
+	<key>DoubleClickPerformsSmartSelection</key>
+	<true/>
 	<key>EnableAPIServer</key>
 	<true/>
 	<key>EnterCopyModeAutomatically</key>
@@ -2431,7 +2433,7 @@
 	<key>URLHandlersByGuid</key>
 	<dict/>
 	<key>UseLionStyleFullscreen</key>
-	<true/>
+	<false/>
 	<key>VisualIndicatorForEsc</key>
 	<false/>
 	<key>WindowNumber</key>
