@@ -127,3 +127,8 @@ download-zsh-plugins:
 	for repo in $(ZSH_PLUGINS_PACKAGES); do \
 		git clone --depth=1 https://github.com/$$repo.git; \
 	done
+
+
+update-zsh-plugins:
+	cd ~/.zsh && \
+	ls | xargs -I{} git -C {} pull
