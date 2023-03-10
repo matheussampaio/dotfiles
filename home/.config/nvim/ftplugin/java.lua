@@ -75,7 +75,7 @@ local config = {
     end,
     capabilities = lsp.capabilities,
     cmd = {
-        "jdtls",
+        home .. "/.java/jdtls/bin/jdtls",
         "--jvm-arg=-javaagent:" .. home .. "/.java/lombok.jar",
         "-Xms1g",
         "-Xmx4G",
