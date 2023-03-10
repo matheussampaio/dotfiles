@@ -3,7 +3,7 @@ DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 UNAME_S := $(shell uname -s)
 
 
-BREW_PACKAGES        := stow tmux ripgrep wget jq fd lua-language-server rust-analyzer exa bat tree jdtls htop miller glow pyenv pyenv-virtualenv lazygit
+BREW_PACKAGES        := stow tmux ripgrep wget jq fd lua-language-server rust-analyzer exa bat tree htop miller glow pyenv pyenv-virtualenv lazygit
 CARGO_PACKAGES       := zoxide
 NODE_PACKAGES        := n tldr neovim typescript typescript-language-server trash-cli eslint prettier js-beautify
 ZSH_PLUGINS_PACKAGES := romkatv/powerlevel10k ohmyzsh/ohmyzsh zsh-users/zsh-autosuggestions jeffreytse/zsh-vi-mode djui/alias-tips apachler/zsh-aws Aloxaf/fzf-tab mroth/evalcache
@@ -65,7 +65,16 @@ install-terminfo:
 	/usr/bin/tic -xe tmux-256color terminfo.src
 
 
-setup-java:: download-checkstyle download-lombok download-google-java-format setup-java-debug setup-vscode-java-test setup-vscode-java-decompiler
+setup-java:: download-jdtls download-checkstyle download-lombok download-google-java-format setup-java-debug setup-vscode-java-test setup-vscode-java-decompiler
+
+
+download-jdtls:
+	mkdir -p ~/.java && \
+	cd ~/.java && \
+	rm -rf ~/.java/jdtls && \
+	mkdir -p jdtls && \
+	wget https://www.eclipse.org/downloads/download.php?file=/jdtls/milestones/1.20.0/jdt-language-server-1.20.0-202302201605.tar.gz -O jdtls.tar.gz && \
+	tar -xf jdtls.tar.gz -C jdtls
 
 
 download-checkstyle:
@@ -84,7 +93,7 @@ setup-java-debug:
 	mkdir -p ~/.java && \
 	cd ~/.java && \
 	rm -rf ~/.java/java-debug && \
-	git clone --depth 1 git@github.com:microsoft/java-debug.git
+	git clone --depth 1 https://github.com/microsoft/java-debug.git
 	cd ~/.java/java-debug && \
 	./mvnw clean install
 
@@ -93,7 +102,7 @@ setup-vscode-java-test:
 	mkdir -p ~/.java && \
 	cd ~/.java && \
 	rm -rf ~/.java/vscode-java-test && \
-	git clone --depth 1 git@github.com:microsoft/vscode-java-test.git
+	git clone --depth 1 https://github.com/microsoft/vscode-java-test.git
 	cd ~/.java/vscode-java-test && \
 	npm install && \
 	npm run build-plugin
@@ -103,7 +112,7 @@ setup-vscode-java-decompiler:
 	mkdir -p ~/.java && \
 	cd ~/.java && \
 	rm -rf ~/.java/vscode-java-decompiler && \
-	git clone --depth 1 git@github.com:dgileadi/vscode-java-decompiler.git
+	git clone --depth 1 https://github.com/dgileadi/vscode-java-decompiler.git
 
 
 setup-neovim-python2:
