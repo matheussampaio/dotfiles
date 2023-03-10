@@ -424,7 +424,7 @@ return require('packer').startup(function(use)
             vim.g.oscyank_silent = true
         end,
         config = function()
-            vim.keymap.set({ 'v', 'x' }, '<Leader>c', ':OSCYank<CR>', { silent = true, desc = 'OSC yank' })
+            vim.keymap.set({ 'v', 'x' }, '<Leader>c', ':OSCYankVisual<CR>', { silent = true, desc = 'OSC yank' })
             vim.keymap.set({ 'n' }, '<Leader>c', '<Plug>OSCYank', { silent = true, desc = 'OSC yank' })
         end
     }
