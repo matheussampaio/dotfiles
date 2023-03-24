@@ -2,19 +2,30 @@ local M = {}
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
-M.on_attach = function(_, bufnr)
+M.on_attach = function(client, bufnr)
     -- Enable completion triggered by <c-x><c-o>
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-    -- vim.api.nvim_create_autocmd({ 'BufEnter', 'InsertLeave', 'BufWritePost' }, {
-    --     desc = 'Refresh CodeLens',
-    --     buffer = bufnr,
-    --     callback = function()
-    --         if vim.lsp.buf.server_ready() then
-    --             -- vim.lsp.codelens.refresh()
-    --         end
-    --     end
-    -- })
+    if client.server_capabilities.documentHighlightProvider then
+        local group = vim.api.nvim_create_augroup("lsp_document_highlight_" .. bufnr, { clear = true })
+
+        vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+            callback = function()
+                vim.lsp.buf.clear_references()
+                vim.lsp.buf.document_highlight()
+            end,
+            buffer = bufnr,
+            group = group,
+            desc = "Document Highlight",
+        })
+
+        -- vim.api.nvim_create_autocmd("CursorMoved", {
+        --     callback = vim.lsp.buf.clear_references,
+        --     buffer = bufnr,
+        --     group = group,
+        --     desc = "Clear All the References",
+        -- })
+    end
 end
 
 M.capabilities = require('cmp_nvim_lsp').default_capabilities()
