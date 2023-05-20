@@ -14,6 +14,8 @@ vim.o.expandtab = true
 -- Change number of spaces that a <Tab> counts for during editing ops.
 vim.o.softtabstop = 4
 
+vim.o.shiftwidth = 4
+
 -- Disable line/column number in status line.
 -- Shows up in preview window when airline is disabled if not.
 vim.o.ruler = false
@@ -280,7 +282,7 @@ return require('packer').startup(function(use)
     use {
         'nvim-lualine/lualine.nvim',
         config = function()
-            local git_blame = require('gitblame')
+            -- local git_blame = require('gitblame')
             local Tab = require('lualine.components.tabs.tab')
             local dap = require("dap")
 
@@ -296,23 +298,23 @@ return require('packer').startup(function(use)
                 extensions = { 'fugitive', 'quickfix' },
                 options = {
                     theme = 'gruvbox',
-                    globalstatus = true
+                    -- globalstatus = true
                 },
                 sections = {
                     lualine_a = { 'mode' },
-                    lualine_b = { 'ObessionStatus', 'branch', 'diff', 'diagnostics' },
+                    lualine_b = { 'ObessionStatus' },
                     lualine_c = { {
                         'filename',
                         newfile_status = true,
                         path = 1
                     } },
                     lualine_x = {
-                        {
-                            git_blame.get_current_blame_text,
-                            cond = git_blame.is_blame_text_available
-                        }
+                        -- {
+                        --     git_blame.get_current_blame_text,
+                        --     cond = git_blame.is_blame_text_available
+                        -- }
                     },
-                    lualine_y = { dap.status, require('plugins/lualine-lsp-name') },
+                    lualine_y = { dap.status },
                     lualine_z = { 'filetype' }
                 },
                 inactive_sections = {
@@ -347,13 +349,13 @@ return require('packer').startup(function(use)
         end
     }
 
-    -- adds a floating status line to show the filename
-    use {
-        'b0o/incline.nvim',
-        config = function()
-            require('incline').setup()
-        end
-    }
+    -- -- adds a floating status line to show the filename
+    -- use {
+    --     'b0o/incline.nvim',
+    --     config = function()
+    --         require('incline').setup()
+    --     end
+    -- }
 
     --  handy brackets mappings.
     use 'tpope/vim-unimpaired'
@@ -365,6 +367,9 @@ return require('packer').startup(function(use)
             require("nvim-surround").setup({})
         end
     }
+
+    -- Asynchronous build and test dispatcher 
+    use 'tpope/vim-dispatch'
 
     -- Change word case, add abbreviations, and search/replace.
     use 'tpope/vim-abolish'
@@ -378,6 +383,15 @@ return require('packer').startup(function(use)
     -- Provides additional text objects
     use 'wellle/targets.vim'
 
+    use {
+        'vimwiki/vimwiki',
+        config = function ()
+            vim.g.vimwiki_list = {{
+                path = '~/vimwiki'
+            }}
+        end
+    }
+
     -- Make Vim persist editing state without fuss.
     use 'zhimsel/vim-stay'
 
@@ -385,7 +399,7 @@ return require('packer').startup(function(use)
     use 'kshenoy/vim-signature'
 
     -- Heuristically set buffer options.
-    use 'tpope/vim-sleuth'
+    -- use 'tpope/vim-sleuth'
 
     -- Add support to .editorconfig files.
     use 'gpanders/editorconfig.nvim'
@@ -395,7 +409,7 @@ return require('packer').startup(function(use)
         'nvim-treesitter/nvim-treesitter',
         requires = {
             'nvim-treesitter/nvim-treesitter-textobjects',
-            'nvim-treesitter/nvim-treesitter-context'
+            -- 'nvim-treesitter/nvim-treesitter-context'
         },
         run = ':TSUpdate',
         config = function() require('plugins/treesitter') end
@@ -433,11 +447,11 @@ return require('packer').startup(function(use)
         end
     }
 
-    -- Markdown
-    use {
-        'preservim/vim-markdown',
-        requires = 'godlygeek/tabular'
-    }
+    -- -- Markdown
+    -- use {
+    --     'preservim/vim-markdown',
+    --     requires = 'godlygeek/tabular'
+    -- }
 
     -- Focus reading/writing mode
     use {
@@ -503,8 +517,9 @@ return require('packer').startup(function(use)
             -- shows git author as virtual text on each line of code
             'f-person/git-blame.nvim',
             setup = function()
-                vim.g.gitblame_display_virtual_text = 0
+                -- vim.g.gitblame_display_virtual_text = 0
                 vim.g.gitblame_date_format = '%r'
+                vim.g.gitblame_message_template = '<date> - <author> - <committer>'
                 vim.g.gitblame_ignored_filetypes = { 'gitcommit', 'fugitive', 'help', 'packer' }
                 -- vim.g.gitblame_highlight_group = 'CursorLine'
             end
@@ -720,13 +735,13 @@ return require('packer').startup(function(use)
     }
 
     -- show lsp initialisation progress
-    use {
-        'j-hui/fidget.nvim',
-        disable = true,
-        config = function()
-            require('fidget').setup({})
-        end
-    }
+    -- use {
+    --     'j-hui/fidget.nvim',
+    --     disable = true,
+    --     config = function()
+    --         require('fidget').setup({})
+    --     end
+    -- }
 
     -- require plugins that start with "extra" in plugins/ folder
     local extra_file_glob = vim.fn.stdpath('config') .. '/lua/plugins/extra*'

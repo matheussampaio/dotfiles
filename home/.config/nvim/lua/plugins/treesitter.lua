@@ -1,4 +1,9 @@
 require('nvim-treesitter.configs').setup({
+    -- Disable in large files
+    disable = function(_, bufnr)
+        return vim.api.nvim_buf_line_count(bufnr) > 50000
+    end,
+
     ensure_installed = {
         "bash",
         "html",
@@ -19,19 +24,21 @@ require('nvim-treesitter.configs').setup({
 
     highlight = {
         enable = true,
-
-        additional_vim_regex_highlighting = { 'org' },
     },
 
-    select = {
-        enable = true,
+    textobjects = {
+        select = {
+            enable = true,
 
-        lookahead = true,
+            lookahead = true,
 
-        keymaps = {
-            ["af"] = "@function.outer",
-            ["if"] = "@function.inner"
-        }
+            keymaps = {
+                ["af"] = { query = "@function.outer", desc = "Select function" },
+                ["if"] = { query = "@function.inner", desc = "Select inner function" },
+                ["ac"] = { query = "@class.outer", desc = "Select class" },
+                ["ic"] = { query = "@class.inner", desc = "Select inner class" },
+            },
+        },
     },
 
     incremental_selection = {
@@ -56,7 +63,4 @@ require('nvim-treesitter.configs').setup({
     context_commentstring = {
         enable = true
     }
-})
-
-require('treesitter-context').setup({
 })

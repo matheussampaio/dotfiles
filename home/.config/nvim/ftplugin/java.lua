@@ -1,14 +1,3 @@
--- configure makeprg if gradle is available
--- @TODO: search for gradlew in the project root folder
-if vim.fn.filereadable("./gradlew") ~= 0 then
-    vim.bo.makeprg = "./gradlew build"
-end
-
--- configure formatprg if google-java-format is in ~/.java/ folder
-if vim.fn.filereadable("~/.java/google-java-format.jar") ~= 0 then
-    vim.bo.formatprg = "java -jar ~/.java/google-java-format.jar -a -"
-end
-
 local jdtls = require("jdtls")
 local jdtls_setup = require("jdtls.setup")
 local lsp = require("plugins/lsp")
@@ -19,6 +8,17 @@ local root_dir = jdtls_setup.find_root({ "packageInfo" }, "Config")
 local home = os.getenv("HOME")
 local eclipse_workspace = home .. "/.local/share/eclipse/" .. vim.fn.fnamemodify(root_dir, ":p:h:t")
 
+-- configure formatprg if google-java-format is in ~/.java/ folder
+if vim.fn.filereadable(home .. "/.java/google-java-format.jar") > 0 then
+    vim.bo.formatprg = "java -jar " .. home .. "/.java/google-java-format.jar -a -"
+end
+
+-- vim.bo.makeprg = "brazil-build format && brazil-build"
+--
+-- -- Examples:
+-- -- [checkstyle] [ERROR] /path/to/file/Main.java:15:29: Variable 'annotation' should be declared final. [FinalLocalVariable]
+-- -- [checkstyle] [ERROR] /path/to/file/Main.java:15: Variable 'annotation' should be declared final. [FinalLocalVariable]
+-- vim.bo.errorformat = "[%.%#checkstyle] [%t%.%#] %f:%l:%c: %m,[%.%#checkstyle] [%t%.%#] %f:%l: %r"
 local ws_folders_jdtls = {}
 
 if root_dir then
@@ -94,13 +94,13 @@ local config = {
                 implementationsCodeLens = { enabled = true },
                 completion = {
                     favoriteStaticMembers = {
-                        "org.hamcrest.MatcherAssert.assertThat",
-                        "org.hamcrest.Matchers.*",
-                        "org.hamcrest.CoreMatchers.*",
-                        "org.junit.jupiter.api.Assertions.*",
-                        "java.util.Objects.requireNonNull",
-                        "java.util.Objects.requireNonNullElse",
-                        "org.mockito.Mockito.*"
+                        -- "org.hamcrest.MatcherAssert.assertThat",
+                        -- "org.hamcrest.Matchers.*",
+                        -- "org.hamcrest.CoreMatchers.*",
+                        -- "org.junit.jupiter.api.Assertions.*",
+                        -- "java.util.Objects.requireNonNull",
+                        -- "java.util.Objects.requireNonNullElse",
+                        -- "org.mockito.Mockito.*"
                     }
                 },
                 sources = {

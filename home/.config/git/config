@@ -14,7 +14,9 @@
     algorithm = patience
 
 [rebase]
+    stat = true
     instructionFormat = %s [%an - %ar]
+    autoSquash = true
 
 [github]
     user = matheussampaio

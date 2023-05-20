@@ -103,6 +103,10 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export EDITOR='nvim'
 export MANPAGER='nvim +Man!'
 
+function zvm_config() {
+  ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
+}
+
 function my_zvm_init() {
     [ -f $XDG_CONFIG_HOME/fzf/fzf.zsh ] && source $XDG_CONFIG_HOME/fzf/fzf.zsh
 
@@ -201,10 +205,10 @@ theme() {
 }
 
 sync() {
-    rsync --verbose --archive --relative $1 $2:$3
+    (set -x; rsync --archive --relative $1 $2)
 
     while inotifywait --quiet --event modify,create,delete,move --recursive $1; do
-        rsync --verbose --archive --relative $1 $2:$3
+        (set -x; rsync --archive --relative $1 $2)
     done
 }
 
@@ -219,6 +223,10 @@ alias ls='exa'
 alias l='ls -lah'
 alias t='tmux'
 alias tn='t new-session -As'
+alias graa='git rebase -i --autostash --autosquash origin/$(git_current_branch)'
+alias gcr='git commit --fixup HEAD && graa'
+alias gg='git global'
+alias ggs='gg status -s'
 
 if [ -f "$HOME/.p10k.zsh" ]; then
     source "$HOME/.p10k.zsh"
