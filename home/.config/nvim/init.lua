@@ -143,6 +143,9 @@ vim.keymap.set('v', '<Leader>c', '"+y', { desc = 'Copy to clipboard' })
 -- Press enter and then confirm each change you agree with y or decline with n.
 vim.keymap.set('v', '<C-r>', '"hy:%s/<C-r>h//gc<left><left><left>', { desc = 'Replace current selection' })
 
+-- Map <Esc> to exit terminal-mode.
+vim.keymap.set('t', '<Esc>', '<C-\\><C-N>', { desc = 'Leave terminal insert mode' })
+
 -- Highlights the yanked text.
 vim.api.nvim_create_autocmd('TextYankPost', {
     desc = 'Highlight yanked text',
