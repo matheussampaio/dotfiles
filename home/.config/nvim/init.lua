@@ -216,9 +216,9 @@ local override_highlights = function()
     hi! default link DiagnosticInfo GruvboxBlue
     hi! default link DiagnosticHint GruvboxAqua
 
-    hi! default LspReferenceText gui=bold guibg=#ebdbb2
-    hi! default LspReferenceRead gui=bold guibg=#ebdbb2
-    hi! default LspReferenceWrite gui=bold guibg=#ebdbb2
+    hi! default LspReferenceText gui=bold,underline cterm=bold,underline
+    hi! default LspReferenceRead gui=bold,underline cterm=bold,underline
+    hi! default LspReferenceWrite gui=bold,underline cterm=bold,underline
     ]])
 end
 
