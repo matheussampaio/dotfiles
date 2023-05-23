@@ -3,7 +3,7 @@ vim.o.number = true
 vim.o.relativenumber = true
 
 -- only save cursor and folds in view sessions
-vim.opt.viewoptions = { 'cursor', 'folds' }
+vim.opt.viewoptions = { "cursor", "folds" }
 
 -- Show tabline is more than one tab exists
 vim.o.showtabline = 1
@@ -24,7 +24,7 @@ vim.o.ruler = false
 vim.o.conceallevel = 1
 
 -- Don't give completion messages like 'match 1 of 2' or 'The only match'.
-vim.o.shortmess = vim.o.shortmess .. 'c'
+vim.o.shortmess = vim.o.shortmess .. "c"
 
 -- Always keep some lines before/after the current line when scrolling.
 vim.o.scrolloff = 4
@@ -62,7 +62,7 @@ vim.o.showmode = false
 vim.o.termguicolors = true
 
 -- Remove ~ from the left side of the window
-vim.o.fillchars = 'eob: '
+vim.o.fillchars = "eob: "
 
 -- Disable bells.
 vim.o.visualbell = true
@@ -71,13 +71,13 @@ vim.o.visualbell = true
 vim.o.list = true
 
 -- Display tab characters
-vim.opt.listchars = 'tab:▶ ,trail:·'
+vim.opt.listchars = "tab:▶ ,trail:·"
 
 -- Set default to unfold
 vim.o.foldlevel = 1
 
 -- Display signs in the number column
-vim.o.signcolumn = 'auto'
+vim.o.signcolumn = "auto"
 
 -- pop up menu height
 vim.o.pumheight = 10
@@ -85,7 +85,7 @@ vim.o.pumheight = 10
 -- Highlight cursor line
 vim.o.cursorline = true
 
-vim.o.completeopt = 'menu,menuone,noinsert,preview'
+vim.o.completeopt = "menu,menuone,noinsert,preview"
 
 -- only show command line if needed
 vim.o.cmdheight = 1
@@ -93,13 +93,10 @@ vim.o.cmdheight = 1
 -- wraps line at last word
 vim.o.linebreak = true
 
--- Enable mouse support
--- vim.o.mouse = 'nvh'
-
-if vim.fn.filereadable(vim.fn.expand('$XDG_CONFIG_HOME/theme')) > 0 then
+if vim.fn.filereadable(vim.fn.expand("$XDG_CONFIG_HOME/theme")) > 0 then
     vim.cmd('let &background = readfile(glob("$XDG_CONFIG_HOME/theme"))[0]')
 else
-    vim.o.background = 'dark'
+    vim.o.background = "dark"
 end
 
 -- disable ruby and perl providers, see :checkhealth
@@ -107,64 +104,64 @@ vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 
 -- set python paths
-vim.g.python2_host_prog = vim.fn.expand('$HOME/.pyenv/versions/neovim2/bin/python')
-vim.g.python3_host_prog = vim.fn.expand('$HOME/.pyenv/versions/neovim3/bin/python')
+vim.g.python2_host_prog = vim.fn.expand("$HOME/.pyenv/versions/neovim2/bin/python")
+vim.g.python3_host_prog = vim.fn.expand("$HOME/.pyenv/versions/neovim3/bin/python")
 
 -- Change leader to SPACE.
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
 -- Normally space move the cursor to the right in normal mode. Since LEADER is
 -- SPACE, disabling that behavior works better for me.
-vim.keymap.set({ 'n', 'v' }, '<Space>', '<NOP>', { silent = true })
+vim.keymap.set({ "n", "v" }, "<Space>", "<NOP>", { silent = true })
 
 -- Quick ways to get to MYVIMRC
-vim.keymap.set('n', '<Leader>uv', ':edit $MYVIMRC<CR>', { silent = true, desc = 'Edit $MYVIMRC' })
-vim.keymap.set('n', '<Leader>ut', ':tabnew $MYVIMRC<CR>', { silent = true, desc = 'Edit $MYVIMRC in a new tab' })
+vim.keymap.set("n", "<Leader>uv", ":edit $MYVIMRC<CR>", { silent = true, desc = "Edit $MYVIMRC" })
+vim.keymap.set("n", "<Leader>ut", ":tabnew $MYVIMRC<CR>", { silent = true, desc = "Edit $MYVIMRC in a new tab" })
 
 -- Erase search highlight
-vim.keymap.set('n', '<Leader>uh', ':nohlsearch<CR>', { silent = true, desc = 'Remove search highlight' })
+vim.keymap.set("n", "<Leader>uh", ":nohlsearch<CR>", { silent = true, desc = "Remove search highlight" })
 
 -- Ctrl + S to save the buffer
-vim.keymap.set('n', '<C-s>', ':w<CR>', { silent = true, desc = 'Save current file' })
+vim.keymap.set("n", "<C-s>", ":w<CR>", { silent = true, desc = "Save current file" })
 
 -- Move visual lines
-vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true })
-vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true })
+vim.keymap.set("n", "k", 'v:count == 0 ? "gk" : "k"', { expr = true })
+vim.keymap.set("n", "j", 'v:count == 0 ? "gj" : "j"', { expr = true })
 
 -- Paste from clipboard
-vim.keymap.set('n', '<Leader>v', 'o<ESC>"+p', { desc = 'Paste from clipboard' })
-vim.keymap.set('x', '<Leader>v', '"+p', { desc = 'Paste from clipboard' })
+vim.keymap.set("n", "<Leader>v", 'o<ESC>"+p', { desc = "Paste from clipboard" })
+vim.keymap.set("x", "<Leader>v", '"+p', { desc = "Paste from clipboard" })
 
 -- Save to clipboard
-vim.keymap.set('v', '<Leader>c', '"+y', { desc = 'Copy to clipboard' })
+vim.keymap.set("v", "<Leader>c", '"+y', { desc = "Copy to clipboard" })
 
 -- By pressing ctrl+r in visual mode, you will be prompted to enter text to replace with.
 -- Press enter and then confirm each change you agree with y or decline with n.
-vim.keymap.set('v', '<C-r>', '"hy:%s/<C-r>h//gc<left><left><left>', { desc = 'Replace current selection' })
+vim.keymap.set("v", "<C-r>", '"hy:%s/<C-r>h//gc<left><left><left>', { desc = "Replace current selection" })
 
 -- Map <Esc> to exit terminal-mode.
-vim.keymap.set('t', '<Esc>', '<C-\\><C-N>', { desc = 'Leave terminal insert mode' })
+vim.keymap.set("t", "<Esc>", "<C-\\><C-N>", { desc = "Leave terminal insert mode" })
 
 -- Highlights the yanked text.
-vim.api.nvim_create_autocmd('TextYankPost', {
-    desc = 'Highlight yanked text',
-    group = vim.api.nvim_create_augroup('HilightTextYank', { clear = true }),
-    pattern = { '*' },
-    callback = function() vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 500 }) end
+vim.api.nvim_create_autocmd("TextYankPost", {
+    desc = "Highlight yanked text",
+    group = vim.api.nvim_create_augroup("HilightTextYank", { clear = true }),
+    pattern = { "*" },
+    callback = function() vim.highlight.on_yank({ higroup = "IncSearch", timeout = 500 }) end
 })
 
-vim.api.nvim_create_autocmd({ 'WinEnter', 'FocusGained' }, {
-    desc = 'Show the cursorline whenever the window gain focus',
-    group = vim.api.nvim_create_augroup('ShowCursorLineWhenLoseFocus', { clear = true }),
-    pattern = { '*' },
+vim.api.nvim_create_autocmd({ "WinEnter", "FocusGained" }, {
+    desc = "Show the cursorline whenever the window gain focus",
+    group = vim.api.nvim_create_augroup("ShowCursorLineWhenLoseFocus", { clear = true }),
+    pattern = { "*" },
     callback = function() vim.o.cursorline = true end
 })
 
-vim.api.nvim_create_autocmd({ 'WinLeave', 'FocusLost' }, {
-    desc = 'Hide the cursorline whenever the window loses focus',
-    group = vim.api.nvim_create_augroup('HideCursorLineWhenLoseFocus', { clear = true }),
-    pattern = { '*' },
+vim.api.nvim_create_autocmd({ "WinLeave", "FocusLost" }, {
+    desc = "Hide the cursorline whenever the window loses focus",
+    group = vim.api.nvim_create_augroup("HideCursorLineWhenLoseFocus", { clear = true }),
+    pattern = { "*" },
     callback = function() vim.o.cursorline = false end
 })
 
@@ -173,13 +170,10 @@ vim.api.nvim_create_autocmd({ 'WinLeave', 'FocusLost' }, {
 -- See https://gist.github.com/romainl/379904f91fa40533175dfaec4c833f2f for details
 local override_highlights = function()
     -- Change highlight
-    vim.api.nvim_set_hl(0, 'Search', { bg = 'NONE', fg = 'peru', bold = true })
-
-    -- Errors bold read with transparent background
-    -- vim.api.nvim_set_hl(0, 'Error', { bg = 'NONE', fg = '#ff005f', bold = true })
+    vim.api.nvim_set_hl(0, "Search", { bg = "NONE", fg = "peru", bold = true })
 
     -- gray
-    vim.api.nvim_set_hl(0, 'CmpItemAbbrDeprecated', { bg = 'NONE', fg = '#808080', strikethrough = true })
+    vim.api.nvim_set_hl(0, "CmpItemAbbrDeprecated", { bg = "NONE", fg = "#808080", strikethrough = true })
     -- blue
     vim.api.nvim_set_hl(0, 'CmpItemAbbrMatch', { bg = 'NONE', fg = '#569CD6' })
     vim.api.nvim_set_hl(0, 'CmpItemAbbrMatchFuzzy', { bg = 'NONE', fg = '#569CD6' })
@@ -194,6 +188,11 @@ local override_highlights = function()
     vim.api.nvim_set_hl(0, 'CmpItemKindKeyword', { bg = 'NONE', fg = '#D4D4D4' })
     vim.api.nvim_set_hl(0, 'CmpItemKindProperty', { bg = 'NONE', fg = '#D4D4D4' })
     vim.api.nvim_set_hl(0, 'CmpItemKindUnit', { bg = 'NONE', fg = '#D4D4D4' })
+
+    -- Merges Comment and CursorLine to create GitBlame
+    local CommentHighlight = vim.api.nvim_get_hl_by_name('Comment', true)
+    local CursorLineHighlight = vim.api.nvim_get_hl_by_name('CursorLine', true)
+    vim.api.nvim_set_hl(0, 'GitBlame', vim.tbl_extend('force', {}, CommentHighlight, CursorLineHighlight))
 
     vim.cmd([[
     hi! SignColumn ctermfg=NONE guibg=NONE
@@ -285,7 +284,6 @@ return require('packer').startup(function(use)
     use {
         'nvim-lualine/lualine.nvim',
         config = function()
-            -- local git_blame = require('gitblame')
             local Tab = require('lualine.components.tabs.tab')
             local dap = require("dap")
 
@@ -301,7 +299,6 @@ return require('packer').startup(function(use)
                 extensions = { 'fugitive', 'quickfix' },
                 options = {
                     theme = 'gruvbox',
-                    -- globalstatus = true
                 },
                 sections = {
                     lualine_a = { 'mode' },
@@ -311,12 +308,7 @@ return require('packer').startup(function(use)
                         newfile_status = true,
                         path = 1
                     } },
-                    lualine_x = {
-                        -- {
-                        --     git_blame.get_current_blame_text,
-                        --     cond = git_blame.is_blame_text_available
-                        -- }
-                    },
+                    lualine_x = {},
                     lualine_y = { dap.status },
                     lualine_z = { 'filetype' }
                 },
@@ -352,14 +344,6 @@ return require('packer').startup(function(use)
         end
     }
 
-    -- -- adds a floating status line to show the filename
-    -- use {
-    --     'b0o/incline.nvim',
-    --     config = function()
-    --         require('incline').setup()
-    --     end
-    -- }
-
     --  handy brackets mappings.
     use 'tpope/vim-unimpaired'
 
@@ -386,6 +370,7 @@ return require('packer').startup(function(use)
     -- Provides additional text objects
     use 'wellle/targets.vim'
 
+    -- Easy notes
     use {
         'vimwiki/vimwiki',
         config = function ()
@@ -400,9 +385,6 @@ return require('packer').startup(function(use)
 
     -- Place, toggle and display marks.
     use 'kshenoy/vim-signature'
-
-    -- Heuristically set buffer options.
-    -- use 'tpope/vim-sleuth'
 
     -- Add support to .editorconfig files.
     use 'gpanders/editorconfig.nvim'
@@ -424,8 +406,6 @@ return require('packer').startup(function(use)
         config = function() require('Comment').setup() end
     }
 
-    use { 'ryym/vim-riot', ft = { 'riot' } }
-
     -- Path navigator designed to work with Vim's built-in mechanisms and complementary plugins.
     use {
         'justinmk/vim-dirvish',
@@ -433,7 +413,7 @@ return require('packer').startup(function(use)
         requires = { 'roginfarrer/vim-dirvish-dovish' }
     }
 
-
+    -- move outside vim to another tmux pane easily
     use 'christoomey/vim-tmux-navigator'
 
     -- OSC 52 is a terminal sequence used to copy printed text into clipboard.
@@ -449,12 +429,6 @@ return require('packer').startup(function(use)
             vim.keymap.set({ 'n' }, '<Leader>c', '<Plug>OSCYank', { silent = true, desc = 'OSC yank' })
         end
     }
-
-    -- -- Markdown
-    -- use {
-    --     'preservim/vim-markdown',
-    --     requires = 'godlygeek/tabular'
-    -- }
 
     -- Focus reading/writing mode
     use {
@@ -513,23 +487,22 @@ return require('packer').startup(function(use)
         },
         {
             -- Enables :GBrowse from fugitive.vim to open GitHub URLs.
-            'tpope/vim-rhubarb',
-            after = 'vim-fugitive'
+            "tpope/vim-rhubarb",
+            after = "vim-fugitive"
         },
         {
             -- shows git author as virtual text on each line of code
-            'f-person/git-blame.nvim',
+            "f-person/git-blame.nvim",
             setup = function()
-                -- vim.g.gitblame_display_virtual_text = 0
-                vim.g.gitblame_date_format = '%r'
-                vim.g.gitblame_message_template = '<date> - <author> - <committer>'
-                vim.g.gitblame_ignored_filetypes = { 'gitcommit', 'fugitive', 'help', 'packer' }
-                -- vim.g.gitblame_highlight_group = 'CursorLine'
+                vim.g.gitblame_date_format = "%r"
+                vim.g.gitblame_message_template = "  <date> - <author>"
+                vim.g.gitblame_ignored_filetypes = { "gitcommit", "fugitive", "help", "packer" }
+                vim.g.gitblame_highlight_group = "GitBlame"
             end
         },
         {
-            'sindrets/diffview.nvim',
-            requires = 'nvim-lua/plenary.nvim'
+            "sindrets/diffview.nvim",
+            requires = "nvim-lua/plenary.nvim"
         }
     }
 
@@ -643,69 +616,88 @@ return require('packer').startup(function(use)
         end
     }
 
+    -- copilot
     use {
-        'jose-elias-alvarez/null-ls.nvim',
+        {
+            "zbirenbaum/copilot.lua",
+            cmd = 'Copilot',
+            config = function()
+                require("copilot").setup({
+                    panel = {
+                        enabled = false
+                    },
+                    suggestion = {
+                        enabled = false
+                    }
+                })
+            end,
+        },
+        {
+            "zbirenbaum/copilot-cmp",
+            after = { "copilot.lua" },
+            config = function()
+                require("copilot_cmp").setup()
+            end
+        }
+    }
+
+
+    use {
+        "jose-elias-alvarez/null-ls.nvim",
         config = function()
-            require('plugins/null-ls')
+            require("plugins/null-ls")
         end
     }
 
     use {
-        'windwp/nvim-autopairs',
+        "windwp/nvim-autopairs",
         config = function()
-            require('nvim-autopairs').setup({
+            require("nvim-autopairs").setup({
                 check_ts = true,
-                disable_filetype = { 'TelescopePrompt', 'vim' }
+                disable_filetype = { "TelescopePrompt", "vim" }
             })
         end
     }
 
     use {
-        'L3MON4D3/LuaSnip',
-        requires = { 'rafamadriz/friendly-snippets' },
+        "L3MON4D3/LuaSnip",
+        requires = { "rafamadriz/friendly-snippets" },
         config = function()
-            require('luasnip.loaders.from_vscode').lazy_load()
+            require("luasnip.loaders.from_vscode").lazy_load()
         end
     }
 
     -- Completion
     use {
-        'hrsh7th/nvim-cmp',
+        "hrsh7th/nvim-cmp",
         requires = {
-            'hrsh7th/cmp-nvim-lsp',
-            'hrsh7th/cmp-nvim-lsp-signature-help',
-            'hrsh7th/cmp-buffer',
-            'hrsh7th/cmp-path',
-            'hrsh7th/cmp-cmdline',
-            'saadparwaiz1/cmp_luasnip',
-            'onsails/lspkind-nvim',
-            'rcarriga/cmp-dap'
+            "hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/cmp-nvim-lsp-signature-help",
+            "hrsh7th/cmp-buffer",
+            "hrsh7th/cmp-path",
+            "hrsh7th/cmp-cmdline",
+            "saadparwaiz1/cmp_luasnip",
+            "onsails/lspkind-nvim",
+            "rcarriga/cmp-dap"
         },
-        config = function() require('plugins/cmp') end
+        config = function() require("plugins/cmp") end
     }
 
     use {
-        'lukas-reineke/indent-blankline.nvim',
+        "lukas-reineke/indent-blankline.nvim",
         config = function()
-            require('indent_blankline').setup({
-                char = '▏',
-                -- use_treesitter = true,
+            require("indent_blankline").setup({
+                char = "▏",
             })
         end
     }
 
-    -- use {
-    --     'abecodes/tabout.nvim',
-    --     config = function()
-    --         require('tabout').setup({})
-    --     end
-    -- }
-
+    -- setup debugger
     use {
         {
-            'mfussenegger/nvim-dap',
+            "mfussenegger/nvim-dap",
             config = function()
-                require('plugins/dap')
+                require("plugins/dap")
             end
         },
         {
@@ -716,7 +708,7 @@ return require('packer').startup(function(use)
             end
         },
         {
-            'theHamsta/nvim-dap-virtual-text',
+            "theHamsta/nvim-dap-virtual-text",
             requires = "mfussenegger/nvim-dap",
             config = function()
                 require("nvim-dap-virtual-text").setup()
@@ -724,38 +716,30 @@ return require('packer').startup(function(use)
         }
     }
 
+    -- open/close Quickfix and Localfix
     use {
-        'milkypostman/vim-togglelist',
+        "milkypostman/vim-togglelist",
         setup = function()
             vim.g.toggle_list_no_mappings = true
         end,
         config = function()
-            vim.keymap.set('n', '<Leader>tq', function() vim.cmd([[:call ToggleQuickfixList()]]) end,
-                { desc = 'Toggle Quickfix list' })
-            vim.keymap.set('n', '<Leader>tl', function() vim.cmd([[:call ToggleLocationList()]]) end,
-                { desc = 'Toggle loc list' })
+            vim.keymap.set("n", "<Leader>tq", function() vim.cmd([[:call ToggleQuickfixList()]]) end,
+                { desc = "Toggle Quickfix list" })
+            vim.keymap.set("n", "<Leader>tl", function() vim.cmd([[:call ToggleLocationList()]]) end,
+                { desc = "Toggle loc list" })
         end
     }
 
-    -- show lsp initialisation progress
-    -- use {
-    --     'j-hui/fidget.nvim',
-    --     disable = true,
-    --     config = function()
-    --         require('fidget').setup({})
-    --     end
-    -- }
-
     -- require plugins that start with "extra" in plugins/ folder
-    local extra_file_glob = vim.fn.stdpath('config') .. '/lua/plugins/extra*'
+    local extra_file_glob = vim.fn.stdpath("config") .. "/lua/plugins/extra*"
     local extra_files = vim.fn.glob(extra_file_glob, true, true)
 
     for _, file in ipairs(extra_files) do
-        file = file:match('.+/lua/(plugins/.+)%..+')
+        file = file:match(".+/lua/(plugins/.+)%..+")
         require(file).setup(use)
     end
 
     if packer_bootstrap then
-        require('packer').sync()
+        require("packer").sync()
     end
 end)
