@@ -1,3 +1,3 @@
-" Ctrl+S to save the buffer
-nnoremap <buffer> <C-s> :w<CR>
-" nmap <buffer> - <Plug>(dirvish_up)
+nmap <buffer> - <Plug>(dirvish_up)
+nnoremap <buffer> =- <Plug>VimwikiRemoveHeaderLevel
+nnoremap <silent> <Leader>uu :call vimwiki#base#linkify()<CR>

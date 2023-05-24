@@ -373,10 +373,44 @@ return require('packer').startup(function(use)
     -- Easy notes
     use {
         'vimwiki/vimwiki',
-        config = function ()
-            vim.g.vimwiki_list = {{
-                path = '~/vimwiki'
-            }}
+        setup = function ()
+            vim.g.vimwiki_list = {
+                {
+                    path = '~/notes',
+                    name = 'Notes',
+                    auto_export = 1,
+                    auto_toc = 1,
+                    links_space_char = '_'
+                },
+                {
+                    path = '~/work-notes',
+                    name = 'Work Notes',
+                    auto_export = 1,
+                    auto_toc = 1,
+                    links_space_char = '_'
+                }
+            }
+
+            -- Performs :lcd to the root of Vimwiki folder
+            vim.g.vimwiki_auto_chdir = 1
+
+            -- Auto creates a header when creating wiki pages.
+            vim.g.vimwiki_auto_header = 1
+
+            -- auto saves when switching wiki pages.
+            vim.g.vimwiki_autowriteall = 1
+
+            -- open index.wiki when opening a folder
+            vim.g.vimwiki_dir_link = 'index'
+
+            -- Not always consider a .wiki or .md file to be a wiki.
+            vim.g.vimwiki_global_ext = 0
+
+            -- Add Comment highlight group to check items
+            vim.g.vimwiki_hl_cb_checked = 2
+
+            -- Add highlight groups to headers
+            vim.g.vimwiki_hl_headers = 1
         end
     }
 
