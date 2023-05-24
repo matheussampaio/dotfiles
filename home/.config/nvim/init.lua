@@ -375,16 +375,22 @@ return require('packer').startup(function(use)
         'vimwiki/vimwiki',
         setup = function ()
             vim.g.vimwiki_list = {
-                {
-                    path = '~/notes',
-                    name = 'Notes',
-                    auto_export = 1,
-                    auto_toc = 1,
-                    links_space_char = '_'
-                },
+                -- {
+                --     path = '~/notes',
+                --     name = 'Notes',
+                --     syntax = 'markdown',
+                --     custom_wiki2html = '~/.local/bin/vimwiki_md2html.py',
+                --     ext = '.md',
+                --     auto_export = 1,
+                --     auto_toc = 1,
+                --     links_space_char = '_'
+                -- },
                 {
                     path = '~/work-notes',
                     name = 'Work Notes',
+                    syntax = 'markdown',
+                    custom_wiki2html = '~/.local/bin/m2h_pandoc.py',
+                    ext = '.md',
                     auto_export = 1,
                     auto_toc = 1,
                     links_space_char = '_'
@@ -392,7 +398,7 @@ return require('packer').startup(function(use)
             }
 
             -- Performs :lcd to the root of Vimwiki folder
-            vim.g.vimwiki_auto_chdir = 1
+            -- vim.g.vimwiki_auto_chdir = 1
 
             -- Auto creates a header when creating wiki pages.
             vim.g.vimwiki_auto_header = 1
@@ -405,6 +411,8 @@ return require('packer').startup(function(use)
 
             -- Not always consider a .wiki or .md file to be a wiki.
             vim.g.vimwiki_global_ext = 0
+
+            vim.g.vimwiki_markdown_link_ext = 1
 
             -- Add Comment highlight group to check items
             vim.g.vimwiki_hl_cb_checked = 2
