@@ -240,6 +240,10 @@ vim.api.nvim_create_autocmd({ 'BufLeave', 'FocusLost' }, {
     callback = function ()
         if vim.bo.modified and not vim.bo.readonly and vim.fn.expand('%') ~= '' and vim.bo.buftype == '' then
             vim.api.nvim_command('silent update')
+
+            if vim.bo.filetype == 'vimwiki' then
+                vim.cmd(':Vimwiki2HTML')
+            end
         end
     end
 })
@@ -392,19 +396,12 @@ return require('packer').startup(function(use)
                     custom_wiki2html = '~/.local/bin/m2h_pandoc.py',
                     ext = '.md',
                     auto_export = 1,
-                    auto_toc = 1,
                     links_space_char = '_'
                 }
             }
 
-            -- Performs :lcd to the root of Vimwiki folder
-            -- vim.g.vimwiki_auto_chdir = 1
-
             -- Auto creates a header when creating wiki pages.
             vim.g.vimwiki_auto_header = 1
-
-            -- auto saves when switching wiki pages.
-            vim.g.vimwiki_autowriteall = 1
 
             -- open index.wiki when opening a folder
             vim.g.vimwiki_dir_link = 'index'

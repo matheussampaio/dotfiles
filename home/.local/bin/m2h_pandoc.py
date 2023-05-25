@@ -52,7 +52,7 @@ def convert(
         "--highlight-style=pygments",
         "--metadata", "pagetitle={}".format(title),
         "--output", output_file,
-        "--section-divs",
+        # "--section-divs",
         "--standalone",
         "--template", "/Users/msampaio/.cache/template.html5",
         "-",
