@@ -18,46 +18,39 @@ M.on_attach = function(client, bufnr)
             group = group,
             desc = "Document Highlight",
         })
-
-        -- vim.api.nvim_create_autocmd("CursorMoved", {
-        --     callback = vim.lsp.buf.clear_references,
-        --     buffer = bufnr,
-        --     group = group,
-        --     desc = "Clear All the References",
-        -- })
     end
+
+    -- Mappings.
+    -- See `:help vim.lsp.*` for documentation on any of the below functions
+    vim.keymap.set('n', '<Leader>a', vim.lsp.buf.code_action, { desc = 'Open code action' })
+    vim.keymap.set('n', '<Leader>lf', function() vim.lsp.buf.format() end, { desc = 'Format' })
+    vim.keymap.set('n', 'gD', function ()
+        if not pcall(vim.lsp.buf.declaration) then
+            vim.cmd([[normal! gD]])
+        end
+    end, { desc = 'Go to declaration' })
+    vim.keymap.set('n', 'gd', function()
+        if not pcall(require('telescope.builtin').lsp_definitions) then
+            vim.cmd([[normal! gd]])
+        end
+    end, { desc = 'Go to definition' })
+    vim.keymap.set('n', 'gm', require('telescope.builtin').lsp_implementations, { desc = 'Go to implementation' })
+    vim.keymap.set('n', 'gp', require('telescope.builtin').lsp_type_definitions, { desc = 'Go to type definition' })
+    vim.keymap.set('n', '<Leader>lr', vim.lsp.buf.rename, { desc = 'Rename' })
+    vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { desc = 'Open references' })
+    vim.keymap.set('n', 'K', function()
+        if not pcall(vim.lsp.buf.hover) then
+            vim.cmd([[normal! K]])
+        end
+    end, { desc = 'See documentation' })
 end
 
 M.capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-
--- Mappings.
--- See `:help vim.lsp.*` for documentation on any of the below functions
-vim.keymap.set('n', '<Leader>a', vim.lsp.buf.code_action, { desc = 'Open code action' })
-vim.keymap.set('n', '<Leader>lf', function() vim.lsp.buf.format() end, { desc = 'Format' })
-vim.keymap.set('n', 'gD', function ()
-    if not pcall(vim.lsp.buf.declaration) then
-        vim.cmd([[normal! gD]])
-    end
-end, { desc = 'Go to declaration' })
-vim.keymap.set('n', 'gd', function()
-    if not pcall(require('telescope.builtin').lsp_definitions) then
-        vim.cmd([[normal! gd]])
-    end
-end, { desc = 'Go to definition' })
-vim.keymap.set('n', 'gm', require('telescope.builtin').lsp_implementations, { desc = 'Go to implementation' })
-vim.keymap.set('n', 'gp', require('telescope.builtin').lsp_type_definitions, { desc = 'Go to type definition' })
-vim.keymap.set('n', '<Leader>lr', vim.lsp.buf.rename, { desc = 'Rename' })
-vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { desc = 'Open references' })
--- vim.keymap.set('n', '<Leader>lwa', vim.lsp.buf.add_workspace_folder, { desc = 'Add workspace folder' })
--- vim.keymap.set('n', '<Leader>lwl', function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,
---     { desc = 'List workspaces folders' })
--- vim.keymap.set('n', '<Leader>lwr', vim.lsp.buf.remove_workspace_folder, { desc = 'Remove workspace folder' })
-vim.keymap.set('n', 'K', function()
-    if not pcall(vim.lsp.buf.hover) then
-        vim.cmd([[normal! K]])
-    end
-end, { desc = 'See documentation' })
+M.capabilities.textDocument.foldingRange = {
+    dynamicRegistration = false,
+    lineFoldingOnly = true
+}
 
 local lspconfig = require('lspconfig')
 
@@ -124,6 +117,5 @@ lspconfig.lua_ls.setup({
         }
     }
 })
-
 
 return M

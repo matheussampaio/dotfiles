@@ -45,19 +45,13 @@ require('telescope').setup({
                 match_filename = false
             }
         },
-        ["ui-select"] = {
-            require("telescope.themes").get_dropdown({})
-        },
         frecency = {
             db_safe_mode = false
         }
     }
 })
 
--- require('telescope').load_extension('fzf')
 require('telescope').load_extension('zf-native')
-require('telescope').load_extension('ui-select')
-require('telescope').load_extension('dap')
 require('telescope').load_extension('frecency')
 
 -- Search for a term in the current directory

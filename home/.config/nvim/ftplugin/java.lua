@@ -47,10 +47,10 @@ for _, jar_pattern in ipairs(jar_patterns) do
     end
 end
 
-local capabilities = cmp_nvim_lsp.default_capabilities()
+local capabilities = lsp.default_capabilities()
 
 capabilities.resolveAdditionalTextEditsSupport = true
-capabilities.progressReportProvider = false
+-- capabilities.progressReportProvider = false
 
 local config = {
     on_attach = function(client, bufnr)
@@ -73,7 +73,7 @@ local config = {
 
         vim.keymap.set("x", "<Leader>lm", function() jdtls.extract_method(true) end, { buffer = true, desc = "Extract to method" })
     end,
-    capabilities = lsp.capabilities,
+    capabilities = capabilities,
     cmd = {
         home .. "/.java/jdtls/bin/jdtls",
         "--jvm-arg=-javaagent:" .. home .. "/.java/lombok.jar",

@@ -165,7 +165,6 @@ vim.api.nvim_create_autocmd({ "WinLeave", "FocusLost" }, {
     callback = function() vim.o.cursorline = false end
 })
 
-
 -- Add custom highlights in method that is executed every time a colorscheme is sourced.
 -- See https://gist.github.com/romainl/379904f91fa40533175dfaec4c833f2f for details
 local override_highlights = function()
@@ -226,7 +225,7 @@ if vim.fn.getenv("SSH_CONNECTION") ~= vim.NIL then
     vim.g.netrw_browsex_viewer = "ssh-open-firefox"
 end
 
--- Call override_highlights after colorschem is set.
+-- Call override_highlights after color schema is set.
 vim.api.nvim_create_autocmd('ColorScheme', {
     desc = 'Reload custom highlight overrides',
     group = vim.api.nvim_create_augroup('ColorSchemeOverrides', { clear = true }),
@@ -249,48 +248,148 @@ vim.api.nvim_create_autocmd({ 'BufLeave', 'FocusLost' }, {
     end
 })
 
-local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
-local packer_bootstrap = false
-
-if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-    packer_bootstrap = vim.fn.system('git clone --depth 1 https://github.com/wbthomason/packer.nvim ' .. install_path)
-
-    vim.cmd('packadd packer.nvim')
+if not vim.uv.fs_stat(lazypath) then
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
+    })
 end
 
-return require('packer').startup(function(use)
-    use 'nvim-lua/plenary.nvim'
+vim.opt.rtp:prepend(lazypath)
 
-    use {
-        'wbthomason/packer.nvim',
-        config = function()
-            vim.keymap.set('n', '<Leader>us', ':PackerSync<CR>', { desc = 'Run packer sync' })
-            vim.keymap.set('n', '<Leader>ui', ':PackerInstall<CR>', { desc = 'Run packer install' })
-            vim.keymap.set('n', '<Leader>uc', ':PackerCompile<CR>', { desc = 'Run packer compile' })
-        end
-    }
+local plugins = {
+    "nvim-lua/plenary.nvim",
+
+    "nvim-tree/nvim-web-devicons",
 
     -- Gruvbox Colorschema.
-    use {
+    {
         'morhetz/gruvbox',
-        config = function()
+        lazy = false,
+        priority = 1000,
+        init = function()
             vim.g.gruvbox_italic = 1
             vim.g.gruvbox_bold = 1
             vim.g.gruvbox_undercul = 1
             vim.g.gruvbox_underline = 1
             vim.g.gruvbox_invert_selection = 0
-
+        end,
+        config = function ()
             vim.cmd('colorscheme gruvbox')
         end
-    }
+    },
+
+    --  handy brackets mappings.
+    'tpope/vim-unimpaired',
+
+    -- Asynchronous build and test dispatcher 
+    'tpope/vim-dispatch',
+
+    -- Change word case, add abbreviations, and search/replace.
+    'tpope/vim-abolish',
+
+    -- Enable repeating supported plugin maps with '.'.
+    'tpope/vim-repeat',
+
+    -- Continuously updated session files
+    'tpope/vim-obsession',
+
+    -- Provides additional text objects
+    'wellle/targets.vim',
+
+    -- Make Vim persist editing state without fuss.
+    'zhimsel/vim-stay',
+
+    -- Place, toggle and display marks.
+    'kshenoy/vim-signature',
+
+    -- move outside vim to another tmux pane easily
+    'christoomey/vim-tmux-navigator',
+
+    -- Provides mappings to easily delete, change and add surroundings (parentheses, brackets, quotes, etc).
+    { 'kylechui/nvim-surround', opts = {} },
+
+    -- Comment stuff out.
+    { 'numToStr/Comment.nvim', opts = {} },
+
+    -- Neovim setup for init.lua and plugin development with full signature help, docs and completion for the nvim lua API. 
+    {
+        "folke/neodev.nvim",
+        ft = { 'lua' },
+        opts = {}
+    },
+
+    -- Path navigator designed to work with Vim's built-in mechanisms and complementary plugins.
+    {
+        'justinmk/vim-dirvish',
+        -- The file manipulation commands for vim-dirvish
+        dependencies = { 'roginfarrer/vim-dirvish-dovish' },
+    },
+
+    -- Standalone UI for nvim-lsp progress
+    {
+        'j-hui/fidget.nvim',
+        opts = {},
+        tag = 'legacy'
+    },
+
+    -- improve the default vim.ui interfaces
+    {
+        'stevearc/dressing.nvim',
+        opts = {},
+    },
+
+    -- Improve Folding
+    {
+        'kevinhwang91/nvim-ufo',
+        dependencies = 'kevinhwang91/promise-async',
+        init = function ()
+            vim.o.foldlevel = 99
+            vim.o.foldlevelstart = 99
+            vim.o.foldenable = true
+            vim.o.foldmethod = 'indent'
+
+            vim.keymap.set('n', '<CR>', 'zo', { remap = false, desc = 'Open fold' })
+            vim.keymap.set('n', '<S-CR>', 'zc', { remap = false, desc = 'Close fold' })
+        end,
+        opts = {}
+    },
+
+    -- Treesitter configurations and abstraction layer for Neovim.
+    {
+        'nvim-treesitter/nvim-treesitter',
+        dependencies = {
+            'nvim-treesitter/nvim-treesitter-textobjects',
+        },
+        build = ':TSUpdate',
+        config = function() require('plugins/treesitter') end
+    },
+
+    -- OSC 52 is a terminal sequence used to copy printed text into clipboard.
+    -- (copy from SSH session)
+    {
+        'ojroques/vim-oscyank',
+        init = function()
+            vim.g.oscyank_term = 'default'
+            vim.g.oscyank_silent = true
+        end,
+        config = function()
+            vim.keymap.set({ 'v', 'x' }, '<Leader>c', ':OSCYankVisual<CR>', { silent = true, desc = 'OSC yank' })
+            vim.keymap.set({ 'n' }, '<Leader>c', '<Plug>OSCYank', { silent = true, desc = 'OSC yank' })
+        end
+    },
 
     -- Lean and mean status/tabline.
-    use {
+    {
         'nvim-lualine/lualine.nvim',
         config = function()
             local Tab = require('lualine.components.tabs.tab')
-            local dap = require("dap")
 
             -- override Tab:label to add the tab's CWD in the tab name
             function Tab:label()
@@ -301,7 +400,7 @@ return require('packer').startup(function(use)
             end
 
             require('lualine').setup({
-                extensions = { 'fugitive', 'quickfix' },
+                extensions = { 'fugitive', 'quickfix', 'lazy' },
                 options = {
                     theme = 'gruvbox',
                 },
@@ -314,7 +413,7 @@ return require('packer').startup(function(use)
                         path = 1
                     } },
                     lualine_x = {},
-                    lualine_y = { dap.status },
+                    lualine_y = { 'dap#status', require('plugins/lualine-lsp-name') },
                     lualine_z = { 'filetype' }
                 },
                 inactive_sections = {
@@ -347,38 +446,18 @@ return require('packer').startup(function(use)
             -- is enabled, so we override back to 1.
             vim.cmd("set showtabline=1")
         end
-    }
-
-    --  handy brackets mappings.
-    use 'tpope/vim-unimpaired'
-
-    -- Provides mappings to easily delete, change and add surroundings (parentheses, brackets, quotes, etc).
-    use {
-        'kylechui/nvim-surround',
-        config = function ()
-            require("nvim-surround").setup({})
-        end
-    }
-
-    -- Asynchronous build and test dispatcher 
-    use 'tpope/vim-dispatch'
-
-    -- Change word case, add abbreviations, and search/replace.
-    use 'tpope/vim-abolish'
-
-    -- Enable repeating supported plugin maps with '.'.
-    use 'tpope/vim-repeat'
-
-    -- Continuously updated session files
-    use 'tpope/vim-obsession'
-
-    -- Provides additional text objects
-    use 'wellle/targets.vim'
+    },
 
     -- Easy notes
-    use {
+    {
         'vimwiki/vimwiki',
-        setup = function ()
+        ft = 'vimwiki',
+        keys = {
+            '<Leader>ww',
+            '<Leader>wt',
+            '<Leader>wi',
+        },
+        init = function ()
             vim.g.vimwiki_list = {
                 {
                     path = '~/notes',
@@ -425,59 +504,19 @@ return require('packer').startup(function(use)
             -- Add highlight groups to headers
             vim.g.vimwiki_hl_headers = 1
         end
-    }
+    },
 
-    -- Make Vim persist editing state without fuss.
-    use 'zhimsel/vim-stay'
-
-    -- Place, toggle and display marks.
-    use 'kshenoy/vim-signature'
-
-    -- Treesitter configurations and abstraction layer for Neovim.
-    use {
-        'nvim-treesitter/nvim-treesitter',
-        requires = {
-            'nvim-treesitter/nvim-treesitter-textobjects',
-            -- 'nvim-treesitter/nvim-treesitter-context'
-        },
-        run = ':TSUpdate',
-        config = function() require('plugins/treesitter') end
-    }
-
-    -- Comment stuff out.
-    use {
-        'numToStr/Comment.nvim',
-        config = function() require('Comment').setup() end
-    }
-
-    -- Path navigator designed to work with Vim's built-in mechanisms and complementary plugins.
-    use {
-        'justinmk/vim-dirvish',
-        -- The file manipulation commands for vim-dirvish
-        requires = { 'roginfarrer/vim-dirvish-dovish' }
-    }
-
-    -- move outside vim to another tmux pane easily
-    use 'christoomey/vim-tmux-navigator'
-
-    -- OSC 52 is a terminal sequence used to copy printed text into clipboard.
-    -- (copy from SSH session)
-    use {
-        'ojroques/vim-oscyank',
-        setup = function()
-            vim.g.oscyank_term = 'default'
-            vim.g.oscyank_silent = true
-        end,
-        config = function()
-            vim.keymap.set({ 'v', 'x' }, '<Leader>c', ':OSCYankVisual<CR>', { silent = true, desc = 'OSC yank' })
-            vim.keymap.set({ 'n' }, '<Leader>c', '<Plug>OSCYank', { silent = true, desc = 'OSC yank' })
-        end
-    }
 
     -- Focus reading/writing mode
-    use {
+    {
         'junegunn/goyo.vim',
-        requires = 'nvim-lualine/lualine.nvim',
+        dependencies = {
+            'nvim-lualine/lualine.nvim',
+
+            -- Highlight current block and dimns the others, useful with Goyo
+            'junegunn/limelight.vim'
+        },
+        cmd = 'Goyo',
         config = function ()
             vim.api.nvim_create_autocmd('User', {
                 desc = 'Hide Lualine when entering Goyo',
@@ -495,65 +534,65 @@ return require('packer').startup(function(use)
                 end
             })
         end
-    }
+    },
 
-    -- Highlight current block and dimns the others, useful with Goyo
-    use { 'junegunn/limelight.vim' }
+    -- Show git changes in the sign column.
+    {
+        'mhinz/vim-signify',
+        enabled = false,
+        init = function()
+            vim.g.signify_sign_delete = '-'
+        end,
+    },
 
-    -- Git
-    use {
-        -- Show git changes in the sign column.
-        {
-            'mhinz/vim-signify',
-            config = function()
-                vim.g.signify_sign_delete = '-'
-            end
-        },
-        {
-            'tpope/vim-fugitive',
-            config = function()
-                vim.keymap.set('n', '<Leader>g', ':Git ', { desc = 'Git' })
-                vim.keymap.set('n', '<Leader>gs', ':Git<CR>', { silent = true, desc = 'Git status' })
-                vim.keymap.set('n', '<Leader>gp', ':Git push<CR>', { silent = true, desc = 'Git push' })
-                vim.keymap.set({ 'n', 'v' }, '<Leader>go', ':GBrowse<CR>', { silent = true, desc = 'Git browse' })
-                vim.keymap.set({ 'n', 'v' }, '<Leader>gc', ':GBrowse!<CR>', { silent = true, desc = 'Git browse' })
-                vim.keymap.set('n', '<Leader>gb', ':Git blame<CR>', { silent = true, desc = 'Git blame' })
-            end
-        },
-        {
+    {
+        'tpope/vim-fugitive',
+        dependencies = {
             -- Git commit browser.
-            'junegunn/gv.vim',
-            after = 'vim-fugitive',
-            config = function()
-                vim.keymap.set('n', '<Leader>gl', ':GV<CR>', { silent = true, desc = 'Git log tree' })
-                vim.keymap.set('n', '<Leader>ga', ':GV --all<CR>', { silent = true, desc = 'Git log tree --all' })
-            end
-        },
-        {
+            {
+                'junegunn/gv.vim',
+                config = function()
+                    vim.keymap.set('n', '<Leader>gl', ':GV<CR>', { silent = true, desc = 'Git log tree' })
+                    vim.keymap.set('n', '<Leader>ga', ':GV --all<CR>', { silent = true, desc = 'Git log tree --all' })
+                end
+            },
+
             -- Enables :GBrowse from fugitive.vim to open GitHub URLs.
-            "tpope/vim-rhubarb",
-            after = "vim-fugitive"
+            {
+                "tpope/vim-rhubarb",
+            },
         },
-        {
-            -- shows git author as virtual text on each line of code
-            "f-person/git-blame.nvim",
-            setup = function()
-                vim.g.gitblame_date_format = "%r"
-                vim.g.gitblame_message_template = "  <date> - <author>"
-                vim.g.gitblame_ignored_filetypes = { "gitcommit", "fugitive", "help", "packer" }
-                vim.g.gitblame_highlight_group = "GitBlame"
-            end
-        },
-        {
-            "sindrets/diffview.nvim",
-            requires = "nvim-lua/plenary.nvim"
+        config = function()
+            vim.keymap.set('n', '<Leader>g', ':Git ', { desc = 'Git' })
+            vim.keymap.set('n', '<Leader>gs', ':Git<CR>', { silent = true, desc = 'Git status' })
+            vim.keymap.set('n', '<Leader>gp', ':Git push<CR>', { silent = true, desc = 'Git push' })
+            vim.keymap.set({ 'n', 'v' }, '<Leader>go', ':GBrowse<CR>', { silent = true, desc = 'Git browse' })
+            vim.keymap.set({ 'n', 'v' }, '<Leader>gc', ':GBrowse!<CR>', { silent = true, desc = 'Git browse' })
+            vim.keymap.set('n', '<Leader>gb', ':Git blame<CR>', { silent = true, desc = 'Git blame' })
+        end
+    },
+
+    -- shows git author as virtual text on each line of code
+    {
+        "f-person/git-blame.nvim",
+        init = function()
+            vim.g.gitblame_date_format = "%r"
+            vim.g.gitblame_message_template = "  <date> - <author>"
+            vim.g.gitblame_ignored_filetypes = { "gitcommit", "fugitive", "help", "packer" }
+            vim.g.gitblame_highlight_group = "GitBlame"
+        end
+    },
+
+    {
+        "sindrets/diffview.nvim",
+        dependencies = {
         }
-    }
+    },
 
     -- Keybinding catalog
-    use {
+    {
         'folke/which-key.nvim',
-        after = 'nvim-lspconfig',
+        event = "VeryLazy",
         config = function()
             local wk = require('which-key')
 
@@ -561,13 +600,10 @@ return require('packer').startup(function(use)
                 window = {
                     border = 'single',
                     margin = { 1, 1, 1, 1 },
-                    spelling = {
-                        enabled = true
-                    }
                 },
                 layout = {
                     width = { min = 20, max = 40 }
-                }
+                },
             })
 
             wk.register({
@@ -583,21 +619,13 @@ return require('packer').startup(function(use)
                 },
             }, { prefix = '<Leader>' })
         end
-    }
-
-    -- Wrap and unwrap function arguments, lists, and dictionaires.
-    use {
-        'FooSoft/vim-argwrap',
-        config = function()
-            vim.keymap.set('n', '<Leader>ua', ':ArgWrap<CR>', { silent = true, desc = 'Arg Wrap' })
-        end
-    }
+    },
 
     -- Support for expanding abbreviations.
-    use {
+    {
         'mattn/emmet-vim',
         ft = { 'html', 'vue', 'jsx', 'riot' },
-        setup = function()
+        init = function()
             vim.g.user_emmet_leader_key = '<C-e>'
             vim.g.user_emmet_install_global = false
         end,
@@ -609,112 +637,146 @@ return require('packer').startup(function(use)
                 callback = 'EmmetInstall'
             })
         end
-    }
+    },
 
-    use {
+    {
         'antoinemadec/FixCursorHold.nvim',
-        config = function()
+        init = function()
             vim.g.cursorhold_updatetime = 100
         end
-    }
+    },
 
-    use {
+    {
         'norcalli/nvim-colorizer.lua',
-        config = function()
-            require('colorizer').setup()
-        end
-    }
+        main = 'colorizer',
+        opts = {}
+    },
+
 
     -- general-purpose motion plugin
-    use {
+    {
         'ggandor/leap.nvim',
         config = function()
             vim.keymap.set('n', 's', '<Plug>(leap-forward-to)', { desc = 'Leap forward-to' })
             vim.keymap.set('n', 'S', '<Plug>(leap-backward-to)', { desc = 'Leap backward-to' })
         end
-    }
+    },
+
+    -- splitting/joining blocks of code 
+    {
+        'Wansmer/treesj',
+        keys = { '<Leader>ua' },
+        dependencies = { 'nvim-treesitter/nvim-treesitter' },
+        config = function()
+            require('treesj').setup({
+                use_default_keymaps = false
+            })
+
+            vim.keymap.set(
+                'n',
+                '<Leader>ua',
+                require('treesj').toggle,
+                { desc = 'Toggle node under cursor (split if one-line and join if multiline)' }
+            )
+        end,
+    },
 
     -- Fuzzy finder over lists.
-    use {
+    {
         'nvim-telescope/telescope.nvim',
-        requires = {
-            -- { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
-            { 'natecraddock/telescope-zf-native.nvim' },
-            { 'nvim-telescope/telescope-ui-select.nvim' },
-            { 'nvim-telescope/telescope-dap.nvim' },
-            { 'nvim-telescope/telescope-frecency.nvim',
-                requires = { 'kkharji/sqlite.lua' }
-            }
+        keys = {
+            '<Leader>f',
+            '<Leader>sr',
+            '<Leader>sh',
+            '<Leader>sw',
+            '<Leader>p',
+            '<Leader>o'
+        },
+        dependencies = {
+            'natecraddock/telescope-zf-native.nvim',
+            -- 'nvim-telescope/telescope-ui-select.nvim',
+            'nvim-telescope/telescope-dap.nvim',
+            'nvim-telescope/telescope-frecency.nvim',
+            'kkharji/sqlite.lua',
         },
         config = function() require('plugins/telescope') end
-    }
+    },
 
     -- java lsp
-    use { 'mfussenegger/nvim-jdtls' }
+    'mfussenegger/nvim-jdtls',
 
-    use {
+    {
         'neovim/nvim-lspconfig',
         config = function()
             require('plugins/lsp')
-            require('plugins/diagnostics')
+
+            vim.diagnostic.config({
+                float = {
+                    source = true
+                },
+            })
+
+            -- vim.keymap.set('n', '<CR>', vim.diagnostic.open_float, { desc = "Diagnostic open float" })
+            vim.keymap.set('n', '<Leader>ll', vim.diagnostic.setloclist, { desc = "Load diagnostics to loc list" })
+            vim.keymap.set('n', '<Leader>lq', vim.diagnostic.setqflist, { desc = "Load all diagnostics to quickfix list" })
+            vim.keymap.set('n', '[d', function() vim.diagnostic.goto_prev({ float = false }) end, { desc = "Go to previous diagnostic" })
+            vim.keymap.set('n', ']d', function() vim.diagnostic.goto_next({ float = false }) end, { desc = "Go to next diagnostic" })
         end
-    }
+    },
 
     -- copilot
-    use {
-        {
-            "zbirenbaum/copilot.lua",
-            cmd = 'Copilot',
-            config = function()
-                require("copilot").setup({
-                    panel = {
-                        enabled = false
-                    },
-                    suggestion = {
-                        enabled = false
-                    }
-                })
-            end,
-        },
-        {
-            "zbirenbaum/copilot-cmp",
-            after = { "copilot.lua" },
-            config = function()
-                require("copilot_cmp").setup()
-            end
+    {
+        "zbirenbaum/copilot.lua",
+        cmd = 'Copilot',
+        dependencies = { "zbirenbaum/copilot-cmp" },
+        opts = {
+            panel = {
+                enabled = false
+            },
+            suggestion = {
+                enabled = false
+            }
         }
-    }
+    },
 
-
-    use {
+    {
         "jose-elias-alvarez/null-ls.nvim",
-        config = function()
-            require("plugins/null-ls")
-        end
-    }
+        config = function ()
+            local null_ls = require("null-ls")
 
-    use {
-        "windwp/nvim-autopairs",
-        config = function()
-            require("nvim-autopairs").setup({
-                check_ts = true,
-                disable_filetype = { "TelescopePrompt", "vim" }
+            null_ls.setup({
+                sources = {
+                    -- null_ls.builtins.formatting.prettier,
+                    -- null_ls.builtins.diagnostics.eslint,
+                    -- null_ls.builtins.formatting.rustfmt
+                }
             })
         end
-    }
+    },
 
-    use {
+    {
+        "windwp/nvim-autopairs",
+        event = "InsertEnter",
+        opts = {
+            check_ts = true,
+            disable_filetype = { "TelescopePrompt", "vim" }
+        }
+    },
+
+    {
         "L3MON4D3/LuaSnip",
-        requires = { "rafamadriz/friendly-snippets" },
+        dependencies = { "rafamadriz/friendly-snippets" },
+        lazy = true,
         config = function()
             require("luasnip.loaders.from_vscode").lazy_load()
         end
-    }
+    },
 
     -- Completion
-    use {
+    {
         "hrsh7th/nvim-cmp",
-        requires = {
+        event = "InsertEnter",
+        dependencies = {
             "hrsh7th/cmp-nvim-lsp",
             "hrsh7th/cmp-nvim-lsp-signature-help",
             "hrsh7th/cmp-buffer",
@@ -725,45 +787,75 @@ return require('packer').startup(function(use)
             "rcarriga/cmp-dap"
         },
         config = function() require("plugins/cmp") end
-    }
+    },
 
-    use {
+    {
         "lukas-reineke/indent-blankline.nvim",
-        config = function()
-            require("indent_blankline").setup({
-                char = "▏",
-            })
-        end
-    }
+        opts = {
+            char = "▏",
+        }
+    },
 
     -- setup debugger
-    use {
-        {
-            "mfussenegger/nvim-dap",
-            config = function()
-                require("plugins/dap")
-            end
+    {
+        "mfussenegger/nvim-dap",
+        lazy = true,
+        dependencies = {
+            {
+                "rcarriga/nvim-dap-ui",
+                main = "dapui",
+                opts = {}
+            },
+            {
+                "theHamsta/nvim-dap-virtual-text",
+                opts = {}
+            },
         },
-        {
-            "rcarriga/nvim-dap-ui",
-            requires = "mfussenegger/nvim-dap",
-            config = function()
-                require("dapui").setup()
-            end
-        },
-        {
-            "theHamsta/nvim-dap-virtual-text",
-            requires = "mfussenegger/nvim-dap",
-            config = function()
-                require("nvim-dap-virtual-text").setup()
-            end
-        }
-    }
+        config = function()
+            local dap = require("dap")
+            local telescope = require("telescope")
+            local dapWidgets = require("dap.ui.widgets")
+
+            require('telescope').load_extension('dap')
+
+            vim.keymap.set("n", "<leader>dc", dap.continue, { desc = "Debug: Continue" })
+            vim.keymap.set("n", "<leader>dd", dap.step_over, { desc = "Debug: Step over" })
+            vim.keymap.set("n", "<leader>di", dap.step_into, { desc = "Debug: Step into" })
+            vim.keymap.set("n", "<leader>do", dap.step_out, { desc = "Debug: Step out" })
+            vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "Debug: Toggle breakpoint" })
+            vim.keymap.set("n", "<leader>dB", function()
+                dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
+            end, { desc = "Debug: Set breakpoint with condition" })
+            vim.keymap.set("n", "<leader>dp", function()
+                dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
+            end, { desc = "Debug: Set breakpoint with log point message" })
+            vim.keymap.set("n", "<leader>dr", function()
+                dap.repl.toggle({ height = 12 })
+            end, { desc = "Debug: Toggle Repl" })
+            vim.keymap.set("n", "<leader>dl", dap.run_last, { desc = "Debug: Run last" })
+            vim.keymap.set("n", "<leader>dL", telescope.extensions.dap.list_breakpoints, { desc = "Debug: List breakpoints" })
+            vim.keymap.set("n", "<leader>de", function()
+                dap.set_exception_breakpoints("default")
+            end, { desc = "Debug: Set exception breakpoint default" })
+            vim.keymap.set("n", "<leader>dE", function()
+                dap.set_exception_breakpoints({})
+            end, { desc = "Debug: Set exception breakpoints" })
+            vim.keymap.set("n", "<leader>dC", dap.run_to_cursor, { desc = "Debug: Run to cursor" })
+            vim.keymap.set("n", "<leader>df", telescope.extensions.dap.frames, { desc = "Debug: Open frames" })
+            vim.keymap.set("n", "<leader>ds", telescope.extensions.dap.variables, { desc = "Debug: Open variables" })
+            vim.keymap.set({ "n", "v" }, "<leader>dK", dapWidgets.hover, { desc = "Debug: Hover" })
+            vim.keymap.set("n", "<leader>du", function()
+                local widgets = dapWidgets
+                widgets.sidebar(widgets.scopes).open()
+                widgets.sidebar(widgets.frames).open()
+            end, { desc = "Debug: Open widgets" })
+        end
+    },
 
     -- open/close Quickfix and Localfix
-    use {
+    {
         "milkypostman/vim-togglelist",
-        setup = function()
+        init = function()
             vim.g.toggle_list_no_mappings = true
         end,
         config = function()
@@ -773,17 +865,16 @@ return require('packer').startup(function(use)
                 { desc = "Toggle loc list" })
         end
     }
+}
 
-    -- require plugins that start with "extra" in plugins/ folder
-    local extra_file_glob = vim.fn.stdpath("config") .. "/lua/plugins/extra*"
-    local extra_files = vim.fn.glob(extra_file_glob, true, true)
+-- require plugins that start with "extra" in plugins/ folder
+local extra_file_glob = vim.fn.stdpath("config") .. "/lua/plugins/extra*"
+local extra_files = vim.fn.glob(extra_file_glob, true, true)
 
-    for _, file in ipairs(extra_files) do
-        file = file:match(".+/lua/(plugins/.+)%..+")
-        require(file).setup(use)
-    end
+for _, file in ipairs(extra_files) do
+    file = file:match(".+/lua/(plugins/.+)%..+")
 
-    if packer_bootstrap then
-        require("packer").sync()
-    end
-end)
+    table.insert(plugins, require(file))
+end
+
+require("lazy").setup(plugins)
