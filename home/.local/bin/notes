@@ -14,7 +14,7 @@ if ! tmux has-session -t $TMUX_SESSION_NAME 2>/dev/null; then
     fi
 
     if [ ! -f "$NVIM_SESSIONS_FOLDER/notes.vim" ]; then
-        nvim --headless +":e $NOTES_FOLDER/refile.org" +":vert help orgmode" +":Obsession $NVIM_SESSIONS_FOLDER/notes.vim" +":qa"
+        nvim --headless +":VimwikiIndex" +":Obsession $NVIM_SESSIONS_FOLDER/notes.vim" +":qa"
     fi
 
     tmux send-keys -t $TMUX_SESSION_NAME "nvim --listen $XDG_DATA_HOME/nvim/nvim-$(date +%s).pipe -S $NVIM_SESSIONS_FOLDER/notes.vim" C-m

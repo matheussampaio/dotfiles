@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 
-from os import path
-import re
-import shutil
 import subprocess
+import os
 import sys
 
 
-def convert(
+def main(
     force,
     syntax,
     extension,
@@ -18,57 +16,35 @@ def convert(
     template_default,
     template_ext,
     root_path,
-    custom_args,
+    *custom_args,
 ):
-    if shutil.which("pandoc") is None:
-        print("Error: pandoc not found", file=sys.stderr)
-        sys.exit(1)
+    input_file_name = os.path.splitext(os.path.basename(input_file))[0]
+    output_file = os.path.join(output_dir, input_file_name) + os.path.extsep + "html"
 
-    if syntax != "markdown":
-        print("Error: Unsupported syntax", file=sys.stderr)
-        sys.exit(1)
-
-    input_file_name = path.splitext(path.basename(input_file))[0]
-    output_file = path.join(output_dir, input_file_name) + path.extsep + "html"
-
-    with open(input_file, "r", encoding="utf8") as f:
-        lines = f.read()
-
-    lines = re.sub(r"\[([^]]+)\]\((.+).md\)", repl, lines)
-
-    # Look for title in metadata
-    match = re.search(
-        "^(?:---|\.\.\.)$\n.*title: ([^\n]+)$\n.*^(?:---|\.\.\.)$",
-        lines,
-        re.MULTILINE | re.DOTALL,
-    )
-
-    title = match.group(1) if match else input_file_name.title()
+    root_file = root_path + "index.html"
 
     command = [
         "pandoc",
-        "--from", "gfm",
+        "--lua-filter", os.path.expanduser("~/.local/bin/pandoc_filters.lua"),
+        "--from", "gfm-task_lists" if syntax == "markdown" else syntax,
         "--to", "html5",
         "--highlight-style=pygments",
-        "--metadata", "pagetitle={}".format(title),
+        "--metadata", "favicon='favicon.ico'",
+        "--quiet",
         "--output", output_file,
-        # "--section-divs",
+        "--metadata", "rootDir={}".format(root_file),
         "--standalone",
-        "--template", "/Users/msampaio/.cache/template.html5",
-        "-",
-    ]
+        "--template", os.path.expanduser("~/.cache/template.html5"),
+    ] + list(custom_args)
+
+    command.append(input_file)
 
     # Prune empty elements from command list
     command = list(filter(None, command))
 
     # Run command
-    subprocess.run(command, check=True, encoding="utf8", input=lines)
-
-
-def repl(match):
-    link = path.splitext(match.group(2))[0] + ".html"
-    return "[{}]({})".format(match.group(1), link)
+    subprocess.run(command, check=True, encoding="utf8")
 
 
 if __name__ == "__main__":
-    convert(*sys.argv[1:])
+    main(*sys.argv[1:])

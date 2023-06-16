@@ -1,14 +1,4 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <title></title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-    </head>
-    <body>
-    </body>
-</html>
-<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="$lang$" xml:lang="$lang$"$if(dir)$ dir="$dir$"$endif$>
 <head>
   <meta charset="utf-8" />
@@ -27,34 +17,48 @@ $if(description-meta)$
   <meta name="description" content="$description-meta$" />
 $endif$
   <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
+  <link type="text/css" rel="stylesheet" href="https://matheus.sampaio.us/assets/css/main.css">
   <style>
-    $styles.html()$
-  </style>
-  <!-- <link type="text/css" rel="stylesheet" href="https://matheus.sampaio.us/assets/css/main.css"> -->
-  <style>
-    html, body {
-      background: #f2f2f2;
+    ul {
+        margin-bottom: 0;
     }
-    body {
-      margin: 5% auto;
-      padding: 0 30px;
-      max-width: 120ch;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      font-size: 16px;
-      line-height: 1.8;
-      text-shadow: 0 1px 0 #ffffff;
+
+    ul.task-list li input[type="checkbox"] {
+        margin-left: -1em;
     }
-    h1, h2, h3, h4, h5, h6 {
-      margin: 0;
+
+    table th, table td {
+        padding: 0.75em;
     }
-    a {
-      color: #007399;
+
+    .post-title {
+        margin: 0;
     }
-    a:visited {
-      color: #940099;
+
+    table th {
+        border: 1px solid #999;
     }
-    a:hover {
-      text-decoration: none;
+
+    a > sup {
+        vertical-align: super;
+        font-size: small;
+    }
+
+    ul + :not(ul) {
+        margin-top: 0.75em;
+    }
+
+    table td {
+        border: 1px solid #ccc;
+    }
+
+    a[target="_blank"] {
+        color: #29a41f;
+    }
+
+    a[target="_blank"]::after {
+        content: "🔗";
+        margin-left: 5px;
     }
   </style>
 $for(css)$
@@ -69,34 +73,12 @@ $if(mathjax)$
 $endif$
   $math$
 $endif$
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
 </head>
 <body>
+<main class="wrapper">
 $for(include-before)$
 $include-before$
 $endfor$
-$if(title)$
-<header id="title-block-header">
-<h1 class="title">$title$</h1>
-$if(subtitle)$
-<p class="subtitle">$subtitle$</p>
-$endif$
-$for(author)$
-<p class="author">$author$</p>
-$endfor$
-$if(date)$
-<p class="date">$date$</p>
-$endif$
-$if(abstract)$
-<div class="abstract">
-<div class="abstract-title">$abstract-title$</div>
-$abstract$
-</div>
-$endif$
-</header>
-$endif$
 $if(toc)$
 <nav id="$idprefix$TOC" role="doc-toc">
 $if(toc-title)$
@@ -105,10 +87,64 @@ $endif$
 $table-of-contents$
 </nav>
 $endif$
-$body$
-$for(include-after)$
-$include-after$
-$endfor$
+<header class="site-header">
+<nav class="nav">
+  <div class="container">
+    <h1 class="logo"><a href="$rootDir$"><span>Notes</span></a></h1>
+    <ul class="navbar">
+      <!-- <li><a href="{{ '/about' | prepend: site.baseurl | prepend: site.url }}">About me</a></li> -->
+    </ul>
+  </div>
+</nav>
+</header>
+<article class="post container">
+    <!-- $if(title)$ -->
+    <!-- <header id="title-block-header" class="post-header"> -->
+    <!--     <h1 class="title">$title$</h1> -->
+    <!--     $if(subtitle)$ -->
+    <!--     <p class="subtitle">$subtitle$</p> -->
+    <!--     $endif$ -->
+    <!--     $for(author)$ -->
+    <!--     <p class="author">$author$</p> -->
+    <!--     $endfor$ -->
+    <!--     $if(date)$ -->
+    <!--     <p class="date">$date$</p> -->
+    <!--     $endif$ -->
+    <!--     $if(abstract)$ -->
+    <!--     <div class="abstract"> -->
+    <!--     <div class="abstract-title">$abstract-title$</div> -->
+    <!--     $abstract$ -->
+    <!--     </div> -->
+    <!--     $endif$ -->
+    <!-- </header> -->
+    <!-- $endif$ -->
+
+    <header class="post-header">
+        <p class="post-meta">
+            $if(date)$
+            <time datetime="$date$">$date$</time>
+            $endif$
+        </p>
+        $if(title)$
+        <h1 class="post-title" itemprop="name headline">$title$</h1>
+        $endif$
+        <p class="post-meta">
+            $if(subtitle)$
+            $subtitle$
+            $endif$
+        </p>
+    </header>
+
+    <div class="post-content">
+        $body$
+    </div>
+</article>
+<footer class="site-footer">
+  <div class="container">
+    <small class="block">$author-meta$</small>
+  </div>
+</footer>
+</main>
 </body>
 </html>
 

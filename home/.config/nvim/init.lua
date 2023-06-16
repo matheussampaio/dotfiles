@@ -243,6 +243,7 @@ vim.api.nvim_create_autocmd({ 'BufLeave', 'FocusLost' }, {
 
             if vim.bo.filetype == 'vimwiki' then
                 vim.cmd(':Vimwiki2HTML')
+                vim.cmd(':VimwikiRebuildTags')
             end
         end
     end
@@ -379,29 +380,36 @@ return require('packer').startup(function(use)
         'vimwiki/vimwiki',
         setup = function ()
             vim.g.vimwiki_list = {
-                -- {
-                --     path = '~/notes',
-                --     name = 'Notes',
-                --     syntax = 'markdown',
-                --     custom_wiki2html = '~/.local/bin/vimwiki_md2html.py',
-                --     ext = '.md',
-                --     auto_export = 1,
-                --     auto_toc = 1,
-                --     links_space_char = '_'
-                -- },
                 {
-                    path = '~/work-notes',
+                    path = '~/notes',
                     name = 'Work Notes',
                     syntax = 'markdown',
-                    custom_wiki2html = '~/.local/bin/m2h_pandoc.py',
                     ext = '.md',
+                    custom_wiki2html = '~/.local/bin/m2h_pandoc.py',
+                    base_url = '~/notes_html/',
+                    custom_wiki2html_args = table.concat {
+                        '--metadata title-prefix="Notes"',
+                    },
+                    -- auto_diary_index = 1,
+                    auto_generate_links = 1,
+                    -- auto_toc = 1,
                     auto_export = 1,
-                    links_space_char = '_'
+                    -- auto_tags = 1,
+                    -- auto_generate_tags = 1,
+                    links_space_char = '_',
+                    diary_frequency = 'monthly',
+                    diary_header = 'Bullet Journal',
+                    diary_rel_path = 'journal',
+                    diary_caption_level = -1,
+                    diary_index = 'index',
                 }
             }
 
             -- Auto creates a header when creating wiki pages.
-            vim.g.vimwiki_auto_header = 1
+            -- vim.g.vimwiki_auto_header = 1
+
+            -- Auto-number headers in HTML
+            -- vim.g.vimwiki_html_header_numbering = 1
 
             -- open index.wiki when opening a folder
             vim.g.vimwiki_dir_link = 'index'
@@ -424,9 +432,6 @@ return require('packer').startup(function(use)
 
     -- Place, toggle and display marks.
     use 'kshenoy/vim-signature'
-
-    -- Add support to .editorconfig files.
-    use 'gpanders/editorconfig.nvim'
 
     -- Treesitter configurations and abstraction layer for Neovim.
     use {
