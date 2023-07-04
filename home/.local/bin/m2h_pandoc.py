@@ -19,17 +19,16 @@ def main(
     *custom_args,
 ):
     input_file_name = os.path.splitext(os.path.basename(input_file))[0]
-    output_file = os.path.join(output_dir, input_file_name) + os.path.extsep + "html"
+    output_file = os.path.join(output_dir.replace("_html", ""), input_file_name) + os.path.extsep + "html"
 
     root_file = root_path + "index.html"
 
     command = [
         "pandoc",
         "--lua-filter", os.path.expanduser("~/.local/bin/pandoc_filters.lua"),
-        "--from", "gfm-task_lists" if syntax == "markdown" else syntax,
+        "--from", "gfm-task_lists+hard_line_breaks" if syntax == "markdown" else syntax,
         "--to", "html5",
         "--highlight-style=pygments",
-        "--metadata", "favicon='favicon.ico'",
         "--quiet",
         "--output", output_file,
         "--metadata", "rootDir={}".format(root_file),

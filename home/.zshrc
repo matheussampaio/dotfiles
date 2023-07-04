@@ -50,6 +50,9 @@ source $HOME/.zsh/ohmyzsh/lib/history.zsh
 # improves cd commands
 source $HOME/.zsh/ohmyzsh/lib/directories.zsh
 
+# system clipboard integration
+source $HOME/.zsh/ohmyzsh/lib/clipboard.zsh
+
 # provides many aliases and a few useful functions
 source $HOME/.zsh/ohmyzsh/plugins/aliases/aliases.plugin.zsh
 
@@ -105,6 +108,14 @@ export MANPAGER='nvim +Man!'
 
 function zvm_config() {
   ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
+}
+
+# https://github.com/jeffreytse/zsh-vi-mode/issues/19
+# saves to clipboard on yank
+function zvm_vi_yank() {
+    zvm_yank
+    printf %s "${CUTBUFFER}" | clipcopy
+    zvm_exit_visual_mode
 }
 
 function my_zvm_init() {

@@ -2,7 +2,6 @@ local jdtls = require("jdtls")
 local jdtls_setup = require("jdtls.setup")
 local lsp = require("plugins/lsp")
 local dap = require("dap")
-local cmp_nvim_lsp = require('cmp_nvim_lsp')
 
 local root_dir = jdtls_setup.find_root({ "packageInfo" }, "Config")
 local home = os.getenv("HOME")
@@ -47,10 +46,8 @@ for _, jar_pattern in ipairs(jar_patterns) do
     end
 end
 
-local capabilities = lsp.default_capabilities()
-
-capabilities.resolveAdditionalTextEditsSupport = true
--- capabilities.progressReportProvider = false
+lsp.capabilities.resolveAdditionalTextEditsSupport = true
+-- lsp.capabilities.progressReportProvider = false
 
 local config = {
     on_attach = function(client, bufnr)
@@ -73,7 +70,7 @@ local config = {
 
         vim.keymap.set("x", "<Leader>lm", function() jdtls.extract_method(true) end, { buffer = true, desc = "Extract to method" })
     end,
-    capabilities = capabilities,
+    capabilities = lsp.capabilities,
     cmd = {
         home .. "/.java/jdtls/bin/jdtls",
         "--jvm-arg=-javaagent:" .. home .. "/.java/lombok.jar",
@@ -85,7 +82,7 @@ local config = {
     init_options = {
         bundles = bundles,
         workspaceFolders = ws_folders_jdtls,
-        extendedClientCapabilities = capabilities,
+        extendedClientCapabilities = lsp.capabilities,
         settings = {
             java = {
                 signatureHelp = { enabled = true },

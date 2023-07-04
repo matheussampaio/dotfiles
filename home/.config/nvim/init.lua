@@ -2,6 +2,11 @@
 vim.o.number = true
 vim.o.relativenumber = true
 
+vim.o.foldlevel = 9999
+vim.o.foldlevelstart = 9999
+vim.o.foldenable = true
+vim.o.foldmethod = 'indent'
+
 -- only save cursor and folds in view sessions
 vim.opt.viewoptions = { "cursor", "folds" }
 
@@ -73,14 +78,14 @@ vim.o.list = true
 -- Display tab characters
 vim.opt.listchars = "tab:▶ ,trail:·"
 
--- Set default to unfold
-vim.o.foldlevel = 1
-
 -- Display signs in the number column
-vim.o.signcolumn = "auto"
+vim.o.signcolumn = "yes"
 
 -- pop up menu height
 vim.o.pumheight = 10
+
+-- disable mouse support
+vim.o.mouse = 'nv'
 
 -- Highlight cursor line
 vim.o.cursorline = true
@@ -114,6 +119,14 @@ vim.g.maplocalleader = " "
 -- Normally space move the cursor to the right in normal mode. Since LEADER is
 -- SPACE, disabling that behavior works better for me.
 vim.keymap.set({ "n", "v" }, "<Space>", "<NOP>", { silent = true })
+
+-- vim.keymap.set("n", "<Leader>ui", function ()
+--     vim.cmd([[function! SynGroup()
+--     let l:s = synID(line('.'), col('.'), 1)
+--         echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
+--     endfun
+--     ]])
+-- end, { desc = "Show highlight under cursor"})
 
 -- Quick ways to get to MYVIMRC
 vim.keymap.set("n", "<Leader>uv", ":edit $MYVIMRC<CR>", { silent = true, desc = "Edit $MYVIMRC" })
@@ -165,6 +178,17 @@ vim.api.nvim_create_autocmd({ "WinLeave", "FocusLost" }, {
     callback = function() vim.o.cursorline = false end
 })
 
+vim.keymap.set('n', '<Leader>ui', function()
+    vim.cmd([[
+    for i1 in synstack(line("."), col("."))
+        let i2 = synIDtrans(i1)
+        let n1 = synIDattr(i1, "name")
+        let n2 = synIDattr(i2, "name")
+        echo n1 "->" n2
+    endfor
+    ]])
+end, { desc = 'Show highlight groups under cursor' })
+
 -- Add custom highlights in method that is executed every time a colorscheme is sourced.
 -- See https://gist.github.com/romainl/379904f91fa40533175dfaec4c833f2f for details
 local override_highlights = function()
@@ -214,6 +238,13 @@ local override_highlights = function()
     hi! default link DiagnosticInfo GruvboxBlue
     hi! default link DiagnosticHint GruvboxAqua
 
+    hi! default link JournalTodo GruvboxFg0
+    hi! default link JournalDone GruvboxFg4
+    hi! default link JournalEvent GruvboxYellow
+    hi! default link JournalNote GruvboxBlue
+    hi! default link JournalMoved GruvboxFg4
+    hi! default link JournalCancelled htmlStrike
+
     hi! default LspReferenceText gui=bold,underline cterm=bold,underline
     hi! default LspReferenceRead gui=bold,underline cterm=bold,underline
     hi! default LspReferenceWrite gui=bold,underline cterm=bold,underline
@@ -236,7 +267,7 @@ vim.api.nvim_create_autocmd('ColorScheme', {
 -- Auto save files
 vim.api.nvim_create_autocmd({ 'BufLeave', 'FocusLost' }, {
     desc = 'Auto save files',
-    callback = function ()
+    callback = function()
         if vim.bo.modified and not vim.bo.readonly and vim.fn.expand('%') ~= '' and vim.bo.buftype == '' then
             vim.api.nvim_command('silent update')
 
@@ -250,7 +281,7 @@ vim.api.nvim_create_autocmd({ 'BufLeave', 'FocusLost' }, {
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
-if not vim.uv.fs_stat(lazypath) then
+if not vim.loop.fs_stat(lazypath) then
     vim.fn.system({
         "git",
         "clone",
@@ -280,7 +311,7 @@ local plugins = {
             vim.g.gruvbox_underline = 1
             vim.g.gruvbox_invert_selection = 0
         end,
-        config = function ()
+        config = function()
             vim.cmd('colorscheme gruvbox')
         end
     },
@@ -288,8 +319,11 @@ local plugins = {
     --  handy brackets mappings.
     'tpope/vim-unimpaired',
 
-    -- Asynchronous build and test dispatcher 
-    'tpope/vim-dispatch',
+    -- Asynchronous build and test dispatcher
+    {
+        'tpope/vim-dispatch',
+        enabled = false
+    },
 
     -- Change word case, add abbreviations, and search/replace.
     'tpope/vim-abolish',
@@ -318,14 +352,14 @@ local plugins = {
     -- Comment stuff out.
     { 'numToStr/Comment.nvim', opts = {} },
 
-    -- Neovim setup for init.lua and plugin development with full signature help, docs and completion for the nvim lua API. 
+    -- Neovim setup for init.lua and plugin development with full signature help, docs and completion for the nvim lua API.
     {
         "folke/neodev.nvim",
         ft = { 'lua' },
         opts = {}
     },
 
-    -- Path navigator designed to work with Vim's built-in mechanisms and complementary plugins.
+    -- simple directory tree viewer
     {
         'justinmk/vim-dirvish',
         -- The file manipulation commands for vim-dirvish
@@ -335,8 +369,12 @@ local plugins = {
     -- Standalone UI for nvim-lsp progress
     {
         'j-hui/fidget.nvim',
-        opts = {},
-        tag = 'legacy'
+        tag = 'legacy',
+        opts = {
+            fmt = {
+                stack_upwards = false
+            }
+        },
     },
 
     -- improve the default vim.ui interfaces
@@ -349,12 +387,7 @@ local plugins = {
     {
         'kevinhwang91/nvim-ufo',
         dependencies = 'kevinhwang91/promise-async',
-        init = function ()
-            vim.o.foldlevel = 99
-            vim.o.foldlevelstart = 99
-            vim.o.foldenable = true
-            vim.o.foldmethod = 'indent'
-
+        init = function()
             vim.keymap.set('n', '<CR>', 'zo', { remap = false, desc = 'Open fold' })
             vim.keymap.set('n', '<S-CR>', 'zc', { remap = false, desc = 'Close fold' })
         end,
@@ -454,10 +487,11 @@ local plugins = {
         ft = 'vimwiki',
         keys = {
             '<Leader>ww',
+            '<Leader>w<Leader>w',
             '<Leader>wt',
             '<Leader>wi',
         },
-        init = function ()
+        init = function()
             vim.g.vimwiki_list = {
                 {
                     path = '~/notes',
@@ -465,16 +499,12 @@ local plugins = {
                     syntax = 'markdown',
                     ext = '.md',
                     custom_wiki2html = '~/.local/bin/m2h_pandoc.py',
-                    base_url = '~/notes_html/',
+                    base_url = '~/notes/',
                     custom_wiki2html_args = table.concat {
                         '--metadata title-prefix="Notes"',
                     },
-                    -- auto_diary_index = 1,
                     auto_generate_links = 1,
-                    -- auto_toc = 1,
                     auto_export = 1,
-                    -- auto_tags = 1,
-                    -- auto_generate_tags = 1,
                     links_space_char = '_',
                     diary_frequency = 'monthly',
                     diary_header = 'Bullet Journal',
@@ -484,12 +514,6 @@ local plugins = {
                 }
             }
 
-            -- Auto creates a header when creating wiki pages.
-            -- vim.g.vimwiki_auto_header = 1
-
-            -- Auto-number headers in HTML
-            -- vim.g.vimwiki_html_header_numbering = 1
-
             -- open index.wiki when opening a folder
             vim.g.vimwiki_dir_link = 'index'
 
@@ -497,9 +521,6 @@ local plugins = {
             vim.g.vimwiki_global_ext = 0
 
             vim.g.vimwiki_markdown_link_ext = 1
-
-            -- Add Comment highlight group to check items
-            vim.g.vimwiki_hl_cb_checked = 2
 
             -- Add highlight groups to headers
             vim.g.vimwiki_hl_headers = 1
@@ -517,11 +538,11 @@ local plugins = {
             'junegunn/limelight.vim'
         },
         cmd = 'Goyo',
-        config = function ()
+        config = function()
             vim.api.nvim_create_autocmd('User', {
                 desc = 'Hide Lualine when entering Goyo',
                 pattern = "GoyoEnter",
-                callback = function ()
+                callback = function()
                     require('lualine').hide()
                 end
             })
@@ -529,7 +550,7 @@ local plugins = {
             vim.api.nvim_create_autocmd('User', {
                 desc = 'Show Lualine when entering Goyo',
                 pattern = 'GoyoLeave',
-                callback = function ()
+                callback = function()
                     require('lualine').hide({ unhide = true })
                 end
             })
@@ -662,7 +683,7 @@ local plugins = {
         end
     },
 
-    -- splitting/joining blocks of code 
+    -- splitting/joining blocks of code
     {
         'Wansmer/treesj',
         keys = { '<Leader>ua' },
@@ -718,9 +739,12 @@ local plugins = {
 
             -- vim.keymap.set('n', '<CR>', vim.diagnostic.open_float, { desc = "Diagnostic open float" })
             vim.keymap.set('n', '<Leader>ll', vim.diagnostic.setloclist, { desc = "Load diagnostics to loc list" })
-            vim.keymap.set('n', '<Leader>lq', vim.diagnostic.setqflist, { desc = "Load all diagnostics to quickfix list" })
-            vim.keymap.set('n', '[d', function() vim.diagnostic.goto_prev({ float = false }) end, { desc = "Go to previous diagnostic" })
-            vim.keymap.set('n', ']d', function() vim.diagnostic.goto_next({ float = false }) end, { desc = "Go to next diagnostic" })
+            vim.keymap.set('n', '<Leader>lq', vim.diagnostic.setqflist,
+                { desc = "Load all diagnostics to quickfix list" })
+            vim.keymap.set('n', '[d', function() vim.diagnostic.goto_prev({ float = false }) end,
+                { desc = "Go to previous diagnostic" })
+            vim.keymap.set('n', ']d', function() vim.diagnostic.goto_next({ float = false }) end,
+                { desc = "Go to next diagnostic" })
         end
     },
 
@@ -741,7 +765,7 @@ local plugins = {
 
     {
         "jose-elias-alvarez/null-ls.nvim",
-        config = function ()
+        config = function()
             local null_ls = require("null-ls")
 
             null_ls.setup({
@@ -833,7 +857,8 @@ local plugins = {
                 dap.repl.toggle({ height = 12 })
             end, { desc = "Debug: Toggle Repl" })
             vim.keymap.set("n", "<leader>dl", dap.run_last, { desc = "Debug: Run last" })
-            vim.keymap.set("n", "<leader>dL", telescope.extensions.dap.list_breakpoints, { desc = "Debug: List breakpoints" })
+            vim.keymap.set("n", "<leader>dL", telescope.extensions.dap.list_breakpoints,
+                { desc = "Debug: List breakpoints" })
             vim.keymap.set("n", "<leader>de", function()
                 dap.set_exception_breakpoints("default")
             end, { desc = "Debug: Set exception breakpoint default" })

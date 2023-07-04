@@ -1,3 +1,5 @@
-nmap <buffer> - <Plug>(dirvish_up)
+nmap <buffer> <silent> - :lua require('carbon').explore({ bang = true })<CR>
 nnoremap <buffer> =- <Plug>VimwikiRemoveHeaderLevel
-nnoremap <silent> <Leader>uu :call vimwiki#base#linkify()<CR>
+nnoremap <buffer> <silent> <Leader>uu :call vimwiki#base#linkify()<CR>
+
+setlocal formatprg=sort\ -V\ --reverse
