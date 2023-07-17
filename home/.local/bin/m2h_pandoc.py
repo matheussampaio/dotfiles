@@ -29,11 +29,12 @@ def main(
         "--from", "gfm-task_lists+hard_line_breaks" if syntax == "markdown" else syntax,
         "--to", "html5",
         "--highlight-style=pygments",
+        "--css", os.path.expanduser("~/.cache/notes/styles.css"),
         "--quiet",
         "--output", output_file,
         "--metadata", "rootDir={}".format(root_file),
         "--standalone",
-        "--template", os.path.expanduser("~/.cache/template.html5"),
+        "--template", os.path.expanduser("~/.cache/notes/template.html5"),
     ] + list(custom_args)
 
     command.append(input_file)

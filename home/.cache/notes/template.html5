@@ -17,49 +17,8 @@ $if(description-meta)$
   <meta name="description" content="$description-meta$" />
 $endif$
   <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
-  <link type="text/css" rel="stylesheet" href="https://matheus.sampaio.us/assets/css/main.css">
   <style>
-    ul {
-        margin-bottom: 0;
-    }
-
-    ul.task-list li input[type="checkbox"] {
-        margin-left: -1em;
-    }
-
-    table th, table td {
-        padding: 0.75em;
-    }
-
-    .post-title {
-        margin: 0;
-    }
-
-    table th {
-        border: 1px solid #999;
-    }
-
-    a > sup {
-        vertical-align: super;
-        font-size: small;
-    }
-
-    ul + :not(ul) {
-        margin-top: 0.75em;
-    }
-
-    table td {
-        border: 1px solid #ccc;
-    }
-
-    a[target="_blank"] {
-        color: #29a41f;
-    }
-
-    a[target="_blank"]::after {
-        content: "🔗";
-        margin-left: 5px;
-    }
+    $styles.html()$
   </style>
 $for(css)$
   <link rel="stylesheet" href="$css$" />
@@ -98,27 +57,6 @@ $endif$
 </nav>
 </header>
 <article class="post container">
-    <!-- $if(title)$ -->
-    <!-- <header id="title-block-header" class="post-header"> -->
-    <!--     <h1 class="title">$title$</h1> -->
-    <!--     $if(subtitle)$ -->
-    <!--     <p class="subtitle">$subtitle$</p> -->
-    <!--     $endif$ -->
-    <!--     $for(author)$ -->
-    <!--     <p class="author">$author$</p> -->
-    <!--     $endfor$ -->
-    <!--     $if(date)$ -->
-    <!--     <p class="date">$date$</p> -->
-    <!--     $endif$ -->
-    <!--     $if(abstract)$ -->
-    <!--     <div class="abstract"> -->
-    <!--     <div class="abstract-title">$abstract-title$</div> -->
-    <!--     $abstract$ -->
-    <!--     </div> -->
-    <!--     $endif$ -->
-    <!-- </header> -->
-    <!-- $endif$ -->
-
     <header class="post-header">
         <p class="post-meta">
             $if(date)$
@@ -134,7 +72,6 @@ $endif$
             $endif$
         </p>
     </header>
-
     <div class="post-content">
         $body$
     </div>

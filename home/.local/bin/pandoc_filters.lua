@@ -12,7 +12,7 @@ function Link (elem)
     return elem
 end
 
-function Header(elem)
+function Header (elem)
     elem.level = elem.level + 1
 
     return elem
@@ -31,7 +31,7 @@ function Meta (m)
 end
 
 
-function lf(o)
+function lf (o)
     for key, value in pairs(o) do
         print(key, value)
     end
