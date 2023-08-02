@@ -99,7 +99,7 @@ export SAVEHIST=1000000000
 export WORDCHARS='~!#$%^&*(){}[]<>?.+;-'
 
 export FZF_DEFAULT_OPTS="--tiebreak end,length,index --color=$(cat $XDG_CONFIG_HOME/theme || echo 'light')"
-export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git --exclude .bemol'
 export FZF_CTRL_R_OPTS="--reverse --info hidden"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 

@@ -368,16 +368,16 @@ local plugins = {
         dependencies = { 'roginfarrer/vim-dirvish-dovish' },
     },
 
-    -- Standalone UI for nvim-lsp progress
-    {
-        'j-hui/fidget.nvim',
-        tag = 'legacy',
-        opts = {
-            fmt = {
-                stack_upwards = false
-            }
-        },
-    },
+    -- -- Standalone UI for nvim-lsp progress
+    -- {
+    --     'j-hui/fidget.nvim',
+    --     tag = 'legacy',
+    --     opts = {
+    --         fmt = {
+    --             stack_upwards = false
+    --         }
+    --     },
+    -- },
 
     -- improve the default vim.ui interfaces
     {
@@ -390,8 +390,8 @@ local plugins = {
         'kevinhwang91/nvim-ufo',
         dependencies = 'kevinhwang91/promise-async',
         init = function()
-            vim.keymap.set('n', '<CR>', 'zo', { remap = false, desc = 'Open fold' })
-            vim.keymap.set('n', '<S-CR>', 'zc', { remap = false, desc = 'Close fold' })
+            -- vim.keymap.set('n', '<CR>', 'zo', { remap = false, desc = 'Open fold' })
+            -- vim.keymap.set('n', '<S-CR>', 'zc', { remap = false, desc = 'Close fold' })
         end,
         opts = {}
     },
@@ -562,7 +562,6 @@ local plugins = {
     -- Show git changes in the sign column.
     {
         'mhinz/vim-signify',
-        enabled = false,
         init = function()
             vim.g.signify_sign_delete = '-'
         end,
@@ -739,7 +738,7 @@ local plugins = {
                 },
             })
 
-            -- vim.keymap.set('n', '<CR>', vim.diagnostic.open_float, { desc = "Diagnostic open float" })
+            vim.keymap.set('n', '<CR>', vim.diagnostic.open_float, { desc = "Diagnostic open float" })
             vim.keymap.set('n', '<Leader>ll', vim.diagnostic.setloclist, { desc = "Load diagnostics to loc list" })
             vim.keymap.set('n', '<Leader>lq', vim.diagnostic.setqflist,
                 { desc = "Load all diagnostics to quickfix list" })
@@ -751,19 +750,19 @@ local plugins = {
     },
 
     -- copilot
-    {
-        "zbirenbaum/copilot.lua",
-        cmd = 'Copilot',
-        dependencies = { "zbirenbaum/copilot-cmp" },
-        opts = {
-            panel = {
-                enabled = false
-            },
-            suggestion = {
-                enabled = false
-            }
-        }
-    },
+    -- {
+    --     "zbirenbaum/copilot.lua",
+    --     cmd = 'Copilot',
+    --     dependencies = { "zbirenbaum/copilot-cmp" },
+    --     opts = {
+    --         panel = {
+    --             enabled = false
+    --         },
+    --         suggestion = {
+    --             enabled = false
+    --         }
+    --     }
+    -- },
 
     {
         "jose-elias-alvarez/null-ls.nvim",

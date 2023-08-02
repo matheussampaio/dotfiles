@@ -46,9 +46,6 @@ for _, jar_pattern in ipairs(jar_patterns) do
     end
 end
 
-lsp.capabilities.resolveAdditionalTextEditsSupport = true
--- lsp.capabilities.progressReportProvider = false
-
 local config = {
     on_attach = function(client, bufnr)
         jdtls.setup_dap({ hotcodereplace = "auto" })
@@ -70,35 +67,53 @@ local config = {
 
         vim.keymap.set("x", "<Leader>lm", function() jdtls.extract_method(true) end, { buffer = true, desc = "Extract to method" })
     end,
-    capabilities = lsp.capabilities,
     cmd = {
-        home .. "/.java/jdtls/bin/jdtls",
+        "java",
+        '-Declipse.application=org.eclipse.jdt.ls.core.id1',
+        '-Dosgi.bundles.defaultStartLevel=4',
+        '-Declipse.product=org.eclipse.jdt.ls.core.product',
+        '-Dlog.protocol=true',
+        '-Dlog.level=ALL',
+        '-Xms1g',
+        '--add-modules=ALL-SYSTEM',
+        '--add-opens', 'java.base/java.util=ALL-UNNAMED',
+        '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
+        "-jar", vim.fn.glob(home .. "/.java/jdtls/plugins/org.eclipse.equinox.launcher_*.jar"),
+        "-configuration", home .. "/.java/jdtls/config_linux",
         "--jvm-arg=-javaagent:" .. home .. "/.java/lombok.jar",
-        "-Xms1g",
-        "-Xmx4G",
         "-data", eclipse_workspace,
     },
     root_dir = root_dir,
     init_options = {
         bundles = bundles,
         workspaceFolders = ws_folders_jdtls,
-        extendedClientCapabilities = lsp.capabilities,
+        extendedClientCapabilities = vim.tbl_extend(
+            'keep',
+            { resolveAdditionalTextEditsSupport = true },
+            jdtls.extendedClientCapabilities,
+            lsp.capabilities
+        ),
         settings = {
             java = {
                 signatureHelp = { enabled = true },
                 contentProvider = { preferred = "fernflower" },
-                referenceCodeLens = { enabled = true },
-                implementationsCodeLens = { enabled = true },
                 completion = {
                     favoriteStaticMembers = {
-                        -- "org.hamcrest.MatcherAssert.assertThat",
-                        -- "org.hamcrest.Matchers.*",
-                        -- "org.hamcrest.CoreMatchers.*",
-                        -- "org.junit.jupiter.api.Assertions.*",
-                        -- "java.util.Objects.requireNonNull",
-                        -- "java.util.Objects.requireNonNullElse",
-                        -- "org.mockito.Mockito.*"
-                    }
+                        "org.hamcrest.MatcherAssert.assertThat",
+                        "org.hamcrest.Matchers.*",
+                        "org.hamcrest.CoreMatchers.*",
+                        "org.junit.jupiter.api.Assertions.*",
+                        "java.util.Objects.requireNonNull",
+                        "java.util.Objects.requireNonNullElse",
+                        "org.mockito.Mockito.*"
+                    },
+                    filteredTypes = {
+                        "com.sun.*",
+                        "io.micrometer.shaded.*",
+                        "java.awt.*",
+                        "jdk.*",
+                        "sun.*",
+                    },
                 },
                 sources = {
                     organizeImports = {
@@ -107,7 +122,7 @@ local config = {
                     }
                 }
             }
-        }
+        },
     }
 }
 
