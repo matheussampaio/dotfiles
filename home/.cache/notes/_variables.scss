@@ -40,13 +40,19 @@
 
 // Colors
 $primary-color: #000;
-$action-color: $primary-color;
+
 $white-color: #fff;
 $black-color: #000;
 $blue-color: #007399;
+$blue-light-color: #3b83d5;
+
 $dark-gray-color: #333;
 $medium-gray-color: #999;
 $light-gray-color: #ccc;
+
+$action-color: $blue-color;
+$action-color--alt: $blue-light-color;
+$action-color--contrast: $white-color;
 
 :root {
     // Typography

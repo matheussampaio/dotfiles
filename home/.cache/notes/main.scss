@@ -1,5 +1,5 @@
-@import "bitters/core/base";
-@import "bourbon/core/bourbon";
+@import "bitters/base";
+// @import "bourbon/bourbon";
 
 @import "variables";
 
@@ -359,7 +359,6 @@ dl {
     margin-top: 0;
     margin-left: 1.2em;
     margin-bottom: 1rem;
-    list-style-type: square;
     list-style-position: outside;
     list-style-image: none;
 }
