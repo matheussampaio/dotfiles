@@ -85,7 +85,7 @@ vim.o.signcolumn = "yes"
 vim.o.pumheight = 10
 
 -- disable mouse support
-vim.o.mouse = 'nv'
+-- vim.o.mouse = 'nv'
 
 -- Highlight cursor line
 vim.o.cursorline = true
@@ -368,16 +368,30 @@ local plugins = {
         dependencies = { 'roginfarrer/vim-dirvish-dovish' },
     },
 
-    -- -- Standalone UI for nvim-lsp progress
-    -- {
-    --     'j-hui/fidget.nvim',
-    --     tag = 'legacy',
-    --     opts = {
-    --         fmt = {
-    --             stack_upwards = false
-    --         }
-    --     },
-    -- },
+    -- Standalone UI for nvim-lsp progress
+    {
+        'j-hui/fidget.nvim',
+        tag = 'legacy',
+        opts = {
+            text = {
+                spinner = 'dots'
+            },
+            fmt = {
+                task = function(task_name, _, percentage)
+                    if (task_name == nill or percentage == nill or string.find(string.lower(task_name), "validate documents") or string.find(string.lower(task_name), "diagnostic")) then
+                        return false
+                    end
+
+                    return string.format("%s%% %s", percentage, task_name)
+                end,
+            },
+            sources = {
+                ["null-ls"] = {
+                    ignore = true
+                }
+            }
+        },
+    },
 
     -- improve the default vim.ui interfaces
     {
@@ -424,56 +438,58 @@ local plugins = {
     {
         'nvim-lualine/lualine.nvim',
         config = function()
-            local Tab = require('lualine.components.tabs.tab')
-
-            -- override Tab:label to add the tab's CWD in the tab name
-            function Tab:label()
-                local winnr = vim.fn.tabpagewinnr(self.tabnr)
-                local tab_cwd = vim.fn.fnamemodify(vim.fn.getcwd(winnr, self.tabnr), ':p:h:t')
-
-                return tab_cwd
-            end
-
             require('lualine').setup({
-                extensions = { 'fugitive', 'quickfix', 'lazy' },
+                -- extensions = { 'fugitive', 'quickfix', 'lazy' },
                 options = {
                     theme = 'gruvbox',
                 },
                 sections = {
                     lualine_a = { 'mode' },
-                    lualine_b = { 'ObessionStatus' },
-                    lualine_c = { {
-                        'filename',
-                        newfile_status = true,
-                        path = 1
-                    } },
+                    -- lualine_b = { 'ObessionStatus' },
+                    -- lualine_c = { {
+                    --     'filename',
+                    --     newfile_status = true,
+                    --     path = 1
+                    -- } },
                     lualine_x = {},
                     lualine_y = { 'dap#status', require('plugins/lualine-lsp-name') },
                     lualine_z = { 'filetype' }
                 },
                 inactive_sections = {
-                    lualine_a = {},
-                    lualine_b = {},
+                    -- lualine_a = {},
+                    -- lualine_b = {},
                     lualine_c = { {
                         'filename',
-                        newfile_status = true,
-                        path = 1
+                        -- newfile_status = true,
+                        -- path = 1
                     } },
-                    lualine_x = {},
-                    lualine_y = {},
-                    lualine_z = {}
+                    -- lualine_x = {},
+                    -- lualine_y = {},
+                    -- lualine_z = {}
                 },
                 tabline = {
                     lualine_a = { {
                         'tabs',
                         max_length = vim.o.columns,
-                        mode = 1
+                        mode = 1,
+                        -- fmt = function(name, context)
+                        --     -- Show + if buffer is modified in tab
+                        --     -- local buflist = vim.fn.tabpagebuflist(context.tabnr)
+                        --     local winnr = vim.fn.tabpagewinnr(context.tabnr)
+                        --     -- local bufnr = buflist[winnr]
+                        --     -- local mod = vim.fn.getbufvar(bufnr, '&mod')
+                        --
+                        --     local tab_cwd = vim.fn.fnamemodify(vim.fn.getcwd(winnr), ':p:h:t')
+                        --
+                        --     return tab_cwd
+                        -- end
+
                     } },
-                    lualine_b = {},
-                    lualine_c = {},
-                    lualine_x = {},
-                    lualine_y = {},
-                    lualine_z = {}
+                    -- lualine_b = {},
+                    -- lualine_c = {},
+                    -- lualine_x = {},
+                    -- lualine_y = {},
+                    -- lualine_z = {}
                 },
             })
 
@@ -691,7 +707,8 @@ local plugins = {
         dependencies = { 'nvim-treesitter/nvim-treesitter' },
         config = function()
             require('treesj').setup({
-                use_default_keymaps = false
+                use_default_keymaps = false,
+                max_join_length = 9999,
             })
 
             vim.keymap.set(

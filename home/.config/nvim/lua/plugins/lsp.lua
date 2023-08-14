@@ -11,20 +11,41 @@ M.on_attach = function(client, bufnr)
 
         vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
             callback = function()
-                vim.lsp.buf.clear_references()
+                -- vim.lsp.buf.clear_references()
                 vim.lsp.buf.document_highlight()
             end,
             buffer = bufnr,
             group = group,
-            desc = "Document Highlight",
+            desc = "Highlight current word on cursor hold",
+        })
+
+        vim.api.nvim_create_autocmd({ "CursorMoved" }, {
+            callback = function()
+                vim.lsp.buf.clear_references()
+                -- vim.lsp.buf.document_highlight()
+            end,
+            buffer = bufnr,
+            group = group,
+            desc = "Clear highlight on cursor moved",
         })
     end
+
+    -- vim.lsp.codelens.refresh()
+    --
+    -- vim.api.nvim_create_autocmd({ 'InsertLeave', 'CursorHold' }, {
+    --     desc = "Refresh codelens",
+    --     group = vim.api.nvim_create_augroup(string.format('lsp_codelens_%s', bufnr), { clear = true }),
+    --     buffer = bufnr,
+    --     callback = function()
+    --         vim.lsp.codelens.refresh()
+    --     end
+    -- })
 
     -- Mappings.
     -- See `:help vim.lsp.*` for documentation on any of the below functions
     vim.keymap.set('n', '<Leader>a', vim.lsp.buf.code_action, { desc = 'Open code action' })
     vim.keymap.set('n', '<Leader>lf', function() vim.lsp.buf.format() end, { desc = 'Format' })
-    vim.keymap.set('n', 'gD', function ()
+    vim.keymap.set('n', 'gD', function()
         if not pcall(vim.lsp.buf.declaration) then
             vim.cmd([[normal! gD]])
         end
@@ -45,12 +66,22 @@ M.on_attach = function(client, bufnr)
     end, { desc = 'See documentation' })
 end
 
-M.capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-M.capabilities.textDocument.foldingRange = {
-    dynamicRegistration = false,
-    lineFoldingOnly = true
-}
+M.capabilities = vim.tbl_deep_extend(
+    'force',
+    require('vim.lsp').protocol.make_client_capabilities(),
+    require('cmp_nvim_lsp').default_capabilities(),
+    {
+        -- resolveAdditionalTextEditsSupport = true,
+        -- onCompletionItemSelectedCommand = "editor.action.triggerParameterHints",
+        textDocument = {
+            foldingRange = {
+                dynamicRegistration = false,
+                lineFoldingOnly = true
+            }
+        }
+    }
+)
 
 local lspconfig = require('lspconfig')
 

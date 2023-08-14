@@ -77,12 +77,11 @@ cmp.setup({
     }),
 
     sources = cmp.config.sources({
-        { name = "copilot", priority = 8 },
-        { name = "nvim_lsp", priority = 8 },
-        { name = "luasnip", priority = 7 },
-        { name = "buffer", priority = 7 },
-        { name = "nvim_lsp_signature_help", priority = 6 },
-        { name = "path", priority = 5 },
+        { name = "path" },
+        { name = "luasnip" },
+        { name = "nvim_lsp" },
+        { name = "nvim_lsp_signature_help" },
+        { name = "buffer", keyword_length = 5 },
     }),
 
     formatting = {
@@ -101,23 +100,24 @@ cmp.setup({
     },
 
     experimental = {
-        ghost_text = true,
+        -- ghost_text = false,
+        native_menu = false,
     },
 
-    sorting = {
-        priority_weight = 2,
-        comparators = {
-            -- require("copilot_cmp.comparators").prioritize,
+    -- sorting = {
+    --     priority_weight = 2,
+    --     comparators = {
+    --         -- require("copilot_cmp.comparators").prioritize,
+    --
+    --         cmp.config.compare.locality,
+    --         cmp.config.compare.recently_used,
+    --         cmp.config.compare.score,
+    --         cmp.config.compare.offset,
+    --         cmp.config.compare.order,
+    --     },
+    -- },
 
-            cmp.config.compare.locality,
-            cmp.config.compare.recently_used,
-            cmp.config.compare.score,
-            cmp.config.compare.offset,
-            cmp.config.compare.order,
-        },
-    },
-
-    preselect = cmp.PreselectMode.Item,
+    -- preselect = cmp.PreselectMode.Item,
 })
 
 cmp.setup.filetype("gitcommit", {
@@ -129,7 +129,7 @@ cmp.setup.filetype("gitcommit", {
 cmp.setup.cmdline({ "/", "?" }, {
     mapping = cmp.mapping.preset.cmdline(),
     sources = {
-        { name = "buffer" }
+        { name = "buffer", keyword_length = 5 }
     }
 })
 
@@ -137,9 +137,9 @@ cmp.setup.cmdline({ "/", "?" }, {
 cmp.setup.cmdline(":", {
     mapping = cmp.mapping.preset.cmdline(),
     sources = cmp.config.sources({
-        { name = "path" }
-    }, {
-        { name = "cmdline" }
+        { name = "path" },
+        { name = "nvim_lua" },
+        { name = "cmdline", keyword_length = 5 }
     })
 })
 
