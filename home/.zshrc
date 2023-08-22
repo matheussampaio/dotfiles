@@ -174,6 +174,10 @@ set-theme() {
     done
 
     if [[ -n "${SSH_CONNECTION:-1}" ]] && [[ "$(uname -s)" = Darwin ]]; then
+        if ! pip3 show iterm2 > /dev/null 2>&1; then
+            pip3 install iterm2
+        fi
+
         python3 $XDG_CONFIG_HOME/iterm2/set-theme.py &
     fi
 }
