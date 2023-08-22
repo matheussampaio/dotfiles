@@ -220,10 +220,3 @@ dap.configurations.java = {
         port = 5005
     }
 }
-
-vim.api.nvim_create_autocmd("BufWritePre", {
-    desc = "Auto format",
-    group = vim.api.nvim_create_augroup("AutoFormat", { clear = true }),
-    pattern = { "*.java" },
-    callback = function() vim.lsp.buf.format() end
-})
