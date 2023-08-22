@@ -22,6 +22,12 @@ require('telescope').setup({
                 ["<C-k>"] = require('telescope.actions').move_selection_previous,
                 ["<C-j>"] = require('telescope.actions').move_selection_next
             }
+        },
+        path_display = {
+            shorten = {
+                len = 1,
+                exclude = { 1, -1 }
+            }
         }
     },
 
@@ -46,7 +52,8 @@ require('telescope').setup({
             }
         },
         frecency = {
-            db_safe_mode = false
+            db_safe_mode = false,
+            show_unindexed = true
         }
     }
 })
@@ -55,10 +62,14 @@ require('telescope').load_extension('zf-native')
 require('telescope').load_extension('frecency')
 
 -- Search for a term in the current directory
-vim.keymap.set('', '<Leader>f', require('telescope.builtin').live_grep, { desc = "Search text" })
+vim.keymap.set('', '<Leader>f', function ()
+    require('telescope.builtin').live_grep({ })
+end, { desc = "Search text" })
 
 -- Browse list of files in current directory
-vim.keymap.set('', '<Leader>p', require('telescope.builtin').find_files, { desc = "Search files" })
+vim.keymap.set('', '<Leader>p', function ()
+    require('telescope.builtin').find_files({ hidden = true })
+end, { desc = "Search files" })
 vim.keymap.set('', '<Leader>o', function()
     require('telescope').extensions.frecency.frecency({ workspace = 'CWD' })
 end, { desc = "Search frecency files" })
