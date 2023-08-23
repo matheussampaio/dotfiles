@@ -17,6 +17,14 @@ export XDG_CACHE_HOME="$HOME/.cache"
 
 export N_PREFIX=$HOME/.n
 
+if [ -f "/usr/local/bin/brew" ]; then
+    eval $(/usr/local/bin/brew shellenv)
+fi
+
+if [ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]; then
+    eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+fi
+
 if [ -d "$HOME/go/bin" ]; then
     path+=$HOME/go/bin
 fi

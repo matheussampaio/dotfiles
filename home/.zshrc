@@ -134,10 +134,6 @@ _nvim() {
 
 alias nvim=_nvim
 
-if [ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]; then
-    _evalcache /home/linuxbrew/.linuxbrew/bin/brew shellenv
-fi
-
 _evalcache zoxide init zsh
 
 # if command -v rbenv > /dev/null 2>&1; then
