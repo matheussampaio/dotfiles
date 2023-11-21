@@ -50,16 +50,11 @@ require('telescope').setup({
                 highlight_results = true,
                 match_filename = false
             }
-        },
-        frecency = {
-            db_safe_mode = false,
-            show_unindexed = true
         }
     }
 })
 
 require('telescope').load_extension('zf-native')
-require('telescope').load_extension('frecency')
 
 -- Search for a term in the current directory
 vim.keymap.set('', '<Leader>f', function ()
@@ -70,9 +65,6 @@ end, { desc = "Search text" })
 vim.keymap.set('', '<Leader>p', function ()
     require('telescope.builtin').find_files({ hidden = true })
 end, { desc = "Search files" })
-vim.keymap.set('', '<Leader>o', function()
-    require('telescope').extensions.frecency.frecency({ workspace = 'CWD' })
-end, { desc = "Search frecency files" })
 
 -- Search help tags
 vim.keymap.set('', '<Leader>sh', require('telescope.builtin').help_tags, { desc = "Search help tags" })

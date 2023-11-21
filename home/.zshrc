@@ -228,6 +228,23 @@ timezsh() {
   for i in $(seq 1 10); do /usr/bin/time $shell -i -c exit; done
 }
 
+random_unused_port() {
+    local port
+    port=$(shuf -i 2000-65000 -n 1)
+
+    if lsof -i :$port; then
+        random_unused_port
+    else
+        export AUTOSSH_PORT=$port
+    fi
+}
+
+ssh() {
+    export AUTOSSH_MAXLIFETIME=14400
+    random_unused_port
+    autossh $@
+}
+
 alias lg='lazygit'
 alias bat='bat --theme=gruvbox-$(theme)'
 alias ls='exa'

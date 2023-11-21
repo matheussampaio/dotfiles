@@ -279,6 +279,33 @@ vim.api.nvim_create_autocmd({ 'BufLeave', 'FocusLost' }, {
     end
 })
 
+local ns_epoch_datetime = vim.api.nvim_create_namespace('EpochToDatetime')
+
+local function epoch_to_virtual_text()
+    vim.api.nvim_buf_del_extmark(vim.api.nvim_get_current_buf(), ns_epoch_datetime, 1)
+
+    local epoch = vim.api.nvim_get_current_line():match('%d%d%d%d%d%d%d%d%d%d')
+
+    if epoch ~= nil then
+        vim.api.nvim_buf_set_extmark(vim.api.nvim_get_current_buf(), ns_epoch_datetime, vim.fn.getcurpos()[2] - 1, 0, {
+            id = 1,
+            virt_text = {
+                { os.date('%Y-%m-%d %H:%M:%S', tonumber(epoch)), 'GitBlame' },
+            }
+        })
+    end
+end
+
+vim.keymap.set('v', '<Leader>ue', epoch_to_virtual_text, { desc = 'Transform EPOCH to Datetime' })
+
+-- Highlights the yanked text.
+vim.api.nvim_create_autocmd("CursorHold", {
+    desc = "Transform EPOCH to Datetime",
+    group = vim.api.nvim_create_augroup("Epoch2Datetime", { clear = true }),
+    pattern = { "*" },
+    callback = epoch_to_virtual_text
+})
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
 if not vim.loop.fs_stat(lazypath) then
@@ -438,6 +465,16 @@ local plugins = {
     {
         'nvim-lualine/lualine.nvim',
         config = function()
+            -- local Tab = require('lualine.components.tabs.tab')
+            --
+            -- -- override Tab:label to add the tab's CWD in the tab name
+            -- function Tab:label()
+            --     local winnr = vim.fn.tabpagewinnr(self.tabnr)
+            --     local tab_cwd = vim.fn.fnamemodify(vim.fn.getcwd(winnr, self.tabnr), ':p:h:t')
+            --
+            --     return tab_cwd
+            -- end
+
             require('lualine').setup({
                 -- extensions = { 'fugitive', 'quickfix', 'lazy' },
                 options = {
@@ -446,11 +483,11 @@ local plugins = {
                 sections = {
                     lualine_a = { 'mode' },
                     -- lualine_b = { 'ObessionStatus' },
-                    -- lualine_c = { {
-                    --     'filename',
-                    --     newfile_status = true,
-                    --     path = 1
-                    -- } },
+                    lualine_c = { {
+                        'filename',
+                        newfile_status = true,
+                        path = 1
+                    } },
                     lualine_x = {},
                     lualine_y = { 'dap#status', require('plugins/lualine-lsp-name') },
                     lualine_z = { 'filetype' }
@@ -470,20 +507,14 @@ local plugins = {
                 tabline = {
                     lualine_a = { {
                         'tabs',
-                        max_length = vim.o.columns,
+                        max_length = vim.o.columns / 3,
                         mode = 1,
                         -- fmt = function(name, context)
-                        --     -- Show + if buffer is modified in tab
-                        --     -- local buflist = vim.fn.tabpagebuflist(context.tabnr)
                         --     local winnr = vim.fn.tabpagewinnr(context.tabnr)
-                        --     -- local bufnr = buflist[winnr]
-                        --     -- local mod = vim.fn.getbufvar(bufnr, '&mod')
-                        --
                         --     local tab_cwd = vim.fn.fnamemodify(vim.fn.getcwd(winnr), ':p:h:t')
                         --
-                        --     return tab_cwd
+                        --     return tab_cwd .. ' > ' .. name
                         -- end
-
                     } },
                     -- lualine_b = {},
                     -- lualine_c = {},
@@ -495,7 +526,7 @@ local plugins = {
 
             -- lualine sets showtabline to 2 (alwasy show) if 'tabs'
             -- is enabled, so we override back to 1.
-            vim.cmd("set showtabline=1")
+            -- vim.cmd("set showtabline=1")
         end
     },
 
@@ -735,7 +766,6 @@ local plugins = {
             'natecraddock/telescope-zf-native.nvim',
             -- 'nvim-telescope/telescope-ui-select.nvim',
             'nvim-telescope/telescope-dap.nvim',
-            'nvim-telescope/telescope-frecency.nvim',
             'kkharji/sqlite.lua',
         },
         config = function() require('plugins/telescope') end
@@ -833,8 +863,11 @@ local plugins = {
 
     {
         "lukas-reineke/indent-blankline.nvim",
+        main = "ibl",
         opts = {
-            char = "▏",
+            indent = {
+                char = "▏",
+            }
         }
     },
 

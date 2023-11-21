@@ -72,3 +72,13 @@ fi
 if [ -f "$HOME/.zshenv.local" ]; then
     source "$HOME/.zshenv.local"
 fi
+
+# Add JAVA_HOME_<VERSION> environment variables.
+folders=($HOMEBREW_PREFIX/opt/openjdk@*/)
+
+for folder in $folders; do
+  if [[ $folder =~ '.*openjdk@([0-9]+)' ]]; then
+    version="${match[1]}"
+    export "JAVA_HOME_${version}"="${folder}libexec/"
+  fi
+done

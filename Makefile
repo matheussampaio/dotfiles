@@ -3,7 +3,7 @@ DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 UNAME_S := $(shell uname -s)
 
 
-BREW_PACKAGES        := stow tmux ripgrep wget jq fd lua-language-server rust-analyzer exa bat tree htop miller glow pyenv pyenv-virtualenv lazygit pandoc
+BREW_PACKAGES        := stow tmux ripgrep wget jq fd lua-language-server rust-analyzer exa bat tree htop miller glow pyenv pyenv-virtualenv lazygit pandoc autossh solargraph
 CARGO_PACKAGES       := zoxide
 NODE_PACKAGES        := n tldr neovim typescript typescript-language-server trash-cli eslint prettier js-beautify
 ZSH_PLUGINS_PACKAGES := romkatv/powerlevel10k ohmyzsh/ohmyzsh zsh-users/zsh-autosuggestions jeffreytse/zsh-vi-mode djui/alias-tips apachler/zsh-aws Aloxaf/fzf-tab mroth/evalcache
@@ -73,7 +73,7 @@ download-jdtls:
 	cd ~/.java && \
 	rm -rf ~/.java/jdtls && \
 	mkdir -p jdtls && \
-	wget https://www.eclipse.org/downloads/download.php?file=/jdtls/milestones/1.26.0/jdt-language-server-1.26.0-202307271613.tar.gz -O jdtls.tar.gz && \
+	wget https://www.eclipse.org/downloads/download.php?file=/jdtls/milestones/1.28.0/jdt-language-server-1.28.0-202309281329.tar.gz -O jdtls.tar.gz && \
 	tar -xf jdtls.tar.gz -C jdtls
 
 
