@@ -73,7 +73,7 @@ download-jdtls:
 	cd ~/.java && \
 	rm -rf ~/.java/jdtls && \
 	mkdir -p jdtls && \
-	wget https://www.eclipse.org/downloads/download.php?file=/jdtls/milestones/1.28.0/jdt-language-server-1.28.0-202309281329.tar.gz -O jdtls.tar.gz && \
+	wget https://www.eclipse.org/downloads/download.php?file=/jdtls/milestones/1.32.0/jdt-language-server-1.32.0-202402011424.tar.gz -O jdtls.tar.gz && \
 	tar -xf jdtls.tar.gz -C jdtls
 
 

@@ -52,7 +52,7 @@ vim.o.undolevels = 3000
 vim.o.undoreload = 10000
 
 -- Faster cursorhold events
-vim.g.updatetime = 200
+vim.o.updatetime = 200
 
 -- Create vertical splits to the ride of the current split.
 vim.o.splitright = true
@@ -483,13 +483,13 @@ local plugins = {
                 sections = {
                     lualine_a = { 'mode' },
                     -- lualine_b = { 'ObessionStatus' },
-                    lualine_c = { {
-                        'filename',
-                        newfile_status = true,
-                        path = 1
-                    } },
-                    lualine_x = {},
-                    lualine_y = { 'dap#status', require('plugins/lualine-lsp-name') },
+                    -- lualine_c = { {
+                    --     'filename',
+                    --     newfile_status = true,
+                    --     path = 1
+                    -- } },
+                    lualine_x = { 'dap#status' },
+                    lualine_y = { require('plugins/lualine-lsp-name') },
                     lualine_z = { 'filetype' }
                 },
                 inactive_sections = {
@@ -507,13 +507,20 @@ local plugins = {
                 tabline = {
                     lualine_a = { {
                         'tabs',
-                        max_length = vim.o.columns / 3,
-                        mode = 1,
+                        -- max_length = vim.o.columns / 3,
+                        -- mode = 1,
                         -- fmt = function(name, context)
                         --     local winnr = vim.fn.tabpagewinnr(context.tabnr)
                         --     local tab_cwd = vim.fn.fnamemodify(vim.fn.getcwd(winnr), ':p:h:t')
+                        --     local uri = vim.uri_from_bufnr(vim.api.nvim_get_current_buf())
                         --
-                        --     return tab_cwd .. ' > ' .. name
+                        --     if vim.startswith(uri, 'jdt://') then
+                        --         local package = uri:match('contents/[%a%d._-]+/([%a%d._-]+)') or ''
+                        --         local class = uri:match('contents/[%a%d._-]+/[%a%d._-]+/([%a%d$]+).class') or ''
+                        --         return string.format('%s::%s::%s', tab_cwd, package, class)
+                        --     end
+                        --
+                        --     return string.format('%s::%s', tab_cwd, name)
                         -- end
                     } },
                     -- lualine_b = {},
@@ -533,13 +540,6 @@ local plugins = {
     -- Easy notes
     {
         'vimwiki/vimwiki',
-        ft = 'vimwiki',
-        keys = {
-            '<Leader>ww',
-            '<Leader>w<Leader>w',
-            '<Leader>wt',
-            '<Leader>wi',
-        },
         init = function()
             vim.g.vimwiki_list = {
                 {
@@ -575,7 +575,6 @@ local plugins = {
             vim.g.vimwiki_hl_headers = 1
         end
     },
-
 
     -- Focus reading/writing mode
     {

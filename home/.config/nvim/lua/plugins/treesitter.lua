@@ -4,20 +4,12 @@ require('nvim-treesitter.configs').setup({
         return vim.api.nvim_buf_line_count(bufnr) > 50000
     end,
 
+    auto_install = true,
+
     ensure_installed = {
-        -- "bash",
-        -- "html",
+        "vimdoc",
         "java",
         "javascript",
-        "json",
-        "lua",
-        -- "markdown",
-        "python",
-        -- "ruby",
-        -- "rust",
-        "typescript",
-        "vim",
-        -- "vue"
     },
 
     sync_install = false,

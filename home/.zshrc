@@ -10,6 +10,10 @@ if [ -d "/home/linuxbrew/.linuxbrew/share/zsh/site-functions" ]; then
     fpath=(/home/linuxbrew/.linuxbrew/share/zsh/site-functions $fpath)
 fi
 
+if [ -d "~/.zsh/completion" ]; then
+    fpath=(~/.zsh/completion $fpath)
+fi
+
 # The following lines were added by compinstall
 zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
 zstyle ':completion:*' expand prefix suffix
@@ -239,7 +243,7 @@ random_unused_port() {
     fi
 }
 
-ssh() {
+assh() {
     export AUTOSSH_MAXLIFETIME=14400
     random_unused_port
     autossh $@

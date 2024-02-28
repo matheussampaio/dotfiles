@@ -18,6 +18,29 @@ local home = os.getenv("HOME")
 -- -- [checkstyle] [ERROR] /path/to/file/Main.java:15: Variable 'annotation' should be declared final. [FinalLocalVariable]
 -- vim.bo.errorformat = "[%.%#checkstyle] [%t%.%#] %f:%l:%c: %m,[%.%#checkstyle] [%t%.%#] %f:%l: %r"
 
+vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost' }, {
+    group = vim.api.nvim_create_augroup('java__codelenses', { clear = true }),
+    pattern = { '*.java' },
+    callback = function()
+        local found = false
+
+        for _, value in pairs(vim.lsp.get_active_clients()) do
+            if value.name == 'jdtls' then
+                found = true
+                break
+            end
+        end
+
+        if not found then
+            return false
+        end
+
+        vim.lsp.codelens.refresh()
+
+        return true
+    end,
+})
+
 local function get_workspace_folders()
     local ws_folders_jdtls = {}
 
@@ -69,7 +92,7 @@ local function get_java_runtimes()
                 table.insert(runtimes, {
                     version = tonumber(version),
                     name = 'JavaSE-' .. version,
-                    path = folder .. '/libexec/',
+                    path = folder .. '/libexec',
                 })
             end
         end
@@ -91,9 +114,9 @@ end
 local function on_attach(client, bufnr)
     jdtls.setup_dap({ hotcodereplace = "auto" })
 
-    jdtls_setup.add_commands()
-
     lsp.on_attach(client, bufnr)
+
+    vim.keymap.set("n", "<Leader>lt", require('jdtls.tests').goto_subjects, { buffer = true, desc = "Toggle between test file and source" })
 
     vim.keymap.set("n", "<Leader>dt", jdtls.test_nearest_method, { buffer = true, desc = "Test nearest method" })
     vim.keymap.set("n", "<Leader>dT", jdtls.test_class, { buffer = true, desc = "Test class" })
@@ -104,12 +127,14 @@ local function on_attach(client, bufnr)
     vim.keymap.set("x", "<Leader>lc", function() jdtls.extract_constant(true) end,
         { buffer = true, desc = "Extract to constant" })
 
-    vim.keymap.set("n", "<Leader>lv", jdtls.extract_variable, { buffer = true, desc = "Extract variable" })
-    vim.keymap.set("x", "<Leader>lv", function() jdtls.extract_variable(true) end,
+    vim.keymap.set("n", "<Leader>lv", jdtls.extract_variable_all, { buffer = true, desc = "Extract variable" })
+    vim.keymap.set("x", "<Leader>lv", function() jdtls.extract_variable_all(true) end,
         { buffer = true, desc = "Extract to variable" })
 
     vim.keymap.set("x", "<Leader>lm", function() jdtls.extract_method(true) end,
         { buffer = true, desc = "Extract to method" })
+
+    vim.lsp.codelens.refresh()
 end
 
 local config = {
@@ -183,26 +208,17 @@ local config = {
                 runtimes = get_java_runtimes()
             },
             completion = {
+                enabled = true,
                 favoriteStaticMembers = {
-                    "io.crate.testing.Asserts.assertThat",
-                    "org.assertj.core.api.Assertions.assertThat",
-                    "org.assertj.core.api.Assertions.assertThatThrownBy",
-                    "org.assertj.core.api.Assertions.assertThatExceptionOfType",
-                    "org.assertj.core.api.Assertions.catchThrowable",
-                    "org.hamcrest.MatcherAssert.assertThat",
+                    "org.assertj.core.api.Assertions.*",
+                    "org.hamcrest.MatcherAssert.*",
                     "org.hamcrest.Matchers.*",
                     "org.hamcrest.CoreMatchers.*",
                     "org.junit.jupiter.api.Assertions.*",
-                    "java.util.Objects.requireNonNull",
-                    "java.util.Objects.requireNonNullElse",
+                    "org.mockito.ArgumentMatchers.*",
                     "org.mockito.Mockito.*",
                 },
                 filteredTypes = {
-                    "com.sun.*",
-                    "io.micrometer.shaded.*",
-                    "java.awt.*",
-                    "jdk.*",
-                    "sun.*",
                 },
                 importOrder = {},
             },
@@ -221,6 +237,13 @@ local config = {
                 }
             },
             referenceCodeLens = { enabled = true },
+            references = {
+                includeAccessors = true,
+                includeDecompiledSources = true
+            },
+            rename = {
+                enabled = true
+            },
             sources = {
                 organizeImports = {
                     starThreshold = 9999,

@@ -43,6 +43,7 @@ M.on_attach = function(client, bufnr)
 
     -- Mappings.
     -- See `:help vim.lsp.*` for documentation on any of the below functions
+    vim.keymap.set('n', '<Leader>r', vim.lsp.codelens.refresh, { desc = 'Refresh Codelens' })
     vim.keymap.set('n', '<Leader>a', vim.lsp.buf.code_action, { desc = 'Open code action' })
     vim.keymap.set('n', '<Leader>lf', function() vim.lsp.buf.format() end, { desc = 'Format' })
     vim.keymap.set('n', 'gD', function()
@@ -147,6 +148,13 @@ lspconfig.lua_ls.setup({
             }
         }
     }
+})
+
+-- vuejs
+-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#vuels
+lspconfig.vuels.setup({
+    on_attach = M.on_attach,
+    capabilities = M.capabilities,
 })
 
 return M
