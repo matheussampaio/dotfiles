@@ -107,6 +107,7 @@ export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git --exclu
 export FZF_CTRL_R_OPTS="--reverse --info hidden"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
+export ZVM_VI_EDITOR='nvim'
 export EDITOR='nvim'
 export MANPAGER='nvim +Man!'
 
