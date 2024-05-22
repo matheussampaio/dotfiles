@@ -2,23 +2,25 @@
 vim.o.number = true
 vim.o.relativenumber = true
 
-vim.o.foldlevel = 9999
-vim.o.foldlevelstart = 9999
-vim.o.foldenable = true
-vim.o.foldmethod = 'indent'
+-- vim.o.foldlevel = 9999
+-- vim.o.foldlevelstart = 9999
+-- vim.o.foldenable = true
+-- vim.o.foldmethod = 'indent'
 
 -- only save cursor and folds in view sessions
 vim.opt.viewoptions = { "cursor", "folds" }
 
--- Show tabline is more than one tab exists
-vim.o.showtabline = 1
+-- -- Show tabline is more than one tab exists
+-- vim.o.showtabline = 1
 
 -- Insert spaces when TAB is pressed.
 vim.o.expandtab = true
 
+-- Enable true colors support.
+vim.o.termguicolors = true
+
 -- Change number of spaces that a <Tab> counts for during editing ops.
 vim.o.softtabstop = 4
-
 vim.o.shiftwidth = 4
 
 -- Disable line/column number in status line.
@@ -30,6 +32,9 @@ vim.o.conceallevel = 1
 
 -- Don't give completion messages like 'match 1 of 2' or 'The only match'.
 vim.o.shortmess = vim.o.shortmess .. "c"
+
+-- scroll by screen line.
+vim.o.smoothscroll = true
 
 -- Always keep some lines before/after the current line when scrolling.
 vim.o.scrolloff = 4
@@ -52,7 +57,11 @@ vim.o.undolevels = 3000
 vim.o.undoreload = 10000
 
 -- Faster cursorhold events
-vim.o.updatetime = 200
+vim.o.updatetime = 250
+
+-- Decrease mapped sequence wait time
+-- Displays which-key popup sooner
+vim.opt.timeoutlen = 300
 
 -- Create vertical splits to the ride of the current split.
 vim.o.splitright = true
@@ -62,9 +71,6 @@ vim.o.splitbelow = true
 
 -- Don't display mode in command line (airline already shows it).
 vim.o.showmode = false
-
--- Enable true colors support.
-vim.o.termguicolors = true
 
 -- Remove ~ from the left side of the window
 vim.o.fillchars = "eob: "
@@ -76,27 +82,21 @@ vim.o.visualbell = true
 vim.o.list = true
 
 -- Display tab characters
-vim.opt.listchars = "tab:▶ ,trail:·"
+vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 -- Display signs in the number column
 vim.o.signcolumn = "yes"
-
--- pop up menu height
-vim.o.pumheight = 10
-
--- disable mouse support
--- vim.o.mouse = 'nv'
 
 -- Highlight cursor line
 vim.o.cursorline = true
 
 vim.o.completeopt = "menu,menuone,noinsert,preview"
 
--- only show command line if needed
-vim.o.cmdheight = 1
-
 -- wraps line at last word
 vim.o.linebreak = true
+
+-- Enable break indent
+vim.o.breakindent = true
 
 if vim.fn.filereadable(vim.fn.expand("$XDG_CONFIG_HOME/theme")) > 0 then
     vim.cmd('let &background = readfile(glob("$XDG_CONFIG_HOME/theme"))[0]')
@@ -120,13 +120,13 @@ vim.g.maplocalleader = " "
 -- SPACE, disabling that behavior works better for me.
 vim.keymap.set({ "n", "v" }, "<Space>", "<NOP>", { silent = true })
 
--- vim.keymap.set("n", "<Leader>ui", function ()
---     vim.cmd([[function! SynGroup()
---     let l:s = synID(line('.'), col('.'), 1)
---         echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
---     endfun
---     ]])
--- end, { desc = "Show highlight under cursor"})
+vim.keymap.set("n", "<Leader>ui", function ()
+    vim.cmd([[function! SynGroup()
+    let l:s = synID(line('.'), col('.'), 1)
+        echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
+    endfun
+    ]])
+end, { desc = "Show highlight under cursor"})
 
 -- Quick ways to get to MYVIMRC
 vim.keymap.set("n", "<Leader>uv", ":edit $MYVIMRC<CR>", { silent = true, desc = "Edit $MYVIMRC" })
@@ -308,7 +308,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
-if not vim.loop.fs_stat(lazypath) then
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
     vim.fn.system({
         "git",
         "clone",
@@ -376,8 +376,8 @@ local plugins = {
     -- Provides mappings to easily delete, change and add surroundings (parentheses, brackets, quotes, etc).
     { 'kylechui/nvim-surround', opts = {} },
 
-    -- Comment stuff out.
-    { 'numToStr/Comment.nvim', opts = {} },
+    -- -- Comment stuff out.
+    -- { 'numToStr/Comment.nvim', opts = {} },
 
     'lepture/vim-jinja',
 
@@ -405,7 +405,7 @@ local plugins = {
             },
             fmt = {
                 task = function(task_name, _, percentage)
-                    if (task_name == nill or percentage == nill or string.find(string.lower(task_name), "validate documents") or string.find(string.lower(task_name), "diagnostic")) then
+                    if (task_name == nil or percentage == nil or string.find(string.lower(task_name), "validate documents") or string.find(string.lower(task_name), "diagnostic")) then
                         return false
                     end
 
@@ -507,8 +507,9 @@ local plugins = {
                 tabline = {
                     lualine_a = { {
                         'tabs',
-                        -- max_length = vim.o.columns / 3,
-                        -- mode = 1,
+                        max_length = vim.o.columns / 3,
+                        mode = 1,
+                        use_mode_colors = true,
                         -- fmt = function(name, context)
                         --     local winnr = vim.fn.tabpagewinnr(context.tabnr)
                         --     local tab_cwd = vim.fn.fnamemodify(vim.fn.getcwd(winnr), ':p:h:t')
@@ -533,7 +534,7 @@ local plugins = {
 
             -- lualine sets showtabline to 2 (alwasy show) if 'tabs'
             -- is enabled, so we override back to 1.
-            -- vim.cmd("set showtabline=1")
+            vim.cmd("set showtabline=1")
         end
     },
 
@@ -596,7 +597,7 @@ local plugins = {
             })
 
             vim.api.nvim_create_autocmd('User', {
-                desc = 'Show Lualine when entering Goyo',
+                desc = 'Show Lualine when leaving Goyo',
                 pattern = 'GoyoLeave',
                 callback = function()
                     require('lualine').hide({ unhide = true })
@@ -784,14 +785,9 @@ local plugins = {
                 },
             })
 
-            vim.keymap.set('n', '<CR>', vim.diagnostic.open_float, { desc = "Diagnostic open float" })
-            vim.keymap.set('n', '<Leader>ll', vim.diagnostic.setloclist, { desc = "Load diagnostics to loc list" })
+            vim.keymap.set('n', '<Leader>ll', vim.diagnostic.setloclist, { desc = "[L]oad diagnostics to [l]oclist" })
             vim.keymap.set('n', '<Leader>lq', vim.diagnostic.setqflist,
-                { desc = "Load all diagnostics to quickfix list" })
-            vim.keymap.set('n', '[d', function() vim.diagnostic.goto_prev({ float = false }) end,
-                { desc = "Go to previous diagnostic" })
-            vim.keymap.set('n', ']d', function() vim.diagnostic.goto_next({ float = false }) end,
-                { desc = "Go to next diagnostic" })
+                { desc = "[L]oad all diagnostics to [q]uickfix list" })
         end
     },
 
@@ -884,6 +880,7 @@ local plugins = {
                 "theHamsta/nvim-dap-virtual-text",
                 opts = {}
             },
+            "nvim-neotest/nvim-nio"
         },
         config = function()
             local dap = require("dap")
