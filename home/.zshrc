@@ -251,7 +251,7 @@ assh() {
 
 alias lg='lazygit'
 alias bat='bat --theme=gruvbox-$(theme)'
-alias ls='exa'
+alias ls='eza'
 alias l='ls -lah'
 alias t='tmux'
 alias tn='t new-session -As'
