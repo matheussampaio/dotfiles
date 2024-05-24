@@ -1,160 +1,186 @@
 local M = {}
 
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
-M.on_attach = function(client, bufnr)
-    -- Enable completion triggered by <c-x><c-o>
-    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-    if client.server_capabilities.documentHighlightProvider then
-        local group = vim.api.nvim_create_augroup("lsp_document_highlight_" .. bufnr, { clear = true })
-
-        vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-            callback = function()
-                -- vim.lsp.buf.clear_references()
-                vim.lsp.buf.document_highlight()
-            end,
-            buffer = bufnr,
-            group = group,
-            desc = "Highlight current word on cursor hold",
-        })
-
-        vim.api.nvim_create_autocmd({ "CursorMoved" }, {
-            callback = function()
-                vim.lsp.buf.clear_references()
-                -- vim.lsp.buf.document_highlight()
-            end,
-            buffer = bufnr,
-            group = group,
-            desc = "Clear highlight on cursor moved",
-        })
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('matheus-lsp-attach', { clear = true }),
+  callback = function(event)
+    local map = function(keys, func, desc)
+      vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
     end
 
-    -- vim.lsp.codelens.refresh()
+    -- Jump to the definition of the word under your cursor.
+    --  This is where a variable was first declared, or where a function is defined, etc.
+    --  To jump back, press <C-t>.
+    map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+
+    -- Find references for the word under your cursor.
+    map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+
+    -- Jump to the implementation of the word under your cursor.
+    --  Useful when your language has ways of declaring types without an actual implementation.
+    map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
+
+    -- Jump to the type of the word under your cursor.
+    --  Useful when you're not sure what type a variable is and you want to see
+    --  the definition of its *type*, not where it was *defined*.
+    map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
+
+    -- Fuzzy find all the symbols in your current document.
+    --  Symbols are things like variables, functions, types, etc.
+    map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+
+    -- Fuzzy find all the symbols in your current workspace.
+    --  Similar to document symbols, except searches over your entire project.
+    map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+
+    -- Rename the variable under your cursor.
+    --  Most Language Servers support renaming across files, etc.
+    map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+
+    -- Execute a code action, usually your cursor needs to be on top of an error
+    -- or a suggestion from your LSP for this to activate.
+    map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+
+    -- -- Opens a popup that displays documentation about the word under your cursor
+    -- --  See `:help K` for why this keymap.
+    -- map('K', vim.lsp.buf.hover, 'Hover Documentation')
+
+    -- WARN: This is not Goto Definition, this is Goto Declaration.
+    --  For example, in C this would take you to the header.
+    map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+
+    -- The following two autocommands are used to highlight references of the
+    -- word under your cursor when your cursor rests there for a little while.
+    --    See `:help CursorHold` for information about when this is executed
     --
-    -- vim.api.nvim_create_autocmd({ 'InsertLeave', 'CursorHold' }, {
-    --     desc = "Refresh codelens",
-    --     group = vim.api.nvim_create_augroup(string.format('lsp_codelens_%s', bufnr), { clear = true }),
-    --     buffer = bufnr,
-    --     callback = function()
-    --         vim.lsp.codelens.refresh()
-    --     end
-    -- })
+    -- When you move your cursor, the highlights will be cleared (the second autocommand).
+    local client = vim.lsp.get_client_by_id(event.data.client_id)
+    if client and client.server_capabilities.documentHighlightProvider then
+      local highlight_augroup = vim.api.nvim_create_augroup('matheus-lsp-highlight', { clear = false })
 
-    -- Mappings.
-    -- See `:help vim.lsp.*` for documentation on any of the below functions
-    vim.keymap.set('n', '<Leader>r', vim.lsp.codelens.refresh, { desc = 'Refresh Codelens' })
-    vim.keymap.set('n', '<Leader>a', vim.lsp.buf.code_action, { desc = 'Open code action' })
-    vim.keymap.set('n', '<Leader>lf', function() vim.lsp.buf.format() end, { desc = 'Format' })
-    vim.keymap.set('n', 'gD', function()
-        if not pcall(vim.lsp.buf.declaration) then
-            vim.cmd([[normal! gD]])
-        end
-    end, { desc = 'Go to declaration' })
-    vim.keymap.set('n', 'gd', function()
-        if not pcall(require('telescope.builtin').lsp_definitions) then
-            vim.cmd([[normal! gd]])
-        end
-    end, { desc = 'Go to definition' })
-    vim.keymap.set('n', 'gm', require('telescope.builtin').lsp_implementations, { desc = 'Go to implementation' })
-    vim.keymap.set('n', 'gp', require('telescope.builtin').lsp_type_definitions, { desc = 'Go to type definition' })
-    vim.keymap.set('n', '<Leader>lr', vim.lsp.buf.rename, { desc = 'Rename' })
-    vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { desc = 'Open references' })
-    vim.keymap.set('n', 'K', function()
-        if not pcall(vim.lsp.buf.hover) then
-            vim.cmd([[normal! K]])
-        end
-    end, { desc = 'See documentation' })
-end
+      vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+        buffer = event.buf,
+        group = highlight_augroup,
+        callback = vim.lsp.buf.document_highlight,
+      })
 
+      vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+        buffer = event.buf,
+        group = highlight_augroup,
+        callback = vim.lsp.buf.clear_references,
+      })
 
-M.capabilities = vim.tbl_deep_extend(
-    'force',
-    require('vim.lsp').protocol.make_client_capabilities(),
-    require('cmp_nvim_lsp').default_capabilities(),
-    {
-        -- resolveAdditionalTextEditsSupport = true,
-        -- onCompletionItemSelectedCommand = "editor.action.triggerParameterHints",
-        textDocument = {
-            foldingRange = {
-                dynamicRegistration = false,
-                lineFoldingOnly = true
-            }
-        }
-    }
-)
+      vim.api.nvim_create_autocmd('LspDetach', {
+        group = vim.api.nvim_create_augroup('matheus-lsp-detach', { clear = true }),
+        callback = function(event2)
+          vim.lsp.buf.clear_references()
+          vim.api.nvim_clear_autocmds({ group = 'matheus-lsp-highlight', buffer = event2.buf })
+        end,
+      })
+    end
 
-local lspconfig = require('lspconfig')
+    -- Autocommands to refresh CodeLens
+    if client and client.server_capabilities.codeLensProvider then
+      local codelens_augroup = vim.api.nvim_create_augroup('matheus-lsp-codelens', { clear = false })
 
-local lsp_with_simple_configs = {
-    -- javascript, typescript
-    -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#tsserver
-    "tsserver",
+      vim.lsp.codelens.refresh()
 
-    -- python
-    -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#pylsp
-    "pylsp",
+      vim.api.nvim_create_autocmd({ 'InsertLeave' }, {
+        buffer = event.buf,
+        group = codelens_augroup,
+        callback = vim.lsp.codelens.refresh,
+      })
 
-    -- rust
-    -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#rust_analyzer
-    "rust_analyzer",
+      vim.api.nvim_create_autocmd('LspDetach', {
+        group = vim.api.nvim_create_augroup('matheus-lsp-detach-2', { clear = true }),
+        callback = function(event2)
+          vim.api.nvim_clear_autocmds({ group = 'matheus-lsp-codelens', buffer = event2.buf })
+        end,
+      })
+    end
+
+    -- The following autocommand is used to enable inlay hints in your
+    -- code, if the language server you are using supports them
+    --
+    -- This may be unwanted, since they displace some of your code
+    if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
+      map('<leader>th', function()
+        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+      end, '[T]oggle Inlay [H]ints')
+    end
+  end,
+})
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+M.capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities(), {
+  -- resolveAdditionalTextEditsSupport = true,
+  -- onCompletionItemSelectedCommand = "editor.action.triggerParameterHints",
+  textDocument = {
+    foldingRange = {
+      dynamicRegistration = false,
+      lineFoldingOnly = true,
+    },
+  },
+})
+
+local servers = {
+  -- javascript, typescript
+  -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#tsserver
+  -- tsserver = {},
+
+  -- python
+  -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#pylsp
+  pylsp = {},
+
+  -- rust
+  -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#rust_analyzer
+  rust_analyzer = {},
+
+  -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#solargraph
+  -- solargraph = {},
+
+  -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#vuels
+  vuels = {},
+
+  -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#emmet_language_server
+  ['emmet-language-server'] = {},
+
+  lua_ls = {
+    settings = {
+      Lua = {
+        completion = {
+          callSnippet = 'Replace',
+        },
+        -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+        diagnostics = { disable = { 'missing-fields' } },
+        telemetry = {
+          enable = false,
+        },
+      },
+    },
+  },
 }
 
-for _, lsp in ipairs(lsp_with_simple_configs) do
-    lspconfig[lsp].setup({ on_attach = M.on_attach, capabilities = M.capabilities })
-end
+-- Ensure the servers and tools above are installed
+require('mason').setup()
 
--- ruby
--- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#solargraph
-lspconfig.solargraph.setup({
-    on_attach = M.on_attach,
-    capabilities = M.capabilities,
-    settings = {
-        solargraph = {
-            diagnostics = false
-        }
-    }
+local ensure_installed = vim.tbl_keys(servers or {})
+vim.list_extend(ensure_installed, {
+  'stylua', -- Used to format Lua code
 })
 
--- lua
--- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#sumneko_lua
-local runtime_path = vim.split(package.path, ';')
+require('mason-tool-installer').setup({ ensure_installed = ensure_installed })
 
-table.insert(runtime_path, "lua/?.lua")
-table.insert(runtime_path, "lua/?/init.lua")
-
-lspconfig.lua_ls.setup({
-    on_attach = M.on_attach,
-    capabilities = M.capabilities,
-    settings = {
-        Lua = {
-            runtime = {
-                -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-                version = 'LuaJIT',
-                -- Setup your lua path
-                path = runtime_path
-            },
-            diagnostics = {
-                -- Get the language server to recognize the `vim` global
-                globals = { 'vim' }
-            },
-            workspace = {
-                -- Make the server aware of Neovim runtime files
-                library = vim.api.nvim_get_runtime_file("", true),
-                checkThirdParty = false
-            },
-            telemetry = {
-                enable = false
-            }
-        }
-    }
-})
-
--- vuejs
--- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#vuels
-lspconfig.vuels.setup({
-    on_attach = M.on_attach,
-    capabilities = M.capabilities,
+require('mason-lspconfig').setup({
+  handlers = {
+    function(server_name)
+      local server = servers[server_name] or {}
+      -- This handles overriding only values explicitly passed
+      -- by the server configuration above. Useful when disabling
+      -- certain features of an LSP (for example, turning off formatting for tsserver)
+      server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+      require('lspconfig')[server_name].setup(server)
+    end,
+  },
 })
 
 return M

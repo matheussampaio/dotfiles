@@ -50,30 +50,30 @@ require('telescope').setup({
                 highlight_results = true,
                 match_filename = false
             }
+        },
+        ['ui-select'] = {
+            require('telescope.themes').get_dropdown()
         }
     }
 })
 
-require('telescope').load_extension('zf-native')
+ -- Enable Telescope extensions if they are installed
+pcall(require('telescope').load_extension, 'zf-native')
+pcall(require('telescope').load_extension, 'ui-select')
 
--- Search for a term in the current directory
-vim.keymap.set('', '<Leader>f', function ()
-    require('telescope.builtin').live_grep({ })
-end, { desc = "Search text" })
+-- See `:help telescope.builtin`
+local builtin = require 'telescope.builtin'
 
--- Browse list of files in current directory
-vim.keymap.set('', '<Leader>p', function ()
-    require('telescope.builtin').find_files({ hidden = true })
-end, { desc = "Search files" })
-
--- Search help tags
-vim.keymap.set('', '<Leader>sh', require('telescope.builtin').help_tags, { desc = "Search help tags" })
-
--- Search for word under cursor
-vim.keymap.set('', '<Leader>sw', require('telescope.builtin').grep_string, { desc = "Search current word" })
-
--- Resume telescope
-vim.keymap.set('', '<Leader>sr', require('telescope.builtin').resume, { desc = "Resume search" })
-
--- Use telescope for spell suggestion
-vim.keymap.set('n', 'z=', require('telescope.builtin').spell_suggest, { desc = "Spell suggestions" })
+vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
+vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
+vim.keymap.set('n', '<leader>sf', function ()
+    builtin.find_files({ hidden = true })
+end, { desc = '[S]earch [F]iles' })
+vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
+vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
+vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
+vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
+vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
+vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
+vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+vim.keymap.set('n', 'z=', builtin.spell_suggest, { desc = "[S]earch Spell S[u]ggestions" })
