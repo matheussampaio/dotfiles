@@ -740,14 +740,6 @@ local plugins = {
   -- Fuzzy finder over lists.
   {
     'nvim-telescope/telescope.nvim',
-    keys = {
-      '<Leader>f',
-      '<Leader>sr',
-      '<Leader>sh',
-      '<Leader>sw',
-      '<Leader>p',
-      '<Leader>o',
-    },
     dependencies = {
       'natecraddock/telescope-zf-native.nvim',
       'nvim-telescope/telescope-ui-select.nvim',
@@ -775,29 +767,30 @@ local plugins = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
       { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
       'williamboman/mason-lspconfig.nvim',
+      'neovim/nvim-lspconfig',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       --  Useful status updates for LSP.
       {
         'j-hui/fidget.nvim',
         opts = {
-          text = {
-            spinner = 'dots',
-          },
-          fmt = {
-            task = function(task_name, _, percentage)
-              if
-                task_name == nil
-                or percentage == nil
-                or string.find(string.lower(task_name), 'validate documents')
-                or string.find(string.lower(task_name), 'diagnostic')
-              then
-                return false
-              end
-
-              return string.format('%s%% %s', percentage, task_name)
-            end,
-          },
+          -- text = {
+          --   spinner = 'dots',
+          -- },
+          -- fmt = {
+          --   task = function(task_name, _, percentage)
+          --     if
+          --       task_name == nil
+          --       or percentage == nil
+          --       or string.find(string.lower(task_name), 'validate documents')
+          --       or string.find(string.lower(task_name), 'diagnostic')
+          --     then
+          --       return false
+          --     end
+          --
+          --     return string.format('%s%% %s', percentage, task_name)
+          --   end,
+          -- },
         },
       },
 
@@ -858,20 +851,20 @@ local plugins = {
   --     }
   -- },
 
-  -- {
-  --     "jose-elias-alvarez/null-ls.nvim",
-  --     config = function()
-  --         local null_ls = require("null-ls")
-  --
-  --         null_ls.setup({
-  --             sources = {
-  --                 -- null_ls.builtins.formatting.prettier,
-  --                 -- null_ls.builtins.diagnostics.eslint,
-  --                 -- null_ls.builtins.formatting.rustfmt
-  --             }
-  --         })
-  --     end
-  -- },
+  {
+    'jose-elias-alvarez/null-ls.nvim',
+    config = function()
+      local null_ls = require('null-ls')
+
+      null_ls.setup({
+        sources = {
+          -- null_ls.builtins.formatting.prettier,
+          -- null_ls.builtins.diagnostics.eslint,
+          -- null_ls.builtins.formatting.rustfmt
+        },
+      })
+    end,
+  },
 
   {
     'windwp/nvim-autopairs',
