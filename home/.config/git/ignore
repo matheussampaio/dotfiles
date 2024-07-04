@@ -2,5 +2,6 @@
 .factorypath
 .project
 .settings/
+.idea/
 
 .bemol/

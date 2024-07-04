@@ -741,7 +741,10 @@ local plugins = {
   {
     'nvim-telescope/telescope.nvim',
     dependencies = {
-      'natecraddock/telescope-zf-native.nvim',
+      {
+        'nvim-telescope/telescope-fzf-native.nvim',
+        build = 'make',
+      },
       'nvim-telescope/telescope-ui-select.nvim',
       'nvim-telescope/telescope-dap.nvim',
       'nvim-tree/nvim-web-devicons',
@@ -878,9 +881,10 @@ local plugins = {
   {
     'L3MON4D3/LuaSnip',
     dependencies = { 'rafamadriz/friendly-snippets' },
-    lazy = true,
     config = function()
-      require('luasnip.loaders.from_vscode').lazy_load()
+      require('luasnip.loaders.from_vscode').load()
+      require('luasnip.loaders.from_snipmate').load()
+      require('luasnip.loaders.from_lua').load()
     end,
   },
 
