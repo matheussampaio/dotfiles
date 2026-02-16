@@ -41,9 +41,6 @@ autoload -Uz bashcompinit && bashcompinit
 # better and friendly vi(vim) mode plugin for ZSH
 source $HOME/.zsh/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 
-# help remembering those shell aliases and Git aliases you once defined
-source $HOME/.zsh/alias-tips/alias-tips.plugin.zsh
-
 # provides many aliases and a few useful functions
 source $HOME/.zsh/ohmyzsh/lib/git.zsh
 source $HOME/.zsh/ohmyzsh/plugins/git/git.plugin.zsh
@@ -68,10 +65,6 @@ source $HOME/.zsh/powerlevel10k/powerlevel10k.zsh-theme
 
 # Suggests commands as you type based on history and completions.
 source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
-
-# Provides completion support for awscli and a few utilities to manage AWS
-# profiles and display them in the prompt.
-source $HOME/.zsh/zsh-aws/zsh-aws.plugin.zsh
 
 # Replace zsh's default completion selection menu with fzf!
 source $HOME/.zsh/fzf-tab/fzf-tab.plugin.zsh
@@ -271,3 +264,5 @@ fi
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

@@ -25,14 +25,6 @@ if [ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]; then
     eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 fi
 
-if [ -d "$HOME/go/bin" ]; then
-    path+=$HOME/go/bin
-fi
-
-if [ -d "/usr/local/go/bin" ]; then
-    path+=/usr/local/go/bin
-fi
-
 if [ -d "$HOME/.npm/bin" ]; then
     path+=$HOME/.npm/bin
 fi
@@ -44,25 +36,12 @@ fi
 if [ -d "$HOME/.local/bin" ]; then
     path+=$HOME/.local/bin
 fi
-
-if [ -d "$HOME/.rbenv/bin" ]; then
-    path+=$HOME/.rbenv/bin
-fi
-
-if [ -d "$HOME/.gem/ruby/2.6.0/bin/" ]; then
-    path+=$HOME/.gem/ruby/2.6.0/bin
-fi
-
 if [ -d "$HOME/.npm-global/bin" ]; then
     path+=$HOME/.npm-global/bin
 fi
 
 if [ -d "$HOME/nvim/bin" ]; then
     path+=$HOME/nvim/bin/
-fi
-
-if [ -d "$HOME/.plenv/bin" ]; then
-    path+=$HOME/.plenv/bin
 fi
 
 if [ -d "$HOME/.cargo/bin" ]; then
@@ -72,13 +51,3 @@ fi
 if [ -f "$HOME/.zshenv.local" ]; then
     source "$HOME/.zshenv.local"
 fi
-
-# Add JAVA_HOME_<VERSION> environment variables.
-folders=($HOMEBREW_PREFIX/opt/openjdk@*/)
-
-for folder in $folders; do
-  if [[ $folder =~ '.*openjdk@([0-9]+)' ]]; then
-    version="${match[1]}"
-    export "JAVA_HOME_${version}"="${folder}libexec/"
-  fi
-done

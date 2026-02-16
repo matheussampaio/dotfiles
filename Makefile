@@ -3,10 +3,10 @@ DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 UNAME_S := $(shell uname -s)
 
 
-BREW_PACKAGES        := stow tmux ripgrep wget jq fd lua-language-server rust-analyzer eza bat tree htop miller glow pyenv pyenv-virtualenv lazygit pandoc autossh solargraph
+BREW_PACKAGES        := stow tmux ripgrep wget jq fd tree htop miller lazygit
 CARGO_PACKAGES       := zoxide
-NODE_PACKAGES        := n tldr neovim typescript typescript-language-server trash-cli eslint prettier js-beautify
-ZSH_PLUGINS_PACKAGES := romkatv/powerlevel10k ohmyzsh/ohmyzsh zsh-users/zsh-autosuggestions jeffreytse/zsh-vi-mode djui/alias-tips apachler/zsh-aws Aloxaf/fzf-tab mroth/evalcache
+NODE_PACKAGES        := n tldr neovim
+ZSH_PLUGINS_PACKAGES := romkatv/powerlevel10k ohmyzsh/ohmyzsh zsh-users/zsh-autosuggestions jeffreytse/zsh-vi-mode Aloxaf/fzf-tab mroth/evalcache
 
 
 all:: install-brew-packages install-cargo-packages install-node-packages install-neovim install-fzf download-zsh-plugins link install-terminfo
@@ -23,9 +23,6 @@ unlink::
 install-brew-packages:
 	if [ -d "/home/linuxbrew/.linuxbrew/bin" ]; then \
 		export PATH="/home/linuxbrew/.linuxbrew/bin:$$PATH"; \
-	fi; \
-	if ! type "brew" >/dev/null 2>&1; then \
-		curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | bash; \
 	fi; \
 	brew install $(BREW_PACKAGES)
 
@@ -55,7 +52,7 @@ install-node-packages:
 	$$HOME/.n/bin/npm install --prefix $$HOME/.npm -g $(NODE_PACKAGES)
 
 
-install-neovim: setup-neovim-python2 setup-neovim-python3
+install-neovim:
 	brew install --HEAD luajit
 	brew install neovim
 
@@ -65,70 +62,6 @@ install-terminfo:
 	gunzip terminfo.src.gz && \
 	/usr/bin/tic -xe tmux-256color terminfo.src && \
 	rm terminfo.src
-
-
-setup-java:: download-jdtls download-checkstyle download-lombok download-google-java-format setup-java-debug setup-vscode-java-test setup-vscode-java-decompiler
-
-
-download-jdtls:
-	mkdir -p ~/.java && \
-	cd ~/.java && \
-	rm -rf ~/.java/jdtls && \
-	mkdir -p jdtls && \
-	wget https://www.eclipse.org/downloads/download.php?file=/jdtls/milestones/1.32.0/jdt-language-server-1.32.0-202402011424.tar.gz -O jdtls.tar.gz && \
-	tar -xf jdtls.tar.gz -C jdtls
-
-
-download-checkstyle:
-	mkdir -p ~/.java && wget https://github.com/checkstyle/checkstyle/releases/download/checkstyle-8.41/checkstyle-8.41-all.jar -O ~/.java/checkstyle.jar
-
-
-download-lombok:
-	mkdir -p ~/.java && wget https://projectlombok.org/downloads/lombok.jar -O ~/.java/lombok.jar
-
-
-download-google-java-format:
-	mkdir -p ~/.java && wget https://github.com/google/google-java-format/releases/download/v1.15.0/google-java-format-1.15.0-all-deps.jar -O ~/.java/google-java-format.jar
-
-
-setup-java-debug:
-	mkdir -p ~/.java && \
-	cd ~/.java && \
-	rm -rf ~/.java/java-debug && \
-	git clone --depth 1 https://github.com/microsoft/java-debug.git
-	cd ~/.java/java-debug && \
-	./mvnw clean install
-
-
-setup-vscode-java-test:
-	mkdir -p ~/.java && \
-	cd ~/.java && \
-	rm -rf ~/.java/vscode-java-test && \
-	git clone --depth 1 https://github.com/microsoft/vscode-java-test.git
-	cd ~/.java/vscode-java-test && \
-	npm install && \
-	npm run build-plugin
-
-
-setup-vscode-java-decompiler:
-	mkdir -p ~/.java && \
-	cd ~/.java && \
-	rm -rf ~/.java/vscode-java-decompiler && \
-	git clone --depth 1 https://github.com/dgileadi/vscode-java-decompiler.git
-
-
-setup-neovim-python2:
-	pyenv install 2.7.18 && \
-	pyenv virtualenv 2.7.18 neovim2 && \
-	pyenv activate neovim2 && \
-	pip install neovim
-
-
-setup-neovim-python3:
-	pyenv install 3.7.13 && \
-	pyenv virtualenv 3.4.4 neovim3 && \
-	pyenv activate neovim3 && \
-	pip install neovim
 
 
 download-zsh-plugins:
