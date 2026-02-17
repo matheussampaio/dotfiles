@@ -107,11 +107,6 @@ end
 -- disable ruby and perl providers, see :checkhealth
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
-
--- set python paths
-vim.g.python2_host_prog = vim.fn.expand('$HOME/.pyenv/versions/neovim2/bin/python')
-vim.g.python3_host_prog = vim.fn.expand('$HOME/.pyenv/versions/neovim3/bin/python')
-
 -- Change leader to SPACE.
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
