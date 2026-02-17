@@ -11,12 +11,16 @@
     verbose = true
 
 [diff]
-    algorithm = patience
+    algorithm = histogram
+    colorMoved = plain
+    mnemonicPrefix = true
+    renames = true
 
 [rebase]
     stat = true
     instructionFormat = %s [%an - %ar]
     autoSquash = true
+    autoStash = true
 
 [github]
     user = matheussampaio
@@ -36,5 +40,34 @@
 [alias]
     dag = log --graph --format='format:%C(yellow)%h%C(reset) %C(blue)%an <%ae>%C(reset) %C(magenta)%cr%C(reset)%C(auto)%d%C(reset)%n%s' --date-order
 
-[includeIf "hasconfig:remote.*.url:ssh://git.amazon.com*/**"]
-    path = ~/.gitconfig-amazon
+[push]
+    default = simple
+    autoSetupRemote = true
+    followTags = true
+
+[column]
+    ui = auto
+
+[branch]
+    sort = -committerdate
+
+[tag]
+    sort = version:refname
+
+[fetch]
+    prune = true
+    pruneTags = true
+    all = true
+
+[help]
+    autocorrect = prompt
+
+[rerere]
+    enabled = true
+    autoupdate = true
+
+[merge]
+    conflictstyle = zdiff3
+
+[includeIf "gitdir:~/git/quaestor/"]
+    path = config-work

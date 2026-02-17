@@ -3,5 +3,15 @@
 .project
 .settings/
 .idea/
+lcov-report/
+.cursor/
+.history/
 
-.bemol/
+.eslintcache
+clover.xml
+coverage-final.json
+lcov.info
+cert.key
+cert.crt
+swagger.json
+
