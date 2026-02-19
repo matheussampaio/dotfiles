@@ -6,9 +6,11 @@
 [user]
     name = Matheus Sampaio
     email = matheus@sampaio.us
+    signingkey = 552FE4A4135B4D20
 
 [commit]
     verbose = true
+    gpgsign = true
 
 [diff]
     algorithm = histogram
@@ -68,6 +70,9 @@
 
 [merge]
     conflictstyle = zdiff3
+
+[gpg]
+	program = gpg
 
 [includeIf "gitdir:~/git/quaestor/"]
     path = config-work
