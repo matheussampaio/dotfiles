@@ -4,7 +4,7 @@ UNAME_S := $(shell uname -s)
 
 
 BREW_PACKAGES        := stow tmux ripgrep wget jq fd tree htop miller lazygit
-CARGO_PACKAGES       := zoxide
+CARGO_PACKAGES       := zoxide eza
 NODE_PACKAGES        := n tldr neovim
 ZSH_PLUGINS_PACKAGES := romkatv/powerlevel10k ohmyzsh/ohmyzsh zsh-users/zsh-autosuggestions jeffreytse/zsh-vi-mode Aloxaf/fzf-tab mroth/evalcache
 

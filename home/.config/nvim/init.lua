@@ -427,6 +427,7 @@ local plugins = {
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
     },
+    branch = 'master',
     build = ':TSUpdate',
     config = function()
       require('plugins/treesitter')
@@ -651,17 +652,19 @@ local plugins = {
   {
     'folke/which-key.nvim',
     event = 'VeryLazy',
+    dependencies = { 'nvim-mini/mini.icons' },
     config = function()
       local wk = require('which-key')
 
       wk.setup({
-        window = {
+        win = {
           border = 'single',
           margin = { 1, 1, 1, 1 },
         },
         layout = {
           width = { min = 20, max = 40 },
         },
+        notify = false,
       })
 
       wk.register({
@@ -715,7 +718,7 @@ local plugins = {
 
   -- general-purpose motion plugin
   {
-    'ggandor/leap.nvim',
+    'https://codeberg.org/andyg/leap.nvim',
     config = function()
       vim.keymap.set('n', 's', '<Plug>(leap-forward-to)', { desc = 'Leap forward-to' })
       vim.keymap.set('n', 'S', '<Plug>(leap-backward-to)', { desc = 'Leap backward-to' })

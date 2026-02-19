@@ -1,7 +1,0 @@
-#!/usr/bin/env zsh
-
-if (( # )); then
-  cat ${@} | ssh mac pbcopy
-elif [[ -t 1 ]]; then
-  ssh mac pbcopy
-fi
