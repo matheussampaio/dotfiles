@@ -38,6 +38,11 @@ zstyle :compinstall filename "$HOME/.zshrc"
 autoload -Uz compinit && compinit -C
 autoload -Uz bashcompinit && bashcompinit
 
+source <(COMPLETE=zsh jj)
+
+# help remembering those shell aliases and Git aliases you once defined                                        ▐│                                                                                                               │
+source $HOME/.zsh/alias-tips/alias-tips.plugin.zsh
+
 # better and friendly vi(vim) mode plugin for ZSH
 source $HOME/.zsh/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 
@@ -126,13 +131,19 @@ function my_zvm_init() {
 
 zvm_after_init_commands+=(my_zvm_init)
 
-_nvim() {
-    nvim --listen $XDG_DATA_HOME/nvim/nvim-$(date +%s).pipe "$@"
-}
+# _nvim() {
+#     nvim --listen $XDG_DATA_HOME/nvim/nvim-$(date +%s).pipe "$@"
+# }
+#
+# alias nvim=_nvim
 
-alias nvim=_nvim
+if command -v zoxide > /dev/null 2>&1; then
+    eval "$(zoxide init zsh)"
+fi
 
-eval "$(zoxide init zsh)"
+if command -v workmux > /dev/null 2>&1; then
+    eval "$(workmux completions zsh)"
+fi
 
 # if command -v rbenv > /dev/null 2>&1; then
 #     eval "$(rbenv init - zsh)";
@@ -243,16 +254,28 @@ assh() {
     autossh $@
 }
 
-alias lg='lazygit'
+claude() {
+  local git_root
+  git_root=$(git rev-parse --show-toplevel 2>/dev/null)
+  if [[ -n "$git_root" ]]; then
+    (cd "$git_root" && command claude "$@")
+  else
+    command claude "$@"
+  fi
+}
+
 alias bat='bat --theme=gruvbox-$(theme)'
-alias ls='eza'
-alias l='ls -lah'
-alias t='tmux'
-alias tn='t new-session -As'
-alias graa='git rebase -i --autostash --autosquash origin/$(git_current_branch)'
 alias gcr='git commit --fixup HEAD && graa'
 alias gg='git global'
 alias ggs='gg status -s'
+alias glog='git log --oneline --decorate --graph --branches'
+alias graa='git rebase -i --autostash --autosquash origin/$(git_current_branch)'
+alias l='ls -lah'
+alias lg='lazygit'
+alias ls='eza'
+alias t='tmux'
+alias tn='t new-session -As'
+alias wm='workmux'
 
 if [ -f "$HOME/.p10k.zsh" ]; then
     source "$HOME/.p10k.zsh"
@@ -263,6 +286,3 @@ if [ -f "$HOME/.zshrc.local" ]; then
 fi
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

@@ -51,3 +51,5 @@ fi
 if [ -f "$HOME/.zshenv.local" ]; then
     source "$HOME/.zshenv.local"
 fi
+
+export PRE_COMMIT_NO_CONCURRENCY=1
