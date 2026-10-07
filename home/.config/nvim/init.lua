@@ -157,7 +157,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = vim.api.nvim_create_augroup('HilightTextYank', { clear = true }),
   pattern = { '*' },
   callback = function()
-    vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 500 })
+    vim.hl.on_yank({ higroup = 'IncSearch', timeout = 500 })
   end,
 })
 
@@ -214,8 +214,8 @@ local override_highlights = function()
   vim.api.nvim_set_hl(0, 'CmpItemKindUnit', { bg = 'NONE', fg = '#D4D4D4' })
 
   -- Merges Comment and CursorLine to create GitBlame
-  local CommentHighlight = vim.api.nvim_get_hl_by_name('Comment', true)
-  local CursorLineHighlight = vim.api.nvim_get_hl_by_name('CursorLine', true)
+  local CommentHighlight = vim.api.nvim_get_hl(0, { name = 'Comment', link = false })
+  local CursorLineHighlight = vim.api.nvim_get_hl(0, { name = 'CursorLine', link = false })
   vim.api.nvim_set_hl(0, 'GitBlame', vim.tbl_extend('force', {}, CommentHighlight, CursorLineHighlight))
 
   vim.cmd([[
@@ -419,8 +419,10 @@ local plugins = {
   -- Treesitter configurations and abstraction layer for Neovim.
   {
     'nvim-treesitter/nvim-treesitter',
+    branch = 'main',
+    lazy = false,
     dependencies = {
-      'nvim-treesitter/nvim-treesitter-textobjects',
+      { 'nvim-treesitter/nvim-treesitter-textobjects', branch = 'main' },
     },
     branch = 'master',
     build = ':TSUpdate',
@@ -662,18 +664,16 @@ local plugins = {
         notify = false,
       })
 
-      wk.register({
-        s = { name = 'Search' },
-        d = { name = 'Debug' },
-        u = { name = 'Utils' },
-        g = { name = 'Git' },
-        w = { name = 'Wiki' },
-        h = { name = 'Jump' },
-        l = {
-          name = 'LSP',
-          w = { name = 'Workspaces' },
-        },
-      }, { prefix = '<Leader>' })
+      wk.add({
+        { '<Leader>s', group = 'Search' },
+        { '<Leader>d', group = 'Debug' },
+        { '<Leader>u', group = 'Utils' },
+        { '<Leader>g', group = 'Git' },
+        { '<Leader>w', group = 'Wiki' },
+        { '<Leader>h', group = 'Jump' },
+        { '<Leader>l', group = 'LSP' },
+        { '<Leader>lw', group = 'Workspaces' },
+      })
     end,
   },
 
@@ -706,7 +706,7 @@ local plugins = {
   },
 
   {
-    'norcalli/nvim-colorizer.lua',
+    'catgoose/nvim-colorizer.lua',
     main = 'colorizer',
     opts = {},
   },
@@ -715,8 +715,8 @@ local plugins = {
   {
     'https://codeberg.org/andyg/leap.nvim',
     config = function()
-      vim.keymap.set('n', 's', '<Plug>(leap-forward-to)', { desc = 'Leap forward-to' })
-      vim.keymap.set('n', 'S', '<Plug>(leap-backward-to)', { desc = 'Leap backward-to' })
+      vim.keymap.set('n', 's', '<Plug>(leap-forward)', { desc = 'Leap forward' })
+      vim.keymap.set('n', 'S', '<Plug>(leap-backward)', { desc = 'Leap backward' })
     end,
   },
 
@@ -766,9 +766,8 @@ local plugins = {
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
-      { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
-      'williamboman/mason-lspconfig.nvim',
-      'neovim/nvim-lspconfig',
+      { 'mason-org/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
+      'mason-org/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       --  Useful status updates for LSP.
@@ -795,9 +794,9 @@ local plugins = {
         },
       },
 
-      -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
+      -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
       -- used for completion, annotations and signatures of Neovim apis
-      { 'folke/neodev.nvim', opts = {} },
+      { 'folke/lazydev.nvim', ft = 'lua', opts = {} },
     },
     config = function()
       require('plugins/lsp')
@@ -812,7 +811,7 @@ local plugins = {
       {
         '<leader>f',
         function()
-          require('conform').format({ async = true, lsp_fallback = true })
+          require('conform').format({ async = true, lsp_format = 'fallback' })
         end,
         mode = '',
         desc = '[F]ormat buffer',
@@ -827,12 +826,12 @@ local plugins = {
         local disable_filetypes = { c = true, cpp = true, java = true }
         return {
           timeout_ms = 500,
-          lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
+          lsp_format = disable_filetypes[vim.bo[bufnr].filetype] and 'never' or 'fallback',
         }
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        javascript = { { 'prettierd', 'prettier' } },
+        javascript = { 'prettierd', 'prettier', stop_after_first = true },
       },
     },
   },
@@ -851,21 +850,6 @@ local plugins = {
   --         }
   --     }
   -- },
-
-  {
-    'jose-elias-alvarez/null-ls.nvim',
-    config = function()
-      local null_ls = require('null-ls')
-
-      null_ls.setup({
-        sources = {
-          -- null_ls.builtins.formatting.prettier,
-          -- null_ls.builtins.diagnostics.eslint,
-          -- null_ls.builtins.formatting.rustfmt
-        },
-      })
-    end,
-  },
 
   {
     'windwp/nvim-autopairs',
@@ -999,4 +983,4 @@ for _, file in ipairs(extra_files) do
   table.insert(plugins, require(file))
 end
 
-require('lazy').setup(plugins)
+require('lazy').setup(plugins, { rocks = { enabled = false } })

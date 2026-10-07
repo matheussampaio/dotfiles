@@ -9,7 +9,7 @@ end
 
 cmp.setup({
     enabled = function()
-        return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
+        return vim.bo.buftype ~= "prompt"
             or cmp_dap.is_dap_buffer()
     end,
 
@@ -23,10 +23,6 @@ cmp.setup({
         completion = {
             border = "rounded",
             scrollbar = "║",
-            autocomplete = {
-                require("cmp.types").cmp.TriggerEvent.InsertEnter,
-                require("cmp.types").cmp.TriggerEvent.TextChanged,
-            },
         },
         documentation = {
             border = "rounded",
@@ -100,11 +96,6 @@ cmp.setup({
         })
     },
 
-    experimental = {
-        -- ghost_text = false,
-        native_menu = false,
-    },
-
     -- sorting = {
     --     priority_weight = 2,
     --     comparators = {
@@ -139,7 +130,6 @@ cmp.setup.cmdline(":", {
     mapping = cmp.mapping.preset.cmdline(),
     sources = cmp.config.sources({
         { name = "path" },
-        { name = "nvim_lua" },
         { name = "cmdline", keyword_length = 5 }
     })
 })

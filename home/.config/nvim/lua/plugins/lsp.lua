@@ -78,24 +78,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
       })
     end
 
-    -- Autocommands to refresh CodeLens
+    -- Enable CodeLens (refreshed automatically by Neovim)
     if client and client.server_capabilities.codeLensProvider then
-      local codelens_augroup = vim.api.nvim_create_augroup('matheus-lsp-codelens', { clear = false })
-
-      vim.lsp.codelens.refresh()
-
-      vim.api.nvim_create_autocmd({ 'InsertLeave' }, {
-        buffer = event.buf,
-        group = codelens_augroup,
-        callback = vim.lsp.codelens.refresh,
-      })
-
-      vim.api.nvim_create_autocmd('LspDetach', {
-        group = vim.api.nvim_create_augroup('matheus-lsp-detach-2', { clear = true }),
-        callback = function(event2)
-          vim.api.nvim_clear_autocmds({ group = 'matheus-lsp-codelens', buffer = event2.buf })
-        end,
-      })
+      vim.lsp.codelens.enable(true, { bufnr = event.buf })
     end
 
     -- The following autocommand is used to enable inlay hints in your
@@ -124,25 +109,22 @@ M.capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_ls
 
 local servers = {
   -- javascript, typescript
-  -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#tsserver
+  -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#tsserver
   -- tsserver = {},
 
   -- python
-  -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#pylsp
+  -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#pylsp
   pylsp = {},
 
   -- rust
-  -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#rust_analyzer
+  -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#rust_analyzer
   rust_analyzer = {},
 
-  -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#solargraph
+  -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#solargraph
   -- solargraph = {},
 
-  -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#vuels
-  vuels = {},
-
-  -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#emmet_language_server
-  ['emmet-language-server'] = {},
+  -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#emmet_language_server
+  emmet_language_server = {},
 
   lua_ls = {
     settings = {
@@ -170,16 +152,17 @@ vim.list_extend(ensure_installed, {
 
 require('mason-tool-installer').setup({ ensure_installed = ensure_installed })
 
+vim.lsp.config('*', { capabilities = M.capabilities })
+
+for server_name, server in pairs(servers) do
+  vim.lsp.config(server_name, server)
+end
+
+-- Enables every installed server (configs come from nvim-lspconfig's lsp/ directory).
+-- stylua is excluded since conform.nvim already runs it as a formatter.
 require('mason-lspconfig').setup({
-  handlers = {
-    function(server_name)
-      local server = servers[server_name] or {}
-      -- This handles overriding only values explicitly passed
-      -- by the server configuration above. Useful when disabling
-      -- certain features of an LSP (for example, turning off formatting for tsserver)
-      server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-      require('lspconfig')[server_name].setup(server)
-    end,
+  automatic_enable = {
+    exclude = { 'stylua' },
   },
 })
 

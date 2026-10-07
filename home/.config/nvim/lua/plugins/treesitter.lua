@@ -1,58 +1,57 @@
-require('nvim-treesitter.configs').setup({
-    -- Disable in large files
-    disable = function(_, bufnr)
-        return vim.api.nvim_buf_line_count(bufnr) > 50000
-    end,
+local ts = require('nvim-treesitter')
 
-    auto_install = true,
+ts.install({ 'vimdoc', 'java', 'javascript' })
 
-    ensure_installed = {
-        "vimdoc",
-        "java",
-        "javascript",
-    },
+local function enable(bufnr)
+  -- Disable in large files
+  if vim.api.nvim_buf_line_count(bufnr) > 50000 then
+    return
+  end
 
-    sync_install = false,
+  if not pcall(vim.treesitter.start, bufnr) then
+    return
+  end
 
-    highlight = {
-        enable = true,
-    },
+  vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+end
 
-    textobjects = {
-        select = {
-            enable = true,
+vim.api.nvim_create_autocmd('FileType', {
+  desc = 'Enable treesitter, installing the parser when available',
+  group = vim.api.nvim_create_augroup('matheus-treesitter', { clear = true }),
+  callback = function(event)
+    local lang = vim.treesitter.language.get_lang(event.match)
 
-            lookahead = true,
+    if not lang then
+      return
+    end
 
-            keymaps = {
-                ["af"] = { query = "@function.outer", desc = "Select function" },
-                ["if"] = { query = "@function.inner", desc = "Select inner function" },
-                ["ac"] = { query = "@class.outer", desc = "Select class" },
-                ["ic"] = { query = "@class.inner", desc = "Select inner class" },
-            },
-        },
-    },
-
-    incremental_selection = {
-        enable = true,
-
-        keymaps = {
-            init_selection = "gnn",
-            node_incremental = "grn",
-            scope_incremental = "grc",
-            node_decremental = "grm"
-        }
-    },
-
-    indent = {
-        enable = true
-    },
-
-    autopairs = {
-        enable = true
-    },
-
-    context_commentstring = {
-        enable = true
-    }
+    if vim.list_contains(ts.get_installed(), lang) then
+      enable(event.buf)
+    elseif vim.list_contains(ts.get_available(), lang) then
+      ts.install({ lang }):await(vim.schedule_wrap(function()
+        if vim.api.nvim_buf_is_valid(event.buf) then
+          enable(event.buf)
+        end
+      end))
+    end
+  end,
 })
+
+require('nvim-treesitter-textobjects').setup({
+  select = {
+    lookahead = true,
+  },
+})
+
+local select_textobjects = {
+  ['af'] = { '@function.outer', 'Select function' },
+  ['if'] = { '@function.inner', 'Select inner function' },
+  ['ac'] = { '@class.outer', 'Select class' },
+  ['ic'] = { '@class.inner', 'Select inner class' },
+}
+
+for keys, textobject in pairs(select_textobjects) do
+  vim.keymap.set({ 'x', 'o' }, keys, function()
+    require('nvim-treesitter-textobjects.select').select_textobject(textobject[1], 'textobjects')
+  end, { desc = textobject[2] })
+end
