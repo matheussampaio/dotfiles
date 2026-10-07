@@ -12,7 +12,8 @@ lcov-report
 .notebooks
 superpowers
 notebooks
-.pnpm-store/
+.pnpm-store
+.zed
 
 cert.crt
 cert.key

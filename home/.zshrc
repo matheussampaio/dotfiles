@@ -276,6 +276,7 @@ alias ls='eza'
 alias t='tmux'
 alias tn='t new-session -As'
 alias wm='workmux'
+alias ghs='gh stack'
 
 if [ -f "$HOME/.p10k.zsh" ]; then
     source "$HOME/.p10k.zsh"
